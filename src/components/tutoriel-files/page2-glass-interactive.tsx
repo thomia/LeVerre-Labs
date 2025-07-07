@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import {
@@ -10,6 +10,9 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import GlassComponent from '../dashboard/glass-component'
+import { BaseSettingsHeader } from "@/components/ui/base-settings-header"
+import { getLocalStorage, setLocalStorage, emitStorageEvent } from '@/lib/localStorage'
+import ProgressSummary from './progress-summary'
 
 // Types pour les antécédents médicaux
 interface MedicalHistory {
@@ -101,11 +104,36 @@ export default function GlassInteractive() {
     // Limiter la capacité entre 10% et 100%
     capacity = Math.max(10, Math.min(100, capacity))
     
+    const calculatedCapacity = Math.round(capacity)
+    const calculatedWidth = 20 + (capacity / 100) * 70
+    
     return {
-      absorptionCapacity: Math.round(capacity),
-      glassWidth: 20 + (capacity / 100) * 70
+      absorptionCapacity: calculatedCapacity,
+      glassWidth: calculatedWidth
     }
   }, [age, physicalActivity, nutrition, sleepDuration, medicalHistory])
+  
+  // Sauvegarder la capacité d'absorption et la largeur du verre dans le localStorage
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    
+    // Sauvegarder les valeurs dans le localStorage
+    setLocalStorage('glassCapacity', absorptionCapacity.toString())
+    setLocalStorage('glassWidth', glassWidth.toString())
+    
+    // Émettre un événement pour notifier les autres composants
+    const event = new CustomEvent('glassCapacityUpdated', {
+      detail: { 
+        capacity: absorptionCapacity,
+        width: glassWidth
+      }
+    })
+    window.dispatchEvent(event)
+    
+    // Émettre un événement storage pour synchroniser tous les composants
+    emitStorageEvent('glassCapacity')
+    emitStorageEvent('glassWidth')
+  }, [absorptionCapacity, glassWidth])
 
   // Gérer les changements d'antécédents médicaux
   const handleMedicalHistoryChange = useCallback((key: MedicalHistoryKey, checked: boolean) => {
@@ -119,29 +147,55 @@ export default function GlassInteractive() {
     if (value >= 2) return "Alimentation moyenne"
     return "Alimentation non équilibrée"
   }, [])
+  
+  // Obtenir la description de la capacité d'absorption
+  const getAbsorptionCapacityDescription = useCallback((value: number) => {
+    if (value >= 80) return "Excellente capacité d'absorption"
+    if (value >= 60) return "Bonne capacité d'absorption"
+    if (value >= 40) return "Capacité d'absorption moyenne"
+    if (value >= 20) return "Faible capacité d'absorption"
+    return "Très faible capacité d'absorption"
+  }, [])
 
   return (
-    <div className="space-y-6">
-      <Card className="bg-slate-900/50 border-slate-800">
-        <CardHeader>
-          <CardTitle className="text-blue-400 text-2xl">Le Verre : Votre Capacité d'Absorption</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="relative flex flex-col items-center">
-            <div className="relative w-full flex flex-col items-center">
-              {/* Verre */}
-              <div className="relative w-32 mb-8">
-                <GlassComponent 
-                  width={glassWidth} 
-                  height={300}
-                  absorptionCapacity={absorptionCapacity}
-                  hideColorLegend={false}
-                />
-              </div>
+    <div className="w-full max-w-4xl mx-auto p-4 relative">
+      {/* Visualisation du verre */}
+      <div className="flex gap-6 items-start relative">
+        <Card className="mb-6 bg-gradient-to-r from-slate-950 to-slate-900 flex-grow">
+          <BaseSettingsHeader 
+            title="Capacité d'absorption" 
+            description="Facteurs individuels qui influencent la résistance aux TMS"
+            currentValue={absorptionCapacity}
+            scoreType="glass"
+            getValueDescription={(value) => {
+              if (value >= 80) return "Excellente capacité d'absorption";
+              if (value >= 60) return "Bonne capacité d'absorption";
+              if (value >= 40) return "Capacité d'absorption moyenne";
+              if (value >= 20) return "Faible capacité d'absorption";
+              return "Très faible capacité d'absorption";
+            }}
+          />
+          <CardContent className="p-6">
+            <div className="flex flex-col items-center justify-center">
+              <GlassComponent 
+                width={glassWidth} 
+                height={300} 
+                fillLevel={0}
+                absorptionCapacity={absorptionCapacity}
+                absorptionRate={70}
+              />
             </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+        
+        {/* Résumé des paramètres précédents */}
+        <div className="sticky top-4">
+          <ProgressSummary 
+            showParameters={['glass']} 
+            className="mt-1"
+          />
+        </div>
+      </div>
 
       {/* Section du verre - paramètres */}
       <Card className="bg-slate-900/50 border-slate-800">
@@ -150,6 +204,17 @@ export default function GlassInteractive() {
         </CardHeader>
         <CardContent>
           <div className="space-y-6">
+            {/* Indicateur de note de capacité */}
+            <div className="w-full mb-6">
+              <BaseSettingsHeader
+                title="Capacité d'absorption"
+                description="Votre capacité à absorber les contraintes physiques et à récupérer"
+                currentValue={absorptionCapacity}
+                getValueDescription={getAbsorptionCapacityDescription}
+                scoreType="glass"
+              />
+            </div>
+            
             {/* Accordion pour les paramètres */}
             <Accordion type="single" collapsible className="space-y-4">
               {/* Facteurs individuels */}

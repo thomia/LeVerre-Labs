@@ -1,15 +1,30 @@
 "use client"
 
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
+import { motion } from 'framer-motion'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
-import { TypeWriter } from "@/components/ui/typewriter"
 import { Slider } from "@/components/ui/slider"
+import { BaseSettingsHeader } from "@/components/ui/base-settings-header"
 import { Button } from "@/components/ui/button"
-import { cn } from '@/lib/utils'
-import GlassComponent from '../dashboard/glass-component'
-import TapComponent from '../dashboard/tap-component'
-import { Weight, Timer, Footprints, Brain, Users, Droplets } from 'lucide-react'
+import { cn } from "@/lib/utils"
+import { CheckCircle2, Weight, Repeat, Layers, Brain, Users, Footprints, Timer, RefreshCw } from "lucide-react"
+import TapComponent from '@/components/dashboard/tap-component'
+import GlassComponent from '@/components/dashboard/glass-component'
+import { getLocalStorage, setLocalStorage, emitStorageEvent } from '@/lib/localStorage'
+import ProgressSummary from './progress-summary'
+
+// Interface pour les paramètres de la bulle
+interface BubbleSettings {
+  temperature: number // 5-30°C
+  nightShift: boolean // true/false
+  lighting: number // 0-1000 lux
+  noise: number // 40-95 dB
+  useProtection: boolean // true/false (EPI/EPC pour le bruit)
+  hygiene: number // 0-100%
+  space: number // 0-100%
+  equipment: number // 0-100%
+}
 
 // Interface pour les paramètres du robinet
 interface TapSettings {
@@ -23,33 +38,159 @@ interface TapSettings {
   psychosocialRisk: number // Risques psychosociaux (0-100)
 }
 
+// Fonction pour obtenir la couleur de fond du score
+function getScoreBgColor(score: number, max: number): string {
+  const percentage = score / max
+  if (percentage < 0.25) return "bg-cyan-950/30"
+  if (percentage < 0.5) return "bg-teal-950/30"
+  if (percentage < 0.75) return "bg-amber-950/30"
+  return "bg-rose-950/30"
+}
+
+// Fonction pour obtenir la couleur de bordure du score
+function getScoreBorderColor(score: number, max: number): string {
+  const percentage = score / max
+  if (percentage < 0.25) return "border-cyan-900"
+  if (percentage < 0.5) return "border-teal-900"
+  if (percentage < 0.75) return "border-amber-900"
+  return "border-rose-900"
+}
+
+// Fonction pour obtenir la couleur du texte du score
+function getScoreColor(score: number, max: number): string {
+  return "text-blue-400"
+}
+
+// Fonction pour calculer les scores intermédiaires
+const getIntermediateScore = (score: number, maxScore: number) => {
+  return Math.round((score / maxScore) * 20);
+};
+
 export default function TapAndGlassInteractive() {
-  // État pour le débit du robinet
+  // États pour les paramètres du verre et du robinet
+  const [glassSize, setGlassSize] = useState(100) // Valeur par défaut si aucune valeur n'est sauvegardée
+  const [glassCapacity, setGlassCapacity] = useState(100) // Capacité d'absorption du verre
   const [flowRate, setFlowRate] = useState(50)
+  const [isPaused, setIsPaused] = useState(false)
   
-  // État pour le niveau de remplissage du verre
-  const [fillLevel, setFillLevel] = useState(25)
+  // Charger la largeur du verre et la capacité d'absorption depuis le localStorage
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    
+    // Charger la largeur du verre
+    const savedGlassWidth = getLocalStorage('glassWidth')
+    if (savedGlassWidth) {
+      try {
+        const width = parseFloat(savedGlassWidth)
+        if (!isNaN(width)) {
+          setGlassSize(width)
+        }
+      } catch (e) {
+        console.error("Erreur lors du chargement de la largeur du verre:", e)
+      }
+    }
+    
+    // Charger la capacité d'absorption
+    const savedGlassCapacity = getLocalStorage('glassCapacity')
+    if (savedGlassCapacity) {
+      try {
+        const capacity = parseFloat(savedGlassCapacity)
+        if (!isNaN(capacity)) {
+          setGlassCapacity(capacity)
+        }
+      } catch (e) {
+        console.error("Erreur lors du chargement de la capacité d'absorption:", e)
+      }
+    }
+    
+    // Écouter les changements de largeur du verre et de capacité d'absorption
+    const handleGlassCapacityUpdate = (event: Event) => {
+      const customEvent = event as CustomEvent
+      if (customEvent.detail) {
+        if (customEvent.detail.width) {
+          setGlassSize(customEvent.detail.width)
+        }
+        if (customEvent.detail.capacity) {
+          setGlassCapacity(customEvent.detail.capacity)
+        }
+      }
+    }
+    
+    window.addEventListener('glassCapacityUpdated', handleGlassCapacityUpdate)
+    
+    return () => {
+      window.removeEventListener('glassCapacityUpdated', handleGlassCapacityUpdate)
+    }
+  }, [])
+  
+  // États pour les paramètres du tap settings
+  const [load, setLoad] = useState(20)
+  const [frequency, setFrequency] = useState(10)
+  const [posture, setPosture] = useState(15)
+  const [mentalWorkload, setMentalWorkload] = useState(10)
+  const [psychosocialRisk, setPsychosocialRisk] = useState(5)
   
   // Paramètres du robinet
   const [tapSettings, setTapSettings] = useState<TapSettings>({
     weight: 30,
     frequency: 40,
     posture: 50,
-    mentalWorkload: 60,
+    mentalWorkload: 45,
     psychosocialRisk: 45
   })
   
-  // État pour afficher les détails du calcul
-  const [showDetails, setShowDetails] = useState(false)
+  // Paramètres environnementaux (bulle)
+  const [settings, setSettings] = useState<BubbleSettings>({
+    temperature: 20,
+    lighting: 500,
+    noise: 70,
+    useProtection: false,
+    hygiene: 60,
+    space: 50,
+    equipment: 40,
+    nightShift: false
+  })
   
-  // États pour suivre la progression de l'animation
-  const [firstLineComplete, setFirstLineComplete] = useState(false)
-  const [secondLineComplete, setSecondLineComplete] = useState(false)
-  const [thirdLineComplete, setThirdLineComplete] = useState(false)
-
-  // Capacité d'absorption du verre (fixe pour la démo)
-  const absorptionCapacity = 70
-  const glassWidth = 120
+  // État pour le score environnemental
+  const [environmentScore, setEnvironmentScore] = useState(60)
+  
+  // État pour le statut (débordement ou non)
+  const [isOverflowing, setIsOverflowing] = useState(false)
+  
+  // État pour le niveau de remplissage du verre
+  const [fillLevel, setFillLevel] = useState(0)
+  
+  // Calculer le score environnemental
+  const calculateEnvironmentScore = (settings: BubbleSettings): number => {
+    // Facteurs de base
+    let tempFactor = Math.abs(settings.temperature - 20) * 1.5; // Optimal à 20°C
+    let lightFactor = Math.abs(settings.lighting - 500) / 10; // Optimal à 500 lux
+    let noiseFactor = settings.noise;
+    
+    // Ajustements
+    if (settings.noise > 85 && !settings.useProtection) {
+      noiseFactor += 15; // Pénalité pour absence de protection à niveau sonore élevé
+    }
+    
+    // Calcul du score final (0-100)
+    const rawScore = (
+      tempFactor + 
+      lightFactor + 
+      noiseFactor * 0.5 + 
+      settings.hygiene * 0.7 + 
+      settings.space * 0.6 + 
+      settings.equipment * 0.8 + 
+      (settings.nightShift ? 15 : 0)
+    ) / 5;
+    
+    return Math.min(100, Math.max(0, Math.round(rawScore)));
+  }
+  
+  // Mettre à jour le score environnemental lorsque les paramètres changent
+  useEffect(() => {
+    const score = calculateEnvironmentScore(settings);
+    setEnvironmentScore(score);
+  }, [settings]);
   
   // Calculer le débit du robinet en fonction des paramètres
   useEffect(() => {
@@ -72,388 +213,441 @@ export default function TapAndGlassInteractive() {
     // Limiter le débit entre 0 et 100
     calculatedFlow = Math.max(0, Math.min(100, calculatedFlow))
     
-    // Mettre à jour le débit avec un léger délai pour l'animation
-    const timer = setTimeout(() => {
-      setFlowRate(Math.round(calculatedFlow))
-    }, 500)
-    
-    return () => clearTimeout(timer)
-  }, [tapSettings])
+    // Mettre à jour le débit immédiatement sans délai
+    setFlowRate(Math.round(calculatedFlow))
+  }, [tapSettings]);
   
-  // Effet pour gérer le remplissage progressif du verre en fonction du débit
+  // Mettre à jour le débit lorsque les paramètres changent
   useEffect(() => {
-    // Si le débit est supérieur à 0, le verre se remplit progressivement
-    if (flowRate > 0) {
-      const fillSpeed = flowRate / 200 // Plus le débit est élevé, plus le remplissage est rapide
-      const fillInterval = setInterval(() => {
-        setFillLevel(currentLevel => {
-          // Calcul du nouveau niveau de remplissage
-          const newLevel = currentLevel + fillSpeed
+    updateFlowRate();
+  }, [load, frequency, posture, mentalWorkload, psychosocialRisk]);
+  
+  // Simuler le remplissage progressif du verre en fonction du débit
+  useEffect(() => {
+    if (flowRate === 0 || isPaused) return;
+    
+    // Intervalle pour augmenter progressivement le niveau de remplissage
+    const interval = setInterval(() => {
+      setFillLevel(prevLevel => {
+        // Calculer le nouveau niveau en fonction du débit
+        // Plus le débit est élevé, plus le remplissage est rapide
+        const inflow = (flowRate / 100) * 0.5;
+        
+        // Facteur environnemental (impact de l'environnement sur le remplissage)
+        const environmentFactor = 1 + (environmentScore / 200);
+        
+        // Calculer le changement net avec un facteur linéaire
+        const netChange = inflow * environmentFactor;
+        
+        // Appliquer le changement avec une progression linéaire
+        let newLevel = prevLevel + netChange;
+        
+        // Vérifier si le verre est plein par rapport à sa capacité
+        if (newLevel >= glassSize) {
+          // Si le verre déborde, continuer à augmenter jusqu'à 100% pour l'affichage visuel
+          // mais marquer comme débordant
+          setIsOverflowing(true);
           
-          // Limiter le niveau de remplissage à 100%
-          return newLevel >= 100 ? 100 : newLevel
-        })
-      }, 100) // Mise à jour toutes les 100ms
-      
-      return () => clearInterval(fillInterval)
-    } else if (flowRate === 0 && fillLevel > 0) {
-      // Si le débit est à 0 et que le verre est rempli, on le vide progressivement
-      const drainInterval = setInterval(() => {
-        setFillLevel(currentLevel => {
-          const newLevel = currentLevel - 0.5
-          return newLevel <= 0 ? 0 : newLevel
-        })
-      }, 200)
-      
-      return () => clearInterval(drainInterval)
-    }
-  }, [flowRate, fillLevel])
+          // Continuer à remplir jusqu'à 100% pour montrer toutes les zones de couleur
+          return Math.min(100, newLevel);
+        }
+        
+        return newLevel;
+      });
+    }, 50); // Mise à jour fréquente pour une animation fluide
+    
+    return () => clearInterval(interval);
+  }, [flowRate, glassSize, isPaused, environmentScore, isOverflowing]);
   
-  // Fonction pour mettre à jour un paramètre du robinet
-  const updateTapSetting = <K extends keyof TapSettings>(key: K, value: TapSettings[K]) => {
-    setTapSettings(prev => ({ ...prev, [key]: value }))
-  }
-  
-  // Gérer le changement de débit du robinet
-  const handleFlowRateChange = useCallback((newRate: number) => {
-    setFlowRate(newRate)
-  }, [])
+  // Réinitialiser le niveau de remplissage lorsque les paramètres sont modifiés
+  const resetFillLevel = () => {
+    setFillLevel(0);
+    setIsOverflowing(false);
+  };
   
   // Fonction pour vider complètement le verre
   const handleEmptyGlass = useCallback(() => {
-    setFillLevel(0)
-  }, [])
-  
-  // Obtenir la description du débit
-  const getFlowDescription = (rate: number): string => {
-    if (rate < 20) return "Faible"
-    if (rate < 40) return "Modéré"
-    if (rate < 60) return "Élevé"
-    if (rate < 80) return "Très élevé"
-    return "Extrême"
+    // Réinitialiser le niveau de remplissage
+    setFillLevel(0);
+    setIsOverflowing(false);
+    
+    // Pause temporaire pour éviter un remplissage immédiat
+    setIsPaused(true);
+    setTimeout(() => {
+      setIsPaused(false);
+    }, 300);
+  }, []);
+
+  // Fonction pour gérer le changement de débit
+  const handleFlowRateChange = (newRate: number) => {
+    setFlowRate(newRate);
   }
   
-  // Obtenir la couleur du débit
-  const getFlowColor = (rate: number): string => {
-    if (rate < 20) return "text-green-500"
-    if (rate < 40) return "text-blue-500"
-    if (rate < 60) return "text-yellow-500"
-    if (rate < 80) return "text-orange-500"
-    return "text-red-500"
+  // Fonction pour mettre à jour le débit en fonction des 5 dimensions
+  const updateFlowRate = () => {
+    const calculatedRate = calculateTotalScore();
+    setFlowRate(calculatedRate);
+    
+    // Vérifier si le verre déborde
+    setIsOverflowing(calculatedRate > glassSize);
+  }
+  
+  // Fonction pour calculer le score total qui détermine le débit
+  const calculateTotalScore = () => {
+    // Normalisation de chaque sous-thème sur 20 points
+    const normalizedLoad = (load / 55) * 20;
+    const normalizedFrequency = (frequency / 60) * 20;
+    const normalizedPosture = (posture / 30) * 20;
+    const normalizedMental = (mentalWorkload / 20) * 20;
+    const normalizedPsychosocial = (psychosocialRisk / 15) * 20;
+    
+    // Score final sur 100 points
+    return Math.round(
+      normalizedLoad + 
+      normalizedPosture + 
+      normalizedFrequency + 
+      normalizedMental + 
+      normalizedPsychosocial
+    );
+  }
+  
+  // Fonction pour obtenir la description du score total
+  function getTotalScoreDescription(score: number): string {
+    if (score >= 80) return "Risque très élevé";
+    if (score >= 60) return "Risque élevé";
+    if (score >= 40) return "Risque modéré";
+    return "Risque faible";
+  }
+  
+  // Fonction pour mettre à jour un paramètre de la bulle
+  const updateSetting = <K extends keyof BubbleSettings>(key: K, value: BubbleSettings[K]) => {
+    setSettings(prev => ({ ...prev, [key]: value }));
+  }
+  
+  // Fonction pour mettre à jour un paramètre du robinet
+  const updateTapSetting = <K extends keyof TapSettings>(key: K, value: TapSettings[K]) => {
+    // Mettre à jour les paramètres du robinet
+    setTapSettings(prev => {
+      const newSettings = { ...prev, [key]: value };
+      
+      // Calculer le débit instantanément
+      const weightFactor = newSettings.weight * 0.3; // 0-30
+      const frequencyFactor = newSettings.frequency * 0.2; // 0-20
+      const postureFactor = newSettings.posture * 0.2; // 0-20
+      const mentalFactor = newSettings.mentalWorkload * 0.15; // 0-15
+      const psychosocialFactor = newSettings.psychosocialRisk * 0.15; // 0-15
+      
+      // Calcul du débit total (0-100)
+      let calculatedFlow = (
+        weightFactor + 
+        frequencyFactor + 
+        postureFactor + 
+        mentalFactor + 
+        psychosocialFactor
+      );
+      
+      // Limiter le débit entre 0 et 100
+      calculatedFlow = Math.max(0, Math.min(100, calculatedFlow));
+      
+      // Mettre à jour le débit immédiatement
+      setFlowRate(Math.round(calculatedFlow));
+      
+      return newSettings;
+    });
+  }
+  
+  // Description du score environnemental
+  function getEnvironmentDescription(score: number): string {
+    if (score >= 80) return "Agitation importante";
+    if (score >= 60) return "Agitation élevée";
+    if (score >= 40) return "Agitation acceptable";
+    return "Agitation faible";
   }
 
   return (
-    <div className="space-y-6">
-      {/* En-tête */}
-      <Card className="bg-gradient-to-b from-slate-950 to-slate-900 border-slate-800">
-        <CardHeader>
-          <CardTitle className="text-blue-400 text-2xl flex items-center gap-2">
-            <Footprints className="h-6 w-6" />
-            Le Robinet et le Verre
-          </CardTitle>
-        </CardHeader>
+    <div className="w-full h-auto min-h-screen py-6 flex flex-col items-center">
+      <div className="max-w-7xl w-full px-4 sm:px-6 lg:px-8 space-y-6">
+        <div className="bg-gradient-to-b from-slate-950 to-slate-900 rounded-xl p-6 shadow-xl">
+          <h2 className="text-2xl font-bold text-white mb-4">Interaction Verre, Robinet et Bulle</h2>
+          
+          <div className="flex flex-col gap-6">
+            {/* Espace pour d'autres composants si nécessaire */}
+            
+            {/* Visualisation principale avec ProgressSummary */}
+            <div className="flex flex-row gap-6">
+              {/* Modèle principal */}
+              <Card className="bg-gray-900/60 border-gray-800 overflow-hidden flex-grow">
+                <CardContent className="p-4">
+                  <div className="bg-gradient-to-r from-slate-950 to-slate-900 p-4 rounded-lg mb-4">
+                    <h3 className="text-xl font-semibold text-white mb-1">Simulation</h3>
+                    <p className="text-sm text-gray-400">Visualisation des interactions</p>
+                  </div>
+              
+                  <div className="relative w-full h-[650px] flex flex-col items-center justify-center">
+                      
+                    {/* Bouton Réinitialiser sur la gauche */}
+                    <div className="absolute left-4 top-1/2 transform -translate-y-1/2 z-30">
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="flex items-center gap-1 bg-slate-800 hover:bg-slate-700 text-white border-blue-500/50 hover:border-blue-400"
+                        onClick={handleEmptyGlass}
+                      >
+                        <RefreshCw className="h-4 w-4 text-blue-400" />
+                        Réinitialiser
+                      </Button>
+                    </div>
+                    
+                    {/* Structure avec le robinet et le verre */}
+                    <div className="flex flex-col items-center justify-center relative" style={{ height: '580px' }}>
+                      {/* Robinet */}
+                      <div className="relative z-20 mt-[50px]">
+                        <TapComponent 
+                          flowRate={flowRate} 
+                          onFlowRateChange={handleFlowRateChange}
+                          hideDebitLabel={true}
+                        />
+                      </div>
+                    
+                      {/* Verre */}
+                      <div className="relative z-10 mt-[-120px]">
+                        <GlassComponent 
+                          width={glassSize} 
+                          height={300}
+                          fillLevel={fillLevel}
+                          absorptionRate={70}
+                          absorptionCapacity={glassCapacity}
+                          hideColorLegend={false}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              {/* Résumé des paramètres précédents */}
+              <ProgressSummary 
+                showParameters={['glass']} 
+                className="mt-0 self-start"
+              />
+            </div>
+          </div>
+        </div>
         
-        {/* Partie supérieure: Visualisation */}
-        <CardContent>
-          <div className="space-y-8">
-            {/* Visualisation du robinet et du verre */}
-            <div className="flex flex-col items-center justify-center space-y-0 relative">
-              <div className="flex justify-center w-full">
-                {/* Modèle du robinet - positionné avec un décalage encore plus important vers la droite */}
-                <div className="relative" style={{ width: '160px', height: '200px', marginLeft: '90px' }}>
-                  <TapComponent 
-                    flowRate={flowRate} 
-                    onFlowRateChange={handleFlowRateChange}
-                    hideDebitLabel={false}
-                  />
-                </div>
-              </div>
-              
-              {/* Conteneur pour le bouton et le verre */}
-              <div className="w-full relative" style={{ marginTop: '-40px', height: '300px' }}>
-                {/* Bouton pour vider le verre - placé à l'extrême gauche */}
-                {fillLevel > 0 && (
-                  <div className="absolute left-0 top-1/3">
-                    <Button 
-                      onClick={handleEmptyGlass}
-                      variant="outline"
-                      className="bg-blue-900/80 hover:bg-blue-800 text-blue-100 border-blue-700 flex items-center gap-2 py-2 px-4 rounded-md shadow-md"
-                    >
-                      <Droplets className="h-5 w-5" />
-                      Vider le verre
-                    </Button>
-                  </div>
-                )}
-                
-                {/* Verre - maintenu au centre */}
-                <div className="absolute left-1/2 transform -translate-x-1/2" style={{ width: '160px' }}>
-                  <GlassComponent 
-                    width={glassWidth} 
-                    height={300}
-                    absorptionCapacity={absorptionCapacity}
-                    fillLevel={fillLevel} // Utilisation du niveau de remplissage progressif
-                    absorptionRate={flowRate} // Le débit affecte la vitesse de remplissage
-                    hideColorLegend={false}
-                  />
-                </div>
-              </div>
-            </div>
-            
-            {/* Barre de progression horizontale pour le débit */}
-            <div className="space-y-2 p-4 bg-slate-900/50 rounded-lg border border-slate-800">
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-gray-300 flex items-center gap-2">
-                  <Timer className="h-4 w-4 text-blue-400" />
-                  Débit du robinet:
-                </span>
-                <span className={cn("text-lg font-bold", getFlowColor(flowRate))}>
-                  {flowRate}%
-                </span>
-              </div>
-              
-              <div className="h-4 w-full bg-gray-800 rounded-full overflow-hidden">
-                <div 
-                  className="h-full rounded-full transition-all duration-500"
-                  style={{ 
-                    width: `${flowRate}%`, 
-                    backgroundColor: flowRate < 20 ? '#10b981' : 
-                                    flowRate < 40 ? '#3b82f6' : 
-                                    flowRate < 60 ? '#eab308' : 
-                                    flowRate < 80 ? '#f97316' : 
-                                    '#ef4444'
-                  }}
-                ></div>
-              </div>
-              
-              <div className="flex justify-between text-xs text-gray-400 mt-1">
-                <span>Faible</span>
-                <span>Modéré</span>
-                <span>Élevé</span>
-                <span>Critique</span>
-              </div>
-              
-              <div className="flex justify-center mt-2">
-                <span className={cn("text-sm font-medium px-3 py-1 rounded-full", getFlowColor(flowRate), "bg-slate-800/80")}>
-                  {getFlowDescription(flowRate)}
-                </span>
-              </div>
-            </div>
+        {/* Partie inférieure: Paramètres */}
+        <Card className="bg-gradient-to-b from-slate-950 to-slate-900 border-slate-800 mt-6">
+          {/* Affichage du score calculé */}
+          <div className="px-6 pt-6">
+            <BaseSettingsHeader
+              title="Score de débit calculé"
+              description="Ce score représente le débit du robinet en fonction des paramètres physiques et psychosociaux."
+              currentValue={flowRate}
+              getValueDescription={getTotalScoreDescription}
+              scoreType="tap"
+            />
           </div>
-        </CardContent>
-      </Card>
-      
-      {/* Partie inférieure: Paramètres */}
-      <Card className="bg-gradient-to-b from-slate-950 to-slate-900 border-slate-800">
-        <CardHeader>
-          <CardTitle className="text-blue-400 text-xl">
-            Paramètres du Robinet
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-6">
-            <p className="text-gray-300">
-              Le robinet représente les contraintes physiques et mentales imposées par le travail.
-              Ajustez les paramètres ci-dessous pour voir comment ils influencent le débit.
-            </p>
-            
-            {/* Paramètres physiques */}
+          
+          <CardHeader>
+            <CardTitle className="text-blue-400 text-xl">
+              Paramètres du Robinet
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
             <div className="space-y-6">
-              <div className="flex items-center gap-2">
-                <Footprints className="h-5 w-5 text-blue-400" />
-                <h3 className="text-lg font-semibold text-blue-400">Facteurs physiques</h3>
-              </div>
+              <p className="text-gray-300">
+                Le robinet représente les contraintes physiques et mentales imposées par le travail.
+                Ajustez les paramètres ci-dessous pour voir comment ils influencent le débit.
+              </p>
               
-              {/* Poids manipulé */}
-              <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <Label className="text-sm font-medium text-white flex items-center gap-2">
-                    <Weight className="h-4 w-4 text-blue-400" />
-                    Poids manipulé
-                  </Label>
-                  <span className="px-2 py-1 rounded-md bg-gray-800 text-sm font-medium text-gray-100 shadow-md">{tapSettings.weight} kg</span>
+              {/* Paramètres physiques */}
+              <div className="space-y-6">
+                <div className="flex items-center gap-2">
+                  <Footprints className="h-5 w-5 text-blue-400" />
+                  <h3 className="text-lg font-semibold text-blue-400">Facteurs physiques</h3>
                 </div>
-                <Slider
-                  min={0}
-                  max={100}
-                  step={5}
-                  value={[tapSettings.weight]}
-                  onValueChange={([value]) => updateTapSetting('weight', value)}
-                  className="[&_[role=slider]]:h-4 [&_[role=slider]]:w-4 [&_[role=slider]]:bg-blue-400 [&_[role=slider]]:border-2 [&_[role=slider]]:border-blue-500 [&_[role=slider]]:shadow-md relative [&_.range]:bg-blue-500"
-                />
-                <div className="flex justify-between text-xs text-gray-400">
-                  <span>Léger</span>
-                  <span>Lourd</span>
-                </div>
-              </div>
-              
-              {/* Fréquence */}
-              <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <Label className="text-sm font-medium text-white flex items-center gap-2">
-                    <Timer className="h-4 w-4 text-blue-400" />
-                    Fréquence des manipulations
-                  </Label>
-                  <span className="px-2 py-1 rounded-md bg-gray-800 text-sm font-medium text-gray-100 shadow-md">{tapSettings.frequency}/heure</span>
-                </div>
-                <Slider
-                  min={0}
-                  max={100}
-                  step={5}
-                  value={[tapSettings.frequency]}
-                  onValueChange={([value]) => updateTapSetting('frequency', value)}
-                  className="[&_[role=slider]]:h-4 [&_[role=slider]]:w-4 [&_[role=slider]]:bg-blue-400 [&_[role=slider]]:border-2 [&_[role=slider]]:border-blue-500 [&_[role=slider]]:shadow-md relative [&_.range]:bg-blue-500"
-                />
-                <div className="flex justify-between text-xs text-gray-400">
-                  <span>Rare</span>
-                  <span>Fréquent</span>
-                </div>
-              </div>
-              
-              {/* Score de posture */}
-              <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <Label className="text-sm font-medium text-white flex items-center gap-2">
-                    <Footprints className="h-4 w-4 text-blue-400" />
-                    Score de posture
-                  </Label>
-                  <span className="px-2 py-1 rounded-md bg-gray-800 text-sm font-medium text-gray-100 shadow-md">{tapSettings.posture}%</span>
-                </div>
-                <Slider
-                  min={0}
-                  max={100}
-                  step={5}
-                  value={[tapSettings.posture]}
-                  onValueChange={([value]) => updateTapSetting('posture', value)}
-                  className="[&_[role=slider]]:h-4 [&_[role=slider]]:w-4 [&_[role=slider]]:bg-blue-400 [&_[role=slider]]:border-2 [&_[role=slider]]:border-blue-500 [&_[role=slider]]:shadow-md relative [&_.range]:bg-blue-500"
-                />
-                <div className="flex justify-between text-xs text-gray-400">
-                  <span>Confortable</span>
-                  <span>Contraignante</span>
-                </div>
-              </div>
-            </div>
-            
-            {/* Paramètres psychosociaux */}
-            <div className="space-y-6 mt-8">
-              <div className="flex items-center gap-2">
-                <Brain className="h-5 w-5 text-purple-400" />
-                <h3 className="text-lg font-semibold text-purple-400">Facteurs psychosociaux</h3>
-              </div>
-              
-              {/* Charge mentale */}
-              <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <Label className="text-sm font-medium text-white flex items-center gap-2">
-                    <Brain className="h-4 w-4 text-purple-400" />
-                    Charge mentale
-                  </Label>
-                  <span className="px-2 py-1 rounded-md bg-gray-800 text-sm font-medium text-gray-100 shadow-md">{tapSettings.mentalWorkload}%</span>
-                </div>
-                <Slider
-                  min={0}
-                  max={100}
-                  step={5}
-                  value={[tapSettings.mentalWorkload]}
-                  onValueChange={([value]) => updateTapSetting('mentalWorkload', value)}
-                  className="[&_[role=slider]]:h-4 [&_[role=slider]]:w-4 [&_[role=slider]]:bg-purple-400 [&_[role=slider]]:border-2 [&_[role=slider]]:border-purple-500 [&_[role=slider]]:shadow-md relative [&_.range]:bg-purple-500"
-                />
-                <div className="flex justify-between text-xs text-gray-400">
-                  <span>Faible</span>
-                  <span>Élevée</span>
-                </div>
-              </div>
-              
-              {/* Risques psychosociaux */}
-              <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <Label className="text-sm font-medium text-white flex items-center gap-2">
-                    <Users className="h-4 w-4 text-purple-400" />
-                    Risques psychosociaux
-                  </Label>
-                  <span className="px-2 py-1 rounded-md bg-gray-800 text-sm font-medium text-gray-100 shadow-md">{tapSettings.psychosocialRisk}%</span>
-                </div>
-                <Slider
-                  min={0}
-                  max={100}
-                  step={5}
-                  value={[tapSettings.psychosocialRisk]}
-                  onValueChange={([value]) => updateTapSetting('psychosocialRisk', value)}
-                  className="[&_[role=slider]]:h-4 [&_[role=slider]]:w-4 [&_[role=slider]]:bg-purple-400 [&_[role=slider]]:border-2 [&_[role=slider]]:border-purple-500 [&_[role=slider]]:shadow-md relative [&_.range]:bg-purple-500"
-                />
-                <div className="flex justify-between text-xs text-gray-400">
-                  <span>Faibles</span>
-                  <span>Élevés</span>
-                </div>
-              </div>
-            </div>
-            
-            {/* Explication du calcul */}
-            <div className="mt-8 p-4 bg-slate-900/80 rounded-lg border border-slate-800">
-              <h3 className="text-lg font-semibold text-white mb-3">Comment le débit est-il calculé ?</h3>
-              
-              <div className="space-y-3 text-sm text-slate-300">
-                <p>Le débit du robinet représente les contraintes physiques et mentales imposées par le travail. Il est calculé en fonction de plusieurs facteurs :</p>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
-                  <div className="flex items-start gap-2">
-                    <Weight className="h-4 w-4 mt-0.5 text-rose-400" />
-                    <div>
-                      <p className="font-medium text-rose-400">Poids manipulé</p>
-                      <p className="text-xs text-gray-400">Impact: 30% du débit total</p>
-                    </div>
+                {/* Poids manipulé */}
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <Label className="text-sm font-medium text-white flex items-center gap-2">
+                      <Weight className="h-4 w-4 text-blue-400" />
+                      Poids manipulé
+                    </Label>
+                    <span className="px-2 py-1 rounded-md bg-gray-800 text-sm font-medium text-gray-100 shadow-md">{tapSettings.weight} kg</span>
                   </div>
-                  
-                  <div className="flex items-start gap-2">
-                    <Timer className="h-4 w-4 mt-0.5 text-amber-400" />
-                    <div>
-                      <p className="font-medium text-amber-400">Fréquence</p>
-                      <p className="text-xs text-gray-400">Impact: 20% du débit total</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-2">
-                    <Footprints className="h-4 w-4 mt-0.5 text-blue-400" />
-                    <div>
-                      <p className="font-medium text-blue-400">Posture</p>
-                      <p className="text-xs text-gray-400">Impact: 20% du débit total</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-2">
-                    <Brain className="h-4 w-4 mt-0.5 text-purple-400" />
-                    <div>
-                      <p className="font-medium text-purple-400">Charge mentale</p>
-                      <p className="text-xs text-gray-400">Impact: 15% du débit total</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-2">
-                    <Users className="h-4 w-4 mt-0.5 text-emerald-400" />
-                    <div>
-                      <p className="font-medium text-emerald-400">Risques psychosociaux</p>
-                      <p className="text-xs text-gray-400">Impact: 15% du débit total</p>
-                    </div>
+                  <Slider
+                    min={0}
+                    max={100}
+                    step={5}
+                    value={[tapSettings.weight]}
+                    onValueChange={([value]) => updateTapSetting('weight', value)}
+                    className="[&_[role=slider]]:h-4 [&_[role=slider]]:w-4 [&_[role=slider]]:bg-blue-400 [&_[role=slider]]:border-2 [&_[role=slider]]:border-blue-500 [&_[role=slider]]:shadow-md relative [&_.range]:bg-blue-500"
+                  />
+                  <div className="flex justify-between text-xs text-gray-400">
+                    <span>Léger</span>
+                    <span>Lourd</span>
                   </div>
                 </div>
                 
-                <div className="mt-3 pt-3 border-t border-slate-700">
-                  <p>Le débit final est comparé à la capacité d'absorption du verre pour déterminer si le corps peut faire face aux contraintes imposées.</p>
-                  <p className="mt-2 text-xs text-blue-400">
-                    <TypeWriter
-                      text={firstLineComplete ? 
-                        "Si le débit est supérieur à la capacité d'absorption, le verre déborde, ce qui représente un risque de TMS." : 
-                        "Ajustez les paramètres pour voir comment ils affectent le débit et le remplissage du verre."
-                      }
-                      delay={30}
-                      onComplete={() => setFirstLineComplete(true)}
-                    />
-                  </p>
+                {/* Fréquence */}
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <Label className="text-sm font-medium text-white flex items-center gap-2">
+                      <Timer className="h-4 w-4 text-blue-400" />
+                      Fréquence des manipulations
+                    </Label>
+                    <span className="px-2 py-1 rounded-md bg-gray-800 text-sm font-medium text-gray-100 shadow-md">{tapSettings.frequency}/heure</span>
+                  </div>
+                  <Slider
+                    min={0}
+                    max={100}
+                    step={5}
+                    value={[tapSettings.frequency]}
+                    onValueChange={([value]) => updateTapSetting('frequency', value)}
+                    className="[&_[role=slider]]:h-4 [&_[role=slider]]:w-4 [&_[role=slider]]:bg-blue-400 [&_[role=slider]]:border-2 [&_[role=slider]]:border-blue-500 [&_[role=slider]]:shadow-md relative [&_.range]:bg-blue-500"
+                  />
+                  <div className="flex justify-between text-xs text-gray-400">
+                    <span>Rare</span>
+                    <span>Fréquent</span>
+                  </div>
+                </div>
+                
+                {/* Score de posture */}
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <Label className="text-sm font-medium text-white flex items-center gap-2">
+                      <Footprints className="h-4 w-4 text-blue-400" />
+                      Score de posture
+                    </Label>
+                    <span className="px-2 py-1 rounded-md bg-gray-800 text-sm font-medium text-gray-100 shadow-md">{tapSettings.posture}%</span>
+                  </div>
+                  <Slider
+                    min={0}
+                    max={100}
+                    step={5}
+                    value={[tapSettings.posture]}
+                    onValueChange={([value]) => updateTapSetting('posture', value)}
+                    className="[&_[role=slider]]:h-4 [&_[role=slider]]:w-4 [&_[role=slider]]:bg-blue-400 [&_[role=slider]]:border-2 [&_[role=slider]]:border-blue-500 [&_[role=slider]]:shadow-md relative [&_.range]:bg-blue-500"
+                  />
+                  <div className="flex justify-between text-xs text-gray-400">
+                    <span>Confortable</span>
+                    <span>Contraignante</span>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Paramètres psychosociaux */}
+              <div className="space-y-6 mt-8">
+                <div className="flex items-center gap-2">
+                  <Brain className="h-5 w-5 text-purple-400" />
+                  <h3 className="text-lg font-semibold text-purple-400">Facteurs psychosociaux</h3>
+                </div>
+                
+                {/* Charge mentale */}
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <Label className="text-sm font-medium text-white flex items-center gap-2">
+                      <Brain className="h-4 w-4 text-purple-400" />
+                      Charge mentale
+                    </Label>
+                    <span className="px-2 py-1 rounded-md bg-gray-800 text-sm font-medium text-gray-100 shadow-md">{tapSettings.mentalWorkload}%</span>
+                  </div>
+                  <Slider
+                    min={0}
+                    max={100}
+                    step={5}
+                    value={[tapSettings.mentalWorkload]}
+                    onValueChange={([value]) => updateTapSetting('mentalWorkload', value)}
+                    className="[&_[role=slider]]:h-4 [&_[role=slider]]:w-4 [&_[role=slider]]:bg-purple-400 [&_[role=slider]]:border-2 [&_[role=slider]]:border-purple-500 [&_[role=slider]]:shadow-md relative [&_.range]:bg-purple-500"
+                  />
+                  <div className="flex justify-between text-xs text-gray-400">
+                    <span>Faible</span>
+                    <span>Élevée</span>
+                  </div>
+                </div>
+                
+                {/* Risques psychosociaux */}
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <Label className="text-sm font-medium text-white flex items-center gap-2">
+                      <Users className="h-4 w-4 text-purple-400" />
+                      Risques psychosociaux
+                    </Label>
+                    <span className="px-2 py-1 rounded-md bg-gray-800 text-sm font-medium text-gray-100 shadow-md">{tapSettings.psychosocialRisk}%</span>
+                  </div>
+                  <Slider
+                    min={0}
+                    max={100}
+                    step={5}
+                    value={[tapSettings.psychosocialRisk]}
+                    onValueChange={([value]) => updateTapSetting('psychosocialRisk', value)}
+                    className="[&_[role=slider]]:h-4 [&_[role=slider]]:w-4 [&_[role=slider]]:bg-purple-400 [&_[role=slider]]:border-2 [&_[role=slider]]:border-purple-500 [&_[role=slider]]:shadow-md relative [&_.range]:bg-purple-500"
+                  />
+                  <div className="flex justify-between text-xs text-gray-400">
+                    <span>Faibles</span>
+                    <span>Élevés</span>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Explication du calcul */}
+              <div className="mt-8 p-4 bg-slate-900/80 rounded-lg border border-slate-800">
+                <h3 className="text-lg font-semibold text-white mb-3">Comment le débit est-il calculé ?</h3>
+                
+                <div className="space-y-3 text-sm text-slate-300">
+                  <p>Le débit du robinet représente les contraintes physiques et mentales imposées par le travail. Il est calculé en fonction de plusieurs facteurs :</p>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
+                    <div className="flex items-start gap-2">
+                      <Weight className="h-4 w-4 mt-0.5 text-rose-400" />
+                      <div>
+                        <p className="font-medium text-rose-400">Poids manipulé</p>
+                        <p className="text-xs text-gray-400">Impact: 30% du débit total</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start gap-2">
+                      <Timer className="h-4 w-4 mt-0.5 text-amber-400" />
+                      <div>
+                        <p className="font-medium text-amber-400">Fréquence</p>
+                        <p className="text-xs text-gray-400">Impact: 20% du débit total</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start gap-2">
+                      <Footprints className="h-4 w-4 mt-0.5 text-blue-400" />
+                      <div>
+                        <p className="font-medium text-blue-400">Posture</p>
+                        <p className="text-xs text-gray-400">Impact: 20% du débit total</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start gap-2">
+                      <Brain className="h-4 w-4 mt-0.5 text-purple-400" />
+                      <div>
+                        <p className="font-medium text-purple-400">Charge mentale</p>
+                        <p className="text-xs text-gray-400">Impact: 15% du débit total</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start gap-2">
+                      <Users className="h-4 w-4 mt-0.5 text-emerald-400" />
+                      <div>
+                        <p className="font-medium text-emerald-400">Risques psychosociaux</p>
+                        <p className="text-xs text-gray-400">Impact: 15% du débit total</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-3 pt-3 border-t border-slate-700">
+                    <p>Le débit final est comparé à la capacité d'absorption du verre pour déterminer si le corps peut faire face aux contraintes imposées.</p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   )
 }

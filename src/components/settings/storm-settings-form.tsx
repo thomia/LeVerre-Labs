@@ -59,7 +59,7 @@ export default function StormSettingsForm({ hideHeader = false }: { hideHeader?:
     }
   }, [])
   
-  // Calculer l'intensité de l'orage
+  // Calculer l'intensité de l'orage (sans émission d'événements)
   useEffect(() => {
     // Normaliser les valeurs
     const normalizedImpact = impact / 10 // 1-10 -> 0.1-1
@@ -80,14 +80,14 @@ export default function StormSettingsForm({ hideHeader = false }: { hideHeader?:
     // Limiter le score entre 0 et 100
     const finalScore = Math.min(100, Math.max(0, roundedScore))
     
-    // Mettre à jour l'intensité
+    // Mettre à jour l'intensité sans déclencher d'événements
     setIntensity(finalScore)
     
-    // Sauvegarder l'intensité
-    setLocalStorage('stormIntensity', finalScore.toString())
-    
-    // Émettre un événement pour notifier les autres composants
-    emitStorageEvent()
+    // Sauvegarder l'intensité dans localStorage sans émettre d'événements
+    // pour éviter les boucles infinies de mises à jour
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('stormIntensity', finalScore.toString())
+    }
   }, [impact, duration, frequency, aleaType])
   
   // Fonction de soumission du formulaire
