@@ -9,7 +9,7 @@ import { Switch } from "@/components/ui/switch"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { RefreshCw } from "lucide-react"
-import { EnvironmentParticles } from '@/components/dashboard/environment-particles'
+import { EnvironmentParticles } from '@/components/dashboard/bubble-component'
 import TapComponent from '@/components/dashboard/tap-component'
 import GlassComponent from '@/components/dashboard/glass-component'
 import { getLocalStorage, setLocalStorage, emitStorageEvent } from '@/lib/localStorage'

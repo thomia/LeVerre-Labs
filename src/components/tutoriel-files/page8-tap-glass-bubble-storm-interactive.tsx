@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { RefreshCw } from "lucide-react"
-import { EnvironmentParticles } from '@/components/dashboard/environment-particles'
+import { EnvironmentParticles } from '@/components/dashboard/bubble-component'
 import TapComponent from '@/components/dashboard/tap-component'
 import GlassComponent from '@/components/dashboard/glass-component'
 import StormComponent from '@/components/dashboard/storm-component'

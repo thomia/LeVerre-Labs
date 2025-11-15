@@ -12,7 +12,7 @@ import { Settings, Droplet, Wind, GlassWater, RectangleHorizontal, Cloud, Clock,
 import { Switch } from "@/components/ui/switch"
 import { cn } from "@/lib/utils"
 import { getLocalStorage, setLocalStorage, emitStorageEvent } from '@/lib/localStorage'
-import { EnvironmentParticles } from './environment-particles'
+import { EnvironmentParticles } from './bubble-component'
 import { ModelDescription } from '../ui/model-description'
 import { AnimatedTitle } from '../ui/animated-title'
 import { Slider } from "@/components/ui/slider"

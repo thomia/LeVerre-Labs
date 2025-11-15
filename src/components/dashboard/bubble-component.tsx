@@ -16,6 +16,11 @@ interface EnvironmentParticlesProps {
   isPaused?: boolean
 }
 
+interface BubbleComponentProps {
+  environmentScore: number // 0-100
+  isPaused?: boolean
+}
+
 export function EnvironmentParticles({ score, isPaused = false }: EnvironmentParticlesProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const particlesRef = useRef<Particle[]>([])
@@ -67,7 +72,8 @@ export function EnvironmentParticles({ score, isPaused = false }: EnvironmentPar
       const count = getParticleCount(score)
       const centerX = canvas.width / 2
       const centerY = canvas.height / 2
-      const radius = Math.min(canvas.width, canvas.height) / 2 * 0.85
+      // Le rayon doit correspondre exactement à la zone visible du cercle
+      const radius = Math.min(canvas.width, canvas.height) / 2 - 6
       const speed = getParticleSpeed(score)
 
       for (let i = 0; i < count; i++) {
@@ -96,7 +102,8 @@ export function EnvironmentParticles({ score, isPaused = false }: EnvironmentPar
 
       const centerX = canvas.width / 2
       const centerY = canvas.height / 2
-      const radius = Math.min(canvas.width, canvas.height) / 2 * 0.85
+      // Le rayon doit correspondre exactement à la zone visible du cercle
+      const radius = Math.min(canvas.width, canvas.height) / 2 - 6
 
       particlesRef.current.forEach(particle => {
         particle.x += particle.vx
@@ -171,4 +178,9 @@ export function EnvironmentParticles({ score, isPaused = false }: EnvironmentPar
       />
     </div>
   )
-} 
+}
+
+// Composant wrapper pour la compatibilité avec le site vitrine
+export default function BubbleComponent({ environmentScore, isPaused = false }: BubbleComponentProps) {
+  return <EnvironmentParticles score={environmentScore} isPaused={isPaused} />
+}

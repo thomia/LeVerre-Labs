@@ -11,7 +11,7 @@ import GlassComponent from "@/components/dashboard/glass-component"
 import TapComponent from "@/components/dashboard/tap-component"
 import StrawComponent from "@/components/dashboard/straw-component"
 import StormComponent from "@/components/dashboard/storm-component"
-import { EnvironmentParticles } from "@/components/dashboard/environment-particles"
+import { EnvironmentParticles } from "@/components/dashboard/bubble-component"
 
 // Types pour les paramètres du modèle du verre
 interface TaskParameters {
