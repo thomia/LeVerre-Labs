@@ -79,8 +79,8 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
               />
               <div className="mt-32 text-center space-y-4">
                 <div>
-                  <div className="text-gray-300 text-sm font-medium mb-1">Capacité d'absorption</div>
-                  <div className="text-gray-400 text-xs mb-12">Ajustez pour voir la largeur du verre changer</div>
+                  <div className="text-gray-300 text-xl font-medium mb-2">Capacité d'absorption</div>
+                  <div className="text-gray-400 text-base mb-12">Ajustez pour voir la largeur du verre changer</div>
                 </div>
                 <Slider
                   value={glassScore}
@@ -104,16 +104,18 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
       <section id="tap-section" className="scroll-mt-20 pb-32 pt-16 px-8 bg-gradient-to-br from-blue-900/20 to-blue-800/10 rounded-3xl shadow-lg">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="order-2 lg:order-1 flex justify-center items-center">
-            <div className="relative scale-110 flex flex-col items-center">
-              <TapComponent 
-                flowRate={tapScore[0]} 
-                onFlowRateChange={() => {}}
-                hideDebitLabel={true}
-              />
+            <div className="relative flex flex-col items-center">
+              <div className="scale-90 mt-8">
+                <TapComponent 
+                  flowRate={tapScore[0]} 
+                  onFlowRateChange={() => {}}
+                  hideDebitLabel={true}
+                />
+              </div>
               <div className="mt-32 text-center space-y-4">
                 <div>
-                  <div className="text-blue-400 text-sm font-medium mb-1">Charge de travail</div>
-                  <div className="text-gray-400 text-xs mb-12">Ajustez pour voir le débit changer</div>
+                  <div className="text-blue-400 text-xl font-medium mb-2">Charge de travail</div>
+                  <div className="text-gray-400 text-base mb-12">Ajustez pour voir le débit changer</div>
                 </div>
                 <Slider
                   value={tapScore}
@@ -237,8 +239,8 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
               
               <div className="mt-32 text-center space-y-4">
                 <div>
-                  <div className="text-purple-400 text-sm font-medium mb-1">Qualité environnementale</div>
-                  <div className="text-gray-400 text-xs mb-12">Ajustez pour voir le nombre et la vitesse des particules</div>
+                  <div className="text-purple-400 text-xl font-medium mb-2">Qualité environnementale</div>
+                  <div className="text-gray-400 text-base mb-12">Ajustez pour voir le nombre et la vitesse des particules</div>
                 </div>
                 <Slider
                   value={bubbleScore}
@@ -266,8 +268,8 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
               />
               <div className="mt-32 text-center space-y-4">
                 <div>
-                  <div className="text-yellow-400 text-sm font-medium mb-1">Intensité des aléas</div>
-                  <div className="text-gray-400 text-xs mb-12">Ajustez pour voir la fréquence des éclairs</div>
+                  <div className="text-yellow-400 text-xl font-medium mb-2">Intensité des aléas</div>
+                  <div className="text-gray-400 text-base mb-12">Ajustez pour voir la fréquence des éclairs</div>
                 </div>
                 <Slider
                   value={stormScore}
@@ -372,8 +374,8 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
               />
               <div className="mt-32 text-center space-y-4">
                 <div>
-                  <div className="text-green-400 text-sm font-medium mb-1">Capacité de récupération</div>
-                  <div className="text-gray-400 text-xs mb-12">Ajustez pour voir la vitesse d'absorption</div>
+                  <div className="text-green-400 text-xl font-medium mb-2">Capacité de récupération</div>
+                  <div className="text-gray-400 text-base mb-12">Ajustez pour voir la vitesse d'absorption</div>
                 </div>
                 <Slider
                   value={strawScore}

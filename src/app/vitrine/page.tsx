@@ -9,6 +9,7 @@ import StrawComponent from '@/components/dashboard/straw-component'
 import StormComponent from '@/components/dashboard/storm-component'
 import BubbleComponent from '@/components/dashboard/bubble-component'
 import { SectionsExplicatives } from './sections-explicatives'
+import ScrollExpandMedia from '@/components/ui/scroll-expansion-hero'
 
 export default function VitrinePage() {
   const [isMounted, setIsMounted] = useState(false)
@@ -48,9 +49,162 @@ export default function VitrinePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
-      {/* Hero Section avec le modèle */}
-      <section className="relative py-16 overflow-hidden">
+    <>
+      {/* Section d'expansion avec scroll */}
+      <ScrollExpandMedia
+        mediaType="video"
+        mediaSrc="/photo%20video/Vid%C3%A9o%20pres.mp4?v=3"
+        posterSrc="/photo%20video/TMSsht-1-1372841116.jpg"
+        bgImageSrc="/photo%20video/TMSsht-1-1372841116.jpg"
+        title="ProtoVerreTMS"
+        date="De la Complexité à la Clarté"
+        scrollToExpand="Faites défiler pour découvrir notre solution"
+        textBlend
+      >
+        <div className="max-w-6xl mx-auto">
+          {/* Section Intro - Problématique */}
+          <div className="text-center mb-16">
+            <h2 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-blue-400 via-purple-400 to-green-400 bg-clip-text text-transparent">
+              Révolutionnez votre Approche TMS
+            </h2>
+            <p className="text-xl text-gray-200 leading-relaxed max-w-4xl mx-auto">
+              Les modèles traditionnels sont complexes, difficiles à communiquer. 
+              <span className="block mt-2 text-2xl font-semibold text-white">ProtoVerreTMS simplifie sans sacrifier la rigueur.</span>
+            </p>
+          </div>
+
+          {/* Section 3 Axes Principaux */}
+          <div className="grid md:grid-cols-3 gap-6 mb-16">
+            {/* Axe 1 : Formation */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="bg-gradient-to-br from-blue-900/40 to-blue-800/30 p-8 rounded-2xl border border-blue-400/30 hover:border-blue-400/60 hover:shadow-xl hover:shadow-blue-500/20 transition-all duration-300"
+            >
+              <div className="text-5xl mb-4">🎓</div>
+              <h3 className="text-2xl font-bold text-blue-400 mb-4">Formation</h3>
+              <p className="text-gray-200 leading-relaxed mb-4">
+                Formez vos équipes avec un modèle qui parle à tous. Du manager à l'opérateur, 
+                créez un langage commun autour de la prévention TMS.
+              </p>
+              <ul className="text-gray-300 space-y-2 text-sm">
+                <li>✓ Métaphore intuitive universelle</li>
+                <li>✓ Appropriation rapide par tous</li>
+                <li>✓ Support pédagogique visuel</li>
+              </ul>
+            </motion.div>
+
+            {/* Axe 2 : Sensibilisation */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="bg-gradient-to-br from-purple-900/40 to-purple-800/30 p-8 rounded-2xl border border-purple-400/30 hover:border-purple-400/60 hover:shadow-xl hover:shadow-purple-500/20 transition-all duration-300"
+            >
+              <div className="text-5xl mb-4">💡</div>
+              <h3 className="text-2xl font-bold text-purple-400 mb-4">Sensibilisation</h3>
+              <p className="text-gray-200 leading-relaxed mb-4">
+                Engagez vos collaborateurs dans la prévention. Rendez visibles les contraintes 
+                invisibles et mobilisez autour d'objectifs concrets.
+              </p>
+              <ul className="text-gray-300 space-y-2 text-sm">
+                <li>✓ Visualisation immédiate des risques</li>
+                <li>✓ Dialogue facilité terrain-direction</li>
+                <li>✓ Culture prévention renforcée</li>
+              </ul>
+            </motion.div>
+
+            {/* Axe 3 : Évaluation & Simulation */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="bg-gradient-to-br from-green-900/40 to-green-800/30 p-8 rounded-2xl border border-green-400/30 hover:border-green-400/60 hover:shadow-xl hover:shadow-green-500/20 transition-all duration-300"
+            >
+              <div className="text-5xl mb-4">📊</div>
+              <h3 className="text-2xl font-bold text-green-400 mb-4">Évaluation & Simulation</h3>
+              <p className="text-gray-200 leading-relaxed mb-4">
+                Mesurez, simulez, décidez. Testez vos aménagements avant investissement 
+                et justifiez vos choix avec des données objectives.
+              </p>
+              <ul className="text-gray-300 space-y-2 text-sm">
+                <li>✓ Scénarios avant/après simulés</li>
+                <li>✓ Priorisation des investissements</li>
+                <li>✓ ROI prévention démontré</li>
+              </ul>
+            </motion.div>
+          </div>
+
+          {/* Section Les 5 Forces - Restructurée */}
+          <div className="bg-gradient-to-br from-slate-900/60 to-slate-800/40 backdrop-blur-sm rounded-3xl p-10 border border-gray-700/50 mb-16">
+            <h2 className="text-4xl font-bold text-center mb-4 bg-gradient-to-r from-blue-400 via-purple-400 to-green-400 bg-clip-text text-transparent">
+              Les 5 Forces de ProtoVerreTMS
+            </h2>
+            <p className="text-center text-xl text-gray-300 mb-10 max-w-3xl mx-auto">
+              Une approche qui transforme l'analyse ergonomique en outil stratégique de prévention
+            </p>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* Force 1 */}
+              <div className="bg-blue-900/20 p-6 rounded-xl border border-blue-500/20 hover:border-blue-400/40 transition-all">
+                <h4 className="text-lg font-bold text-blue-400 mb-2">Rigueur & Flexibilité</h4>
+                <p className="text-gray-300 text-sm leading-relaxed">
+                  Modèle scientifique adaptable à vos contraintes organisationnelles.
+                </p>
+              </div>
+
+              {/* Force 2 */}
+              <div className="bg-purple-900/20 p-6 rounded-xl border border-purple-500/20 hover:border-purple-400/40 transition-all">
+                <h4 className="text-lg font-bold text-purple-400 mb-2">Langage Fédérateur</h4>
+                <p className="text-gray-300 text-sm leading-relaxed">
+                  Du directeur au technicien, un dialogue commun pour transformer la culture sécurité.
+                </p>
+              </div>
+
+              {/* Force 3 */}
+              <div className="bg-green-900/20 p-6 rounded-xl border border-green-500/20 hover:border-green-400/40 transition-all">
+                <h4 className="text-lg font-bold text-green-400 mb-2">Métaphore Intuitive</h4>
+                <p className="text-gray-300 text-sm leading-relaxed">
+                  Chaque opérationnel comprend et devient acteur de sa prévention.
+                </p>
+              </div>
+
+              {/* Force 4 */}
+              <div className="bg-yellow-900/20 p-6 rounded-xl border border-yellow-500/20 hover:border-yellow-400/40 transition-all">
+                <h4 className="text-lg font-bold text-yellow-400 mb-2">Décisions Data-Driven</h4>
+                <p className="text-gray-300 text-sm leading-relaxed">
+                  Arguments objectifs pour justifier vos investissements prévention.
+                </p>
+              </div>
+
+              {/* Force 5 */}
+              <div className="bg-gray-700/20 p-6 rounded-xl border border-gray-500/20 hover:border-gray-400/40 transition-all md:col-span-2 lg:col-span-1">
+                <h4 className="text-lg font-bold text-gray-300 mb-2">Vision Holistique</h4>
+                <p className="text-gray-300 text-sm leading-relaxed">
+                  Tous les aspects de la charge de travail consolidés en un seul endroit.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* CTA Final */}
+          <div className="text-center">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <button className="px-10 py-5 bg-gradient-to-r from-blue-500 via-purple-600 to-green-500 text-white font-bold rounded-xl text-xl shadow-2xl hover:shadow-purple-500/50 transition-all duration-300">
+                Découvrir le Modèle Complet ↓
+              </button>
+            </motion.div>
+          </div>
+        </div>
+      </ScrollExpandMedia>
+
+      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+        {/* Hero Section avec le modèle */}
+        <section className="relative py-16 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <motion.div
             initial={{ opacity: 0, y: -30 }}
@@ -171,109 +325,9 @@ export default function VitrinePage() {
         </div>
       </section>
 
-      {/* Section des 5 Forces */}
-      <section className="py-32 bg-gradient-to-br from-gray-900 via-gray-800 to-black border-t-2 border-gray-700/50">
-        <div className="max-w-7xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-20"
-          >
-            <h2 className="text-5xl md:text-6xl font-extrabold mb-6 bg-gradient-to-r from-blue-400 via-purple-400 to-green-400 bg-clip-text text-transparent tracking-tight">
-              Les 5 Forces
-            </h2>
-            <p className="text-2xl text-gray-300 max-w-4xl mx-auto font-light leading-relaxed">
-              Une approche révolutionnaire qui transforme l'analyse ergonomique en outil stratégique de prévention
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Force 1 */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.1 }}
-              className="bg-gradient-to-br from-blue-900/30 to-blue-800/20 p-8 rounded-2xl border border-blue-500/30 hover:border-blue-400/50 hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-300"
-            >
-              <div className="mb-4">
-                <h3 className="text-2xl font-bold text-blue-400 mb-2">Rigueur Scientifique</h3>
-                <h4 className="text-lg font-semibold text-white/90">Flexibilité Opérationnelle</h4>
-              </div>
-              <p className="text-gray-300 leading-relaxed">
-                Modèle basé sur les connaissances scientifiques disponibles. Vous configurez les cinq composants selon les contraintes et besoins de votre organisation.
-              </p>
-            </motion.div>
-
-            {/* Force 2 */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="bg-gradient-to-br from-purple-900/30 to-purple-800/20 p-8 rounded-2xl border border-purple-500/30 hover:border-purple-400/50 hover:shadow-lg hover:shadow-purple-500/10 transition-all duration-300"
-            >
-              <div className="mb-4">
-                <h3 className="text-2xl font-bold text-purple-400 mb-2">Langage Fédérateur</h3>
-                <h4 className="text-lg font-semibold text-white/90">Du Directeur au Technicien</h4>
-              </div>
-              <p className="text-gray-300 leading-relaxed">
-                Un langage commun qui facilite le dialogue stratégique entre tous les acteurs de la prévention. Une clé pour transformer la culture sécurité.
-              </p>
-            </motion.div>
-
-            {/* Force 3 */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="bg-gradient-to-br from-green-900/30 to-green-800/20 p-8 rounded-2xl border border-green-500/30 hover:border-green-400/50 hover:shadow-lg hover:shadow-green-500/10 transition-all duration-300"
-            >
-              <div className="mb-4">
-                <h3 className="text-2xl font-bold text-green-400 mb-2">Comprendre pour Transformer</h3>
-                <h4 className="text-lg font-semibold text-white/90">Métaphore Visuelle Intuitive</h4>
-              </div>
-              <p className="text-gray-300 leading-relaxed">
-                Vulgarise les concepts d'ergonomie. Chaque opérationnel identifie et comprend le risque à son poste, il devient acteur de sa prévention.
-              </p>
-            </motion.div>
-
-            {/* Force 4 */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="bg-gradient-to-br from-yellow-900/30 to-yellow-800/20 p-8 rounded-2xl border border-yellow-500/30 hover:border-yellow-400/50 hover:shadow-lg hover:shadow-yellow-500/10 transition-all duration-300 md:col-span-2 lg:col-span-1"
-            >
-              <div className="mb-4">
-                <h3 className="text-2xl font-bold text-yellow-400 mb-2">Décisions Basées sur les Données</h3>
-                <h4 className="text-lg font-semibold text-white/90">Arguments Objectifs</h4>
-              </div>
-              <p className="text-gray-300 leading-relaxed">
-                Visualisez et mesurez les contraintes réelles. Testez des scénarios avant/après. Disposez d'arguments objectifs pour justifier vos investissements prévention.
-              </p>
-            </motion.div>
-
-            {/* Force 5 */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-              className="bg-gradient-to-br from-gray-900/30 to-gray-800/20 p-8 rounded-2xl border border-gray-500/30 hover:border-gray-400/50 hover:shadow-lg hover:shadow-gray-500/10 transition-all duration-300 md:col-span-2"
-            >
-              <div className="mb-4">
-                <h3 className="text-2xl font-bold text-gray-300 mb-2">Vision Holistique</h3>
-                <h4 className="text-lg font-semibold text-white/90">Tous les Aspects en Un Seul Endroit</h4>
-              </div>
-              <p className="text-gray-300 leading-relaxed">
-                Un outil centralisé qui consolide tous les aspects de la charge de travail en un seul endroit. Une approche globale pour une prévention efficace et durable.
-              </p>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
       {/* Sections explicatives détaillées */}
       <SectionsExplicatives expandedSections={expandedSections} toggleSection={toggleSection} />
-    </div>
+      </div>
+    </>
   )
 }

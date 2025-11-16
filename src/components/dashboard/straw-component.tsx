@@ -83,7 +83,7 @@ export default function StrawComponent({
       {/* Paille */}
       <div className={cn(
         "relative w-[40px]",
-        isInsideGlass ? "h-[250px]" : "h-[200px]",
+        isInsideGlass ? "h-[350px]" : "h-[200px]",
         "flex items-center justify-center",
         !isEnabled && "opacity-50"
       )}>
