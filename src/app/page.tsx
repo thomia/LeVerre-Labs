@@ -1,9 +1,15 @@
+/**
+ * PAGE PRINCIPALE - DASHBOARD
+ * Route: /
+ * Affiche le dashboard interactif avec le modèle ProtoVerreTMS
+ */
+
 import Dashboard from '@/components/dashboard/dashboard-new';
 import Link from 'next/link';
 import { UserCircle, BookOpen } from 'lucide-react';
 import { Button } from "@/components/ui/button"
 
-export default function Home() {
+export default function DashboardPage() {
   return (
     <main className="flex min-h-screen w-full flex-col items-center justify-start p-0 bg-black">
       {/* Bouton pour accéder au tutoriel */}

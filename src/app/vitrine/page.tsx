@@ -1,3 +1,9 @@
+/**
+ * PAGE VITRINE - PRÉSENTATION DU MODÈLE
+ * Route: /vitrine
+ * Présentation complète du modèle ProtoVerreTMS avec explications scientifiques
+ */
+
 "use client"
 
 import { useState, useEffect } from 'react'
@@ -10,6 +16,7 @@ import StormComponent from '@/components/dashboard/storm-component'
 import BubbleComponent from '@/components/dashboard/bubble-component'
 import { SectionsExplicatives } from './sections-explicatives'
 import ScrollExpandMedia from '@/components/ui/scroll-expansion-hero'
+import FeaturesCards from '@/components/ui/feature-shader-cards'
 
 export default function VitrinePage() {
   const [isMounted, setIsMounted] = useState(false)
@@ -56,136 +63,36 @@ export default function VitrinePage() {
         mediaSrc="/photo%20video/Vid%C3%A9o%20pres.mp4?v=3"
         posterSrc="/photo%20video/TMSsht-1-1372841116.jpg"
         bgImageSrc="/photo%20video/TMSsht-1-1372841116.jpg"
-        title="ProtoVerreTMS"
-        date="De la Complexité à la Clarté"
+        title="LeVerre Labs"
+        date="The Powerful Digital Ergonomic Lab"
         scrollToExpand="Faites défiler pour découvrir notre solution"
         textBlend
       >
         <div className="max-w-6xl mx-auto">
           {/* Section Intro - Problématique */}
           <div className="text-center mb-16">
-            <h2 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-blue-400 via-purple-400 to-green-400 bg-clip-text text-transparent">
-              Révolutionnez votre Approche TMS
+            <h2 className="text-5xl md:text-6xl font-bold mb-8 text-gray-100">
+              Comprendre pour transformer
             </h2>
-            <p className="text-xl text-gray-200 leading-relaxed max-w-4xl mx-auto">
-              Les modèles traditionnels sont complexes, difficiles à communiquer. 
-              <span className="block mt-2 text-2xl font-semibold text-white">ProtoVerreTMS simplifie sans sacrifier la rigueur.</span>
-            </p>
-          </div>
-
-          {/* Section 3 Axes Principaux */}
-          <div className="grid md:grid-cols-3 gap-6 mb-16">
-            {/* Axe 1 : Formation */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="bg-gradient-to-br from-blue-900/40 to-blue-800/30 p-8 rounded-2xl border border-blue-400/30 hover:border-blue-400/60 hover:shadow-xl hover:shadow-blue-500/20 transition-all duration-300"
-            >
-              <div className="text-5xl mb-4">🎓</div>
-              <h3 className="text-2xl font-bold text-blue-400 mb-4">Formation</h3>
-              <p className="text-gray-200 leading-relaxed mb-4">
-                Formez vos équipes avec un modèle qui parle à tous. Du manager à l'opérateur, 
-                créez un langage commun autour de la prévention TMS.
+            <div className="bg-gray-900/80 backdrop-blur-sm rounded-2xl p-8 mb-8 max-w-5xl mx-auto border-2 border-[rgb(255,30,90)]/40 shadow-[0_0_30px_rgba(255,30,90,0.5)]">
+              <p className="text-2xl md:text-3xl text-white font-bold mb-4 leading-relaxed">
+                88% des maladies professionnelles et 50% des accidents du travail :
               </p>
-              <ul className="text-gray-300 space-y-2 text-sm">
-                <li>✓ Métaphore intuitive universelle</li>
-                <li>✓ Appropriation rapide par tous</li>
-                <li>✓ Support pédagogique visuel</li>
-              </ul>
-            </motion.div>
-
-            {/* Axe 2 : Sensibilisation */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="bg-gradient-to-br from-purple-900/40 to-purple-800/30 p-8 rounded-2xl border border-purple-400/30 hover:border-purple-400/60 hover:shadow-xl hover:shadow-purple-500/20 transition-all duration-300"
-            >
-              <div className="text-5xl mb-4">💡</div>
-              <h3 className="text-2xl font-bold text-purple-400 mb-4">Sensibilisation</h3>
-              <p className="text-gray-200 leading-relaxed mb-4">
-                Engagez vos collaborateurs dans la prévention. Rendez visibles les contraintes 
-                invisibles et mobilisez autour d'objectifs concrets.
+              <p className="text-xl md:text-2xl text-[rgb(255,30,90)] font-semibold mb-6">
+                tous liés à l'activité physique.
               </p>
-              <ul className="text-gray-300 space-y-2 text-sm">
-                <li>✓ Visualisation immédiate des risques</li>
-                <li>✓ Dialogue facilité terrain-direction</li>
-                <li>✓ Culture prévention renforcée</li>
-              </ul>
-            </motion.div>
-
-            {/* Axe 3 : Évaluation & Simulation */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="bg-gradient-to-br from-green-900/40 to-green-800/30 p-8 rounded-2xl border border-green-400/30 hover:border-green-400/60 hover:shadow-xl hover:shadow-green-500/20 transition-all duration-300"
-            >
-              <div className="text-5xl mb-4">📊</div>
-              <h3 className="text-2xl font-bold text-green-400 mb-4">Évaluation & Simulation</h3>
-              <p className="text-gray-200 leading-relaxed mb-4">
-                Mesurez, simulez, décidez. Testez vos aménagements avant investissement 
-                et justifiez vos choix avec des données objectives.
+              <p className="text-lg md:text-xl text-gray-200 leading-relaxed">
+                <span className="font-bold text-white">LeVerre Labs</span> transforme la prévention en la rendant enfin accessible et ludique pour tous. 
+                Une métaphore visuelle qui simplifie l'ergonomie, permet de <span className="text-[rgb(255,30,90)]">sensibiliser</span>, 
+                <span className="text-[rgb(255,60,120)]"> former</span>, <span className="text-[rgb(255,40,100)]">analyser</span> et <span className="text-[rgb(255,50,110)]">transformer</span> vos postes de travail — 
+                <span className="font-bold text-white">100% personnalisable</span> à votre organisation — en un seul outil.
               </p>
-              <ul className="text-gray-300 space-y-2 text-sm">
-                <li>✓ Scénarios avant/après simulés</li>
-                <li>✓ Priorisation des investissements</li>
-                <li>✓ ROI prévention démontré</li>
-              </ul>
-            </motion.div>
-          </div>
-
-          {/* Section Les 5 Forces - Restructurée */}
-          <div className="bg-gradient-to-br from-slate-900/60 to-slate-800/40 backdrop-blur-sm rounded-3xl p-10 border border-gray-700/50 mb-16">
-            <h2 className="text-4xl font-bold text-center mb-4 bg-gradient-to-r from-blue-400 via-purple-400 to-green-400 bg-clip-text text-transparent">
-              Les 5 Forces de ProtoVerreTMS
-            </h2>
-            <p className="text-center text-xl text-gray-300 mb-10 max-w-3xl mx-auto">
-              Une approche qui transforme l'analyse ergonomique en outil stratégique de prévention
-            </p>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {/* Force 1 */}
-              <div className="bg-blue-900/20 p-6 rounded-xl border border-blue-500/20 hover:border-blue-400/40 transition-all">
-                <h4 className="text-lg font-bold text-blue-400 mb-2">Rigueur & Flexibilité</h4>
-                <p className="text-gray-300 text-sm leading-relaxed">
-                  Modèle scientifique adaptable à vos contraintes organisationnelles.
-                </p>
-              </div>
-
-              {/* Force 2 */}
-              <div className="bg-purple-900/20 p-6 rounded-xl border border-purple-500/20 hover:border-purple-400/40 transition-all">
-                <h4 className="text-lg font-bold text-purple-400 mb-2">Langage Fédérateur</h4>
-                <p className="text-gray-300 text-sm leading-relaxed">
-                  Du directeur au technicien, un dialogue commun pour transformer la culture sécurité.
-                </p>
-              </div>
-
-              {/* Force 3 */}
-              <div className="bg-green-900/20 p-6 rounded-xl border border-green-500/20 hover:border-green-400/40 transition-all">
-                <h4 className="text-lg font-bold text-green-400 mb-2">Métaphore Intuitive</h4>
-                <p className="text-gray-300 text-sm leading-relaxed">
-                  Chaque opérationnel comprend et devient acteur de sa prévention.
-                </p>
-              </div>
-
-              {/* Force 4 */}
-              <div className="bg-yellow-900/20 p-6 rounded-xl border border-yellow-500/20 hover:border-yellow-400/40 transition-all">
-                <h4 className="text-lg font-bold text-yellow-400 mb-2">Décisions Data-Driven</h4>
-                <p className="text-gray-300 text-sm leading-relaxed">
-                  Arguments objectifs pour justifier vos investissements prévention.
-                </p>
-              </div>
-
-              {/* Force 5 */}
-              <div className="bg-gray-700/20 p-6 rounded-xl border border-gray-500/20 hover:border-gray-400/40 transition-all md:col-span-2 lg:col-span-1">
-                <h4 className="text-lg font-bold text-gray-300 mb-2">Vision Holistique</h4>
-                <p className="text-gray-300 text-sm leading-relaxed">
-                  Tous les aspects de la charge de travail consolidés en un seul endroit.
-                </p>
-              </div>
             </div>
+          </div>
+
+          {/* Section des Forces avec Shaders */}
+          <div className="mb-16">
+            <FeaturesCards />
           </div>
 
           {/* CTA Final */}
@@ -194,7 +101,7 @@ export default function VitrinePage() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <button className="px-10 py-5 bg-gradient-to-r from-blue-500 via-purple-600 to-green-500 text-white font-bold rounded-xl text-xl shadow-2xl hover:shadow-purple-500/50 transition-all duration-300">
+              <button className="px-10 py-5 bg-[rgb(255,20,80)] hover:bg-[rgb(255,50,110)] text-white font-bold rounded-xl text-xl shadow-[0_0_40px_rgba(255,30,90,0.7)] hover:shadow-[0_0_50px_rgba(255,30,90,0.9)] transition-all duration-300 border-2 border-[rgb(255,30,90)]/60">
                 Découvrir le Modèle Complet ↓
               </button>
             </motion.div>
@@ -202,7 +109,7 @@ export default function VitrinePage() {
         </div>
       </ScrollExpandMedia>
 
-      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+      <div className="min-h-screen bg-black">
         {/* Hero Section avec le modèle */}
         <section className="relative py-16 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 text-center">
@@ -211,14 +118,11 @@ export default function VitrinePage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h1 className="text-6xl md:text-7xl lg:text-8xl font-extrabold mb-8 bg-gradient-to-r from-blue-400 via-purple-400 to-green-400 bg-clip-text text-transparent tracking-tight">
-              ProtoVerreTMS
+            <h1 className="text-6xl md:text-7xl lg:text-8xl font-extrabold mb-8 tracking-tight">
+              <span className="text-[rgb(255,30,90)] drop-shadow-[0_0_15px_rgba(255,30,90,0.8)]">LeVerre</span> <span className="text-gray-400">Labs</span>
             </h1>
-            <p className="text-xl md:text-2xl lg:text-3xl text-gray-300 mb-4 max-w-4xl mx-auto font-light leading-relaxed">
-              Révolutionnez votre approche ergonomique
-            </p>
-            <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto font-light">
-              Une métaphore visuelle intuitive pour une prévention efficace
+            <p className="text-2xl md:text-3xl text-white mb-4 max-w-4xl mx-auto font-bold leading-relaxed">
+              The Powerful Digital Ergonomic Lab
             </p>
           </motion.div>
 

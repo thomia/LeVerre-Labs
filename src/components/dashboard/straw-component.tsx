@@ -40,10 +40,14 @@ export default function StrawComponent({
       }
     }
 
-    // Vérifier si la paille est activée
-    const savedEnabled = getLocalStorage('strawEnabled')
-    if (savedEnabled !== null) {
-      setIsEnabled(savedEnabled === 'true')
+    // Vérifier si la paille est activée (toujours true si dans le verre de la vitrine)
+    if (isInsideGlass) {
+      setIsEnabled(true)
+    } else {
+      const savedEnabled = getLocalStorage('strawEnabled')
+      if (savedEnabled !== null) {
+        setIsEnabled(savedEnabled === 'true')
+      }
     }
 
     // Ajouter l'écouteur d'événement
@@ -124,27 +128,26 @@ export default function StrawComponent({
               {/* Animation de l'absorption */}
               {isEnabled && (
                 <motion.div
-                  className="absolute top-[36px] right-[3px] w-2 h-[220px] overflow-hidden z-0"
+                  className="absolute top-[36px] right-[10px] w-2 h-[220px] overflow-visible z-20"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.5 }}
-                  style={{ right: '10px' }}
                 >
                   {/* Particules d'eau montant dans la paille */}
                   {[...Array(8)].map((_, i) => (
                     <motion.div
-                      key={i}
-                      className="absolute w-2 h-2 bg-blue-400 rounded-full"
+                      key={`${i}-${absorptionRate}`}
+                      className="absolute w-3 h-3 bg-white rounded-full shadow-[0_0_10px_rgba(255,255,255,0.9)]"
                       style={{
-                        left: '0px',
+                        left: '-0.5px',
                         bottom: `-10px`,
                       }}
                       animate={{
                         y: [-10, -220],
-                        opacity: [0.8, 0],
+                        opacity: [1, 0.3],
                       }}
                       transition={{
-                        duration: 2,
+                        duration: Math.max(0.3, 4 - (absorptionRate / 100) * 3.7),
                         repeat: Infinity,
                         delay: i * 0.25,
                         ease: "easeOut"
@@ -206,7 +209,7 @@ export default function StrawComponent({
                         opacity: [0.8, 0],
                       }}
                       transition={{
-                        duration: 1.5,
+                        duration: Math.max(0.4, 1.5 - (absorptionRate / 80) * 1.1),
                         repeat: Infinity,
                         delay: i * 0.3,
                         ease: "easeOut"

@@ -171,7 +171,7 @@ const ScrollExpandMedia = ({
   return (
     <div
       ref={sectionRef}
-      className='transition-colors duration-700 ease-in-out overflow-x-hidden'
+      className='transition-colors duration-700 ease-in-out overflow-x-hidden bg-black'
     >
       <section className='relative flex flex-col items-center justify-start min-h-[100dvh]'>
         <div className='relative w-full flex flex-col items-center min-h-[100dvh]'>
@@ -197,9 +197,48 @@ const ScrollExpandMedia = ({
           </motion.div>
 
           <div className='container mx-auto flex flex-col items-center justify-start relative z-10'>
-            <div className='flex flex-col items-center justify-center w-full h-[100dvh] relative'>
+            <div className='flex flex-col items-center justify-center w-full h-[100dvh] relative gap-8'>
+              {/* Texte au-dessus de la vidéo */}
               <div
-                className='absolute z-0 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-none rounded-2xl'
+                className='flex items-center justify-center text-center w-full relative z-20 transition-none'
+              >
+                <div className='bg-gray-900/90 backdrop-blur-md px-8 py-6 rounded-2xl border-2 border-[rgb(255,30,90)]/50 shadow-[0_0_40px_rgba(255,30,90,0.7)]'>
+                  <motion.h2
+                    className='text-5xl md:text-6xl lg:text-7xl font-extrabold text-[rgb(255,30,90)] drop-shadow-[0_0_15px_rgba(255,30,90,0.8)] transition-none mb-2'
+                    style={{ transform: `translateX(-${textTranslateX}vw)` }}
+                  >
+                    {firstWord}
+                  </motion.h2>
+                  <motion.h2
+                    className='text-5xl md:text-6xl lg:text-7xl font-extrabold text-center text-gray-400 transition-none'
+                    style={{ transform: `translateX(${textTranslateX}vw)` }}
+                  >
+                    {restOfTitle}
+                  </motion.h2>
+                  {date && (
+                    <motion.p
+                      className='text-xl md:text-2xl text-gray-200 font-semibold mt-4'
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 - scrollProgress * 0.5 }}
+                    >
+                      {date}
+                    </motion.p>
+                  )}
+                  {scrollToExpand && (
+                    <motion.p
+                      className='text-gray-300 font-medium text-center mt-3'
+                      initial={{ opacity: 1 }}
+                      animate={{ opacity: 1 - scrollProgress * 0.8 }}
+                    >
+                      {scrollToExpand}
+                    </motion.p>
+                  )}
+                </div>
+              </div>
+
+              {/* Vidéo */}
+              <div
+                className='relative z-0 transition-none rounded-2xl'
                 style={{
                   width: `${mediaWidth}px`,
                   height: `${mediaHeight}px`,
@@ -287,48 +326,11 @@ const ScrollExpandMedia = ({
                   </div>
                 )}
 
-                <div className='flex flex-col items-center text-center relative z-10 mt-4 transition-none'>
-                  {date && (
-                    <p
-                      className='text-2xl text-blue-200'
-                      style={{ transform: `translateX(-${textTranslateX}vw)` }}
-                    >
-                      {date}
-                    </p>
-                  )}
-                  {scrollToExpand && (
-                    <p
-                      className='text-blue-200 font-medium text-center'
-                      style={{ transform: `translateX(${textTranslateX}vw)` }}
-                    >
-                      {scrollToExpand}
-                    </p>
-                  )}
-                </div>
-              </div>
-
-              <div
-                className={`flex items-center justify-center text-center gap-4 w-full relative z-10 transition-none flex-col ${
-                  textBlend ? 'mix-blend-difference' : 'mix-blend-normal'
-                }`}
-              >
-                <motion.h2
-                  className='text-4xl md:text-5xl lg:text-6xl font-bold text-blue-200 transition-none'
-                  style={{ transform: `translateX(-${textTranslateX}vw)` }}
-                >
-                  {firstWord}
-                </motion.h2>
-                <motion.h2
-                  className='text-4xl md:text-5xl lg:text-6xl font-bold text-center text-blue-200 transition-none'
-                  style={{ transform: `translateX(${textTranslateX}vw)` }}
-                >
-                  {restOfTitle}
-                </motion.h2>
               </div>
             </div>
 
             <motion.section
-              className='flex flex-col w-full px-8 py-10 md:px-16 lg:py-20'
+              className='flex flex-col w-full px-8 py-10 md:px-16 lg:py-20 bg-transparent'
               initial={{ opacity: 0 }}
               animate={{ opacity: showContent ? 1 : 0 }}
               transition={{ duration: 0.7 }}

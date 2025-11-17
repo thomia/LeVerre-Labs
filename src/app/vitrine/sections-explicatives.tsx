@@ -1,3 +1,10 @@
+/**
+ * SECTIONS EXPLICATIVES VITRINE
+ * Composant: SectionsExplicatives
+ * Affiche les 5 sections détaillées du modèle (Verre, Robinet, Bulle, Orage, Paille)
+ * avec démos interactives et références scientifiques
+ */
+
 "use client"
 
 import { useState } from 'react'
@@ -73,7 +80,7 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
           <div className="flex justify-center items-center">
             <div className="relative scale-110 flex flex-col items-center">
               <GlassComponent 
-                fillLevel={45} 
+                fillLevel={Math.min(90, 3000 / (20 + (glassScore[0] * 0.7)))} 
                 absorptionRate={50}
                 width={20 + (glassScore[0] * 0.7)}
               />
@@ -89,6 +96,7 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
                   max={100}
                   step={1}
                   className="mx-auto w-[250px]"
+                  valueColor="text-gray-300"
                   style={{
                     '--slider-range-bg': 'rgb(209 213 219)',
                     '--slider-thumb-ring': 'rgb(209 213 219 / 0.2)'
@@ -124,6 +132,7 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
                   max={100}
                   step={1}
                   className="mx-auto w-[250px] [&_.bg-black]:!bg-blue-500 [&_.dark\\:bg-white]:!bg-blue-500"
+                  valueColor="text-blue-400"
                 />
               </div>
             </div>
@@ -249,6 +258,7 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
                   max={100}
                   step={1}
                   className="mx-auto w-[250px] [&_.bg-black]:!bg-purple-500 [&_.dark\\:bg-white]:!bg-purple-500"
+                  valueColor="text-purple-400"
                 />
               </div>
             </div>
@@ -278,6 +288,7 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
                   max={100}
                   step={1}
                   className="mx-auto w-[250px] [&_.bg-black]:!bg-yellow-500 [&_.dark\\:bg-white]:!bg-yellow-500"
+                  valueColor="text-yellow-400"
                 />
               </div>
             </div>
@@ -384,35 +395,12 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
                   max={100}
                   step={1}
                   className="mx-auto w-[250px] [&_.bg-black]:!bg-green-500 [&_.dark\\:bg-white]:!bg-green-500"
+                  valueColor="text-green-400"
                 />
               </div>
             </div>
           </div>
         </div>
-      </section>
-
-      {/* CTA Final */}
-      <section className="text-center py-16">
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <h2 className="text-4xl font-bold text-white mb-6">
-            Prêt à révolutionner votre approche de l'ergonomie ?
-          </h2>
-          <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-            Découvrez comment ProtoVerreTMS peut transformer votre analyse des risques 
-            et améliorer la santé de vos équipes.
-          </p>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold rounded-lg text-lg shadow-lg hover:shadow-xl transition-all duration-300"
-          >
-            Commencer l'analyse
-          </motion.button>
-        </motion.div>
       </section>
     </div>
   )
