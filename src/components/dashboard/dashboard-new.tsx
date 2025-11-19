@@ -14,7 +14,6 @@ import { cn } from "@/lib/utils"
 import { getLocalStorage, setLocalStorage, emitStorageEvent } from '@/lib/localStorage'
 import { EnvironmentParticles } from './bubble-component'
 import { ModelDescription } from '../ui/model-description'
-import { AnimatedTitle } from '../ui/animated-title'
 import { Slider } from "@/components/ui/slider"
 import { FastForward } from 'lucide-react'
 import { StrawSectionV2, TapSectionV2, GlassSectionV2, StormSectionV2, BubbleSectionV2 } from './parameter-sections-v2'
@@ -590,15 +589,6 @@ export default function Dashboard() {
 
   return (
     <div className="w-full">
-      {/* En-tête du dashboard */}
-      <div className="mb-8">
-        <AnimatedTitle 
-          title="ProtoVerreTMS" 
-          subtitle="Simulation des Troubles Musculo-Squelettiques" 
-          className="text-center"
-        />
-      </div>
-      
       <div className="w-full max-w-[1400px] mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Panneau de contrôle - Occupe 4 colonnes sur grand écran */}

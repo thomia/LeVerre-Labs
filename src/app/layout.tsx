@@ -2,12 +2,14 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import '@/styles/globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
+import Navbar from '@/components/layout/navbar'
+import Footer from '@/components/layout/footer'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Tableau de bord TMS',
-  description: 'Tableau de bord interactif avec un verre qui se remplit',
+  title: 'LeVerre Labs - The Powerful Digital Ergonomic Lab',
+  description: 'Transformez votre approche de la prévention avec une métaphore visuelle innovante. LeVerre Labs rend l\'ergonomie accessible et ludique pour tous.',
 }
 
 export default function RootLayout({
@@ -24,9 +26,13 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <Navbar />
+          <main className="min-h-screen">
+            {children}
+          </main>
+          <Footer />
         </ThemeProvider>
       </body>
     </html>
   )
-} 
+}

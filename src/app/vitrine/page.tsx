@@ -17,6 +17,7 @@ import BubbleComponent from '@/components/dashboard/bubble-component'
 import { SectionsExplicatives } from './sections-explicatives'
 import ScrollExpandMedia from '@/components/ui/scroll-expansion-hero'
 import FeaturesCards from '@/components/ui/feature-shader-cards'
+import HeroSection from '@/components/ui/hero-section'
 
 export default function VitrinePage() {
   const [isMounted, setIsMounted] = useState(false)
@@ -68,44 +69,12 @@ export default function VitrinePage() {
         scrollToExpand="Faites défiler pour découvrir notre solution"
         textBlend
       >
-        <div className="max-w-6xl mx-auto">
-          {/* Section Intro - Problématique */}
-          <div className="text-center mb-16">
-            <h2 className="text-5xl md:text-6xl font-bold mb-8 text-gray-100">
-              Comprendre pour transformer
-            </h2>
-            <div className="bg-gray-900/80 backdrop-blur-sm rounded-2xl p-8 mb-8 max-w-5xl mx-auto border-2 border-[rgb(255,30,90)]/40 shadow-[0_0_30px_rgba(255,30,90,0.5)]">
-              <p className="text-2xl md:text-3xl text-white font-bold mb-4 leading-relaxed">
-                88% des maladies professionnelles et 50% des accidents du travail :
-              </p>
-              <p className="text-xl md:text-2xl text-[rgb(255,30,90)] font-semibold mb-6">
-                tous liés à l'activité physique.
-              </p>
-              <p className="text-lg md:text-xl text-gray-200 leading-relaxed">
-                <span className="font-bold text-white">LeVerre Labs</span> transforme la prévention en la rendant enfin accessible et ludique pour tous. 
-                Une métaphore visuelle qui simplifie l'ergonomie, permet de <span className="text-[rgb(255,30,90)]">sensibiliser</span>, 
-                <span className="text-[rgb(255,60,120)]"> former</span>, <span className="text-[rgb(255,40,100)]">analyser</span> et <span className="text-[rgb(255,50,110)]">transformer</span> vos postes de travail — 
-                <span className="font-bold text-white">100% personnalisable</span> à votre organisation — en un seul outil.
-              </p>
-            </div>
-          </div>
+        {/* Section Intro - Problématique */}
+        <HeroSection />
 
-          {/* Section des Forces avec Shaders */}
-          <div className="mb-16">
-            <FeaturesCards />
-          </div>
-
-          {/* CTA Final */}
-          <div className="text-center">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <button className="px-10 py-5 bg-[rgb(255,20,80)] hover:bg-[rgb(255,50,110)] text-white font-bold rounded-xl text-xl shadow-[0_0_40px_rgba(255,30,90,0.7)] hover:shadow-[0_0_50px_rgba(255,30,90,0.9)] transition-all duration-300 border-2 border-[rgb(255,30,90)]/60">
-                Découvrir le Modèle Complet ↓
-              </button>
-            </motion.div>
-          </div>
+        {/* Section des Forces avec Shaders */}
+        <div className="mb-16">
+          <FeaturesCards />
         </div>
       </ScrollExpandMedia>
 
@@ -119,7 +88,7 @@ export default function VitrinePage() {
             transition={{ duration: 0.8 }}
           >
             <h1 className="text-6xl md:text-7xl lg:text-8xl font-extrabold mb-8 tracking-tight">
-              <span className="text-[rgb(255,30,90)] drop-shadow-[0_0_15px_rgba(255,30,90,0.8)]">LeVerre</span> <span className="text-gray-400">Labs</span>
+              <span className="text-[rgb(255,30,90)] drop-shadow-[0_0_8px_rgba(255,30,90,0.5)]">LeVerre</span> <span className="text-gray-400">Labs</span>
             </h1>
             <p className="text-2xl md:text-3xl text-white mb-4 max-w-4xl mx-auto font-bold leading-relaxed">
               The Powerful Digital Ergonomic Lab

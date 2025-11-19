@@ -202,9 +202,9 @@ const ScrollExpandMedia = ({
               <div
                 className='flex items-center justify-center text-center w-full relative z-20 transition-none'
               >
-                <div className='bg-gray-900/90 backdrop-blur-md px-8 py-6 rounded-2xl border-2 border-[rgb(255,30,90)]/50 shadow-[0_0_40px_rgba(255,30,90,0.7)]'>
+                <div className='bg-gray-900/90 backdrop-blur-md px-8 py-6 rounded-2xl border-2 border-[rgb(255,30,90)]/50 shadow-[0_0_25px_rgba(255,30,90,0.4)]'>
                   <motion.h2
-                    className='text-5xl md:text-6xl lg:text-7xl font-extrabold text-[rgb(255,30,90)] drop-shadow-[0_0_15px_rgba(255,30,90,0.8)] transition-none mb-2'
+                    className='text-5xl md:text-6xl lg:text-7xl font-extrabold text-[rgb(255,30,90)] drop-shadow-[0_0_8px_rgba(255,30,90,0.5)] transition-none mb-2'
                     style={{ transform: `translateX(-${textTranslateX}vw)` }}
                   >
                     {firstWord}

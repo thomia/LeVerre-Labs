@@ -65,16 +65,6 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
               )}
             </div>
 
-            <div className="bg-gray-900/50 p-4 rounded-lg border border-gray-400/20">
-              <h4 className="text-gray-300 font-medium mb-2">Références scientifiques</h4>
-              <div className="text-gray-400 text-sm space-y-2">
-                <p>[1] Cruz-Jentoft, A. J., et al. (2019). Sarcopenia: revised European consensus on definition and diagnosis. Age and Ageing, 48(1), 16-31.</p>
-                <p>[2] Jerban, S., Ma, Y., Namiranian, B. et al. (2019). Age-related decrease in collagen proton fraction in tibial tendons. Sci Rep 9, 17974.</p>
-                <p>[3] Loeser, R. F., et al. (2012). Osteoarthritis: a disease of the joint as an organ. Arthritis & Rheumatology, 64(6), 1697-1707.</p>
-                <p>[7] Viegas, F., et al. (2022). The sleep as a predictor of musculoskeletal injuries in adolescent athletes. Sleep science, 15(3), 305–311.</p>
-                <p>[8] Webster, J., et al. (2023). Nutritional strategies to optimise musculoskeletal health. Bone reports, 19, 101684.</p>
-              </div>
-            </div>
           </div>
           
           <div className="flex justify-center items-center">
@@ -170,14 +160,6 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
               )}
             </div>
 
-            <div className="bg-gray-900/50 p-4 rounded-lg border border-blue-400/20">
-              <h4 className="text-blue-400 font-medium mb-2">Références scientifiques</h4>
-              <div className="text-gray-400 text-sm space-y-2">
-                <p>[10] Waters, T. R., et al. (1993). Revised NIOSH equation for the design and evaluation of manual lifting tasks. Ergonomics, 36(7), 749-776.</p>
-                <p>[11] Liu, F., et al. (2025). Mixed adverse ergonomic factors exposure in relation to work-related musculoskeletal disorders. Sci Rep 15, 14705.</p>
-                <p>[13] Hart, S. G., & Staveland, L. E. (1988). Development of NASA-TLX. Advances in Psychology, 52, 139-183.</p>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -219,13 +201,6 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
               )}
             </div>
 
-            <div className="bg-gray-900/50 p-4 rounded-lg border border-purple-400/20">
-              <h4 className="text-purple-400 font-medium mb-2">Références scientifiques</h4>
-              <div className="text-gray-400 text-sm space-y-2">
-                <p>[15] Bovenzi, M., & Hulshof, C. T. J. (1999). An updated review of epidemiologic studies on whole-body vibration and low back pain. Int Arch Occup Environ Health, 72(6), 351-365.</p>
-                <p>[16] Magnavita, N., et al. (2011). Environmental discomfort and musculoskeletal disorders. Occupational medicine, 61(3), 196-201.</p>
-              </div>
-            </div>
           </div>
           
           <div className="flex justify-center items-center">
@@ -323,12 +298,6 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
               )}
             </div>
 
-            <div className="bg-gray-900/50 p-4 rounded-lg border border-yellow-400/20">
-              <h4 className="text-yellow-400 font-medium mb-2">Références scientifiques</h4>
-              <div className="text-gray-400 text-sm">
-                <p>[18] Berthet, M., & Cru, D. (2003). Travail prescrit, travail réel et santé au travail. Travail et emploi, 96, 85-96.</p>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -367,13 +336,6 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
               )}
             </div>
 
-            <div className="bg-gray-900/50 p-4 rounded-lg border border-green-400/20">
-              <h4 className="text-green-400 font-medium mb-2">Références scientifiques</h4>
-              <div className="text-gray-400 text-sm space-y-2">
-                <p>[19] Ding, Y., et al. (2020). It is time to have rest: how do break types affect muscular activity during prolonged sitting work. Safety and health at work, 11(2), 207-214.</p>
-                <p>[20] INRS. (2018). Pratique d'exercices physiques au travail et prévention des TMS - Revue de la littérature. Brochure TC 161.</p>
-              </div>
-            </div>
           </div>
           
           <div className="flex justify-center items-center">
