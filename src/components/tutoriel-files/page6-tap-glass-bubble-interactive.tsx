@@ -1,15 +1,19 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { Card, CardContent } from "@/components/ui/card"
 import { Slider } from "@/components/ui/slider"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
+import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { EnvironmentParticles } from '@/components/dashboard/environment-particles'
+import { RefreshCw } from "lucide-react"
+import { EnvironmentParticles } from '@/components/dashboard/bubble-component'
 import TapComponent from '@/components/dashboard/tap-component'
 import GlassComponent from '@/components/dashboard/glass-component'
+import { getLocalStorage, setLocalStorage, emitStorageEvent } from '@/lib/localStorage'
+import ProgressSummary from './progress-summary'
 
 // Interface pour les paramètres de la bulle
 interface BubbleSettings {
@@ -25,9 +29,12 @@ interface BubbleSettings {
 
 export default function TapGlassBubbleInteractive() {
   // États pour les paramètres du verre et du robinet
-  const [glassSize, setGlassSize] = useState(70)
+  const [glassSize, setGlassSize] = useState(100) // Valeur par défaut si aucune valeur n'est sauvegardée
+  const [glassCapacity, setGlassCapacity] = useState(100) // Capacité d'absorption du verre
   const [flowRate, setFlowRate] = useState(50)
+  const [fillLevel, setFillLevel] = useState(0) // Niveau de remplissage du verre
   const [isPaused, setIsPaused] = useState(false)
+  const [isOverflowing, setIsOverflowing] = useState(false) // État pour le statut de débordement
   
   // Paramètres environnementaux (bulle)
   const [settings, setSettings] = useState<BubbleSettings>({
@@ -44,8 +51,55 @@ export default function TapGlassBubbleInteractive() {
   // État pour le score environnemental
   const [environmentScore, setEnvironmentScore] = useState(60)
   
-  // État pour le statut (débordement ou non)
-  const [isOverflowing, setIsOverflowing] = useState(false)
+  // Charger la largeur du verre et la capacité d'absorption depuis le localStorage
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    
+    // Charger la largeur du verre
+    const savedGlassWidth = getLocalStorage('glassWidth')
+    if (savedGlassWidth) {
+      try {
+        const width = parseFloat(savedGlassWidth)
+        if (!isNaN(width)) {
+          setGlassSize(width)
+        }
+      } catch (e) {
+        console.error("Erreur lors du chargement de la largeur du verre:", e)
+      }
+    }
+    
+    // Charger la capacité d'absorption
+    const savedGlassCapacity = getLocalStorage('glassCapacity')
+    if (savedGlassCapacity) {
+      try {
+        const capacity = parseFloat(savedGlassCapacity)
+        if (!isNaN(capacity)) {
+          setGlassCapacity(capacity)
+        }
+      } catch (e) {
+        console.error("Erreur lors du chargement de la capacité d'absorption:", e)
+      }
+    }
+    
+    // Écouter les changements de largeur du verre et de capacité d'absorption
+    const handleGlassCapacityUpdate = (event: Event) => {
+      const customEvent = event as CustomEvent
+      if (customEvent.detail) {
+        if (customEvent.detail.width) {
+          setGlassSize(customEvent.detail.width)
+        }
+        if (customEvent.detail.capacity) {
+          setGlassCapacity(customEvent.detail.capacity)
+        }
+      }
+    }
+    
+    window.addEventListener('glassCapacityUpdated', handleGlassCapacityUpdate)
+    
+    return () => {
+      window.removeEventListener('glassCapacityUpdated', handleGlassCapacityUpdate)
+    }
+  }, [])
   
   // Calculer le score environnemental
   const calculateEnvironmentScore = (settings: BubbleSettings): number => {
@@ -79,15 +133,55 @@ export default function TapGlassBubbleInteractive() {
     setEnvironmentScore(score);
   }, [settings]);
   
-  // Vérifier si le verre déborde
+  // Gestion du remplissage progressif du verre
   useEffect(() => {
-    setIsOverflowing(flowRate > glassSize);
-  }, [flowRate, glassSize]);
+    if (isPaused) return;
+    
+    // Facteur environnemental qui influence la vitesse de remplissage
+    const environmentFactor = Math.max(0.5, Math.min(1.5, environmentScore / 60));
+    
+    // Calcul de l'incrément par intervalle
+    const fillIncrement = 0.2 * flowRate * environmentFactor / 100;
+    
+    // Timer pour mettre à jour le niveau de remplissage progressivement
+    const fillTimer = setInterval(() => {
+      setFillLevel(prevLevel => {
+        // Calculer le nouveau niveau
+        const newLevel = prevLevel + fillIncrement;
+        
+        // Vérifier si le verre déborde
+        const isNowOverflowing = newLevel > glassSize;
+        if (isNowOverflowing !== isOverflowing) {
+          setIsOverflowing(isNowOverflowing);
+        }
+        
+        // Limiter le niveau maximum au niveau du verre
+        return Math.min(newLevel, 100);
+      });
+    }, 50); // Mise à jour fréquente pour une animation fluide
+    
+    return () => clearInterval(fillTimer);
+  }, [flowRate, glassSize, isPaused, environmentScore, isOverflowing]);
 
   // Fonction pour gérer le changement de débit
   const handleFlowRateChange = (newRate: number) => {
     setFlowRate(newRate);
   }
+  
+  // Fonction pour vider le verre
+  const handleEmptyGlass = useCallback(() => {
+    // Vider le verre
+    setFillLevel(0);
+    
+    // Mettre en pause temporairement pour éviter un remplissage immédiat
+    setIsPaused(true);
+    setTimeout(() => {
+      setIsPaused(false);
+    }, 500);
+    
+    // Réinitialiser l'état de débordement
+    setIsOverflowing(false);
+  }, []);
   
   // Fonction pour mettre à jour un paramètre de la bulle
   const updateSetting = <K extends keyof BubbleSettings>(key: K, value: BubbleSettings[K]) => {
@@ -108,49 +202,72 @@ export default function TapGlassBubbleInteractive() {
         <h2 className="text-2xl font-bold text-white mb-4">Interaction Verre, Robinet et Bulle</h2>
         
         <div className="flex flex-col gap-6">
-          {/* Visualisation principale */}
-          <Card className="bg-gray-900/60 border-gray-800 overflow-hidden">
-            <CardContent className="p-4">
-              <div className="bg-gradient-to-r from-slate-950 to-slate-900 p-4 rounded-lg mb-4">
-                <h3 className="text-xl font-semibold text-white mb-1">Simulation</h3>
-                <p className="text-sm text-gray-400">Visualisation des interactions</p>
-              </div>
-              
-              <div className="relative w-full h-[650px] flex flex-col items-center justify-center">
-                {/* Bulle environnementale */}
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[580px] h-[580px] rounded-full overflow-hidden border-2 border-purple-400/40 bg-transparent shadow-[0_0_20px_rgba(168,85,247,0.15)] z-0" style={{ top: '48%' }}>
-                  <EnvironmentParticles 
-                    score={environmentScore} 
-                    isPaused={isPaused}
-                  />
+          {/* Visualisation principale avec ProgressSummary */}
+          <div className="flex flex-row gap-6">
+            {/* Modèle principal */}
+            <Card className="bg-gray-900/60 border-gray-800 overflow-hidden flex-grow">
+              <CardContent className="p-4">
+                <div className="bg-gradient-to-r from-slate-950 to-slate-900 p-4 rounded-lg mb-4">
+                  <h3 className="text-xl font-semibold text-white mb-1">Simulation</h3>
+                  <p className="text-sm text-gray-400">Visualisation des interactions</p>
                 </div>
-                
-                {/* Structure avec le robinet et le verre */}
-                <div className="flex flex-col items-center justify-center relative" style={{ height: '580px' }}>
-                  {/* Robinet */}
-                  <div className="relative z-20 mt-[50px]">
-                    <TapComponent 
-                      flowRate={flowRate} 
-                      onFlowRateChange={handleFlowRateChange}
-                      hideDebitLabel={true}
+              
+                <div className="relative w-full h-[650px] flex flex-col items-center justify-center">
+                  {/* Bulle environnementale */}
+                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[580px] h-[580px] rounded-full overflow-hidden border-2 border-purple-400/40 bg-transparent shadow-[0_0_20px_rgba(168,85,247,0.15)] z-0" style={{ top: '48%' }}>
+                    <EnvironmentParticles 
+                      score={environmentScore} 
+                      isPaused={isPaused}
                     />
                   </div>
                   
-                  {/* Verre */}
-                  <div className="relative z-10 mt-[-120px]">
-                    <GlassComponent 
-                      width={glassSize} 
-                      height={300}
-                      fillLevel={isOverflowing ? 100 : flowRate}
-                      absorptionRate={70}
-                      absorptionCapacity={glassSize}
-                      hideColorLegend={false}
-                    />
+                  {/* Bouton Réinitialiser sur la gauche */}
+                  <div className="absolute left-4 top-1/2 transform -translate-y-1/2 z-30">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="flex items-center gap-1 bg-slate-800 hover:bg-slate-700 text-white border-blue-500/50 hover:border-blue-400"
+                      onClick={handleEmptyGlass}
+                    >
+                      <RefreshCw className="h-4 w-4 text-blue-400" />
+                      Réinitialiser
+                    </Button>
+                  </div>
+                  
+                  {/* Structure avec le robinet et le verre */}
+                  <div className="flex flex-col items-center justify-center relative" style={{ height: '580px' }}>
+                    
+                    {/* Robinet */}
+                    <div className="relative z-20 mt-[50px]">
+                      <TapComponent 
+                        flowRate={flowRate} 
+                        onFlowRateChange={handleFlowRateChange}
+                        hideDebitLabel={true}
+                      />
+                    </div>
+                    
+                    {/* Verre */}
+                    <div className="relative z-10 mt-[-120px]">
+                      <GlassComponent 
+                        width={glassSize} 
+                        height={300}
+                        fillLevel={fillLevel}
+                        absorptionRate={70}
+                        absorptionCapacity={glassCapacity}
+                        hideColorLegend={false}
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+            
+            {/* Résumé des paramètres précédents */}
+            <ProgressSummary 
+              showParameters={['glass', 'tap', 'bubble']} 
+              className="mt-0 self-start"
+            />
+          </div>
           
           {/* Paramètres environnementaux */}
           <Card className="bg-gray-900/60 border-gray-800 overflow-hidden">

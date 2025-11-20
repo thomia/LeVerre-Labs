@@ -1,13 +1,19 @@
+/**
+ * PAGE PRINCIPALE - DASHBOARD
+ * Route: /
+ * Affiche le dashboard interactif avec le modèle ProtoVerreTMS
+ */
+
 import Dashboard from '@/components/dashboard/dashboard-new';
 import Link from 'next/link';
 import { UserCircle, BookOpen } from 'lucide-react';
 import { Button } from "@/components/ui/button"
 
-export default function Home() {
+export default function DashboardPage() {
   return (
     <main className="flex min-h-screen w-full flex-col items-center justify-start p-0 bg-black">
       {/* Bouton pour accéder au tutoriel */}
-      <div className="fixed top-4 right-4 z-50">
+      <div className="fixed top-64 right-64 z-50">
         <Link href="/tutorial/glass">
           <Button variant="outline" className="bg-slate-900/50 backdrop-blur-sm">
             <BookOpen className="w-4 h-4 mr-2" />
@@ -33,23 +39,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-      
-      {/* Footer avec mentions légales */}
-      <footer className="w-full py-4 px-6 border-t border-gray-800/30 bg-black backdrop-blur-sm mt-auto">
-        <div className="max-w-[2000px] mx-auto flex flex-col items-center text-xs text-gray-400 space-y-2">
-          <div className="flex items-center space-x-2">
-            <span> 2024 ProtoVerreTMS</span>
-            <span>•</span>
-            <span>Tous droits réservés</span>
-            <span>•</span>
-            <span>Développé par Thomas REL</span>
-          </div>
-          <div className="text-center">
-            <p>Logiciel protégé - Reproduction interdite</p>
-            <p className="text-[10px] mt-1">Tous droits de propriété intellectuelle réservés</p>
-          </div>
-        </div>
-      </footer>
     </main>
   )
 }

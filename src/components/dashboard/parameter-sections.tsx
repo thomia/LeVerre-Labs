@@ -82,7 +82,7 @@ export function TapSection({
   return (
     <ParameterSection
       title="Robinet"
-      description="Représente le débit de travail (charge, fréquence, posture, force)."
+      description="Représente la charge de travail physique et mentale"
       value={flowRate}
       onSettingsClick={onSettingsClick}
       type="tap"

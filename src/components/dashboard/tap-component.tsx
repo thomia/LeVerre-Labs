@@ -109,7 +109,6 @@ export default function TapComponent({ flowRate, onFlowRateChange, hideDebitLabe
   return (
     <div 
       className="relative"
-      onClick={handleClick}
     >
       <motion.div 
         className="relative h-[400px] w-full max-w-[160px] flex flex-col items-center"
