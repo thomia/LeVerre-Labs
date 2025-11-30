@@ -15,7 +15,12 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* Brand */}
           <div className="space-y-4">
-            <Link href="/vitrine" className="inline-block group">
+            <Link href="/vitrine" className="flex items-center gap-3 group">
+              <img 
+                src="/photo%20video/logo_noir-removebg-preview.png" 
+                alt="LeVerre Labs Logo" 
+                className="h-10 w-10 object-contain brightness-0 invert group-hover:scale-110 transition-transform duration-200"
+              />
               <h3 className="text-2xl font-bold">
                 <span className="text-[rgb(255,30,90)] group-hover:text-[rgb(255,60,120)] transition-colors">LeVerre</span>{' '}
                 <span className="text-gray-400 group-hover:text-gray-300 transition-colors">Labs</span>

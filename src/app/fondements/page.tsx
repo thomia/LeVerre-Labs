@@ -1,312 +1,183 @@
 "use client"
 
 import { motion } from 'framer-motion'
-import { BookOpen, Lightbulb, FlaskConical, Target, Users, Award } from 'lucide-react'
+import { LampContainer } from '@/components/ui/lamp'
+import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button'
+import { StickyScrollSections } from '@/components/ui/sticky-scroll-sections'
 
 export default function FondementsPage() {
+  const sectionsData = [
+    {
+      title: "Notre Mission",
+      content: (
+        <div className="space-y-12 text-lg md:text-xl text-gray-400 font-normal leading-relaxed mb-32 text-center">
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+          >
+            L'ergonomie ne devrait pas être réservée aux ergonomes. La prévention ne devrait pas être réservée aux préventeurs. 
+            La <span className="text-white">santé au travail est l'affaire de chacun</span>.
+          </motion.p>
+          
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+          >
+            Jour après jour, nous travaillons pour proposer une expérience d'apprentissage qui donne 
+            le <span className="text-white">pouvoir à chacun</span> de comprendre simplement l'impact du travail sur sa santé. Les messages les plus simples sont les plus puissants.
+          </motion.p>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+            className="mt-8 p-6 bg-gradient-to-r from-gray-900 to-black border-l-4 border-[rgb(255,30,90)] text-center"
+          >
+            <p className="text-2xl md:text-3xl text-white font-light italic">
+              Démocratiser le savoir. Multiplier le pouvoir d'agir.
+            </p>
+          </motion.div>
+        </div>
+      )
+    },
+    {
+      title: "Origines",
+      content: (
+        <div className="space-y-12 text-lg md:text-xl text-gray-400 leading-relaxed mb-32 text-center">
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+          >
+            <span className="text-[rgb(255,30,90)] font-bold">LeVerre Labs</span> est né au fil d'années d'expérience en entreprise, d'un travail de préventeur et ergonome 
+            confronté jour après jour aux enjeux des <span className="text-white">accidents du travail et des TMS</span>.
+          </motion.p>
+          
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+          >
+            Le constat s'est imposé progressivement : malgré des formations scientifiquement fondées, les contenus 
+            traditionnels ne parvenaient pas à créer une <span className="text-white">connexion directe</span> avec la réalité vécue par les travailleurs.
+          </motion.p>
+          
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+          >
+            L'enjeu était clair : rendre ces notions complexes <span className="text-white">immédiatement compréhensibles et appropriables</span> par tous, 
+            sans nécessiter de formation préalable en physiologie ou ergonomie.
+          </motion.p>
+          
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.5 }}
+            className="mt-8 p-6 bg-gradient-to-r from-gray-900 to-black border-l-4 border-[rgb(255,30,90)] rounded-r-lg text-center"
+          >
+            <p className="text-gray-400">
+              Le <span className="text-white">Modèle du Verre</span> a d'abord existé sous sa forme la plus simple : un feutre, un tableau blanc et un message 
+              à faire passer. Après des mois de tests terrain et d'itérations successives, il a été formalisé dans un mémoire 
+              de Mastère puis développé en outil numérique, capable de <span className="text-white">former, d'analyser et d'accompagner</span> la transformation 
+              des situations de travail.
+            </p>
+          </motion.div>
+        </div>
+      )
+    },
+    {
+      title: "Notre Approche",
+      content: (
+        <div className="space-y-12 text-lg md:text-xl text-gray-400 leading-relaxed mb-32 text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="p-6 bg-gradient-to-r from-gray-900 to-black border-l-4 border-[rgb(255,30,90)] rounded-r-lg text-center"
+          >
+            <p className="text-2xl md:text-3xl text-white font-light">
+              <span className="text-[rgb(255,30,90)] font-bold">LeVerre Labs</span> transforme l'invisible en évidence.
+            </p>
+          </motion.div>
+          
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+          >
+            Notre approche : une <span className="text-white">métaphore universelle</span> qui rend le risque visible en un instant. Auto-évaluation, leviers d'action, transformation ciblée.
+          </motion.p>
+          
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+          >
+            L'outil ne s'arrête pas à la prise de conscience: il sert l'<span className="text-white">analyse concrète</span> des situations, permet de tester des hypothèses, guide les transformations. De la compréhension individuelle à la décision organisationnelle.
+          </motion.p>
+          
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.5 }}
+          >
+            Appuyée sur les <span className="text-white">sciences cognitives</span> et forgée sur le terrain, notre approche reste dynamique. Nos équipes maintiennent une veille scientifique et réglementaire active qui nourrit l'amélioration continue de nos solutions.
+          </motion.p>
+        </div>
+      )
+    }
+  ];
+
   return (
-    <div className="min-h-screen bg-black pt-24 pb-16">
-      <div className="max-w-5xl mx-auto px-6">
-        {/* Hero Section */}
+    <div className="min-h-screen bg-black">
+      {/* Hero avec lampe - sans titre, juste la lampe LED */}
+      <LampContainer>
+        <div className="h-4" />
+      </LampContainer>
+
+      {/* Sections avec titres sticky - marge négative pour rapprocher de la LED */}
+      <div className="-mt-96 md:-mt-[32rem]">
+        <StickyScrollSections sections={sectionsData} />
+      </div>
+
+      {/* CTA - Devenir organisation partenaire */}
+      <section className="relative py-32 px-6 bg-gradient-to-br from-slate-700 to-slate-900">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-20"
-        >
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6">
-            <span className="bg-clip-text text-transparent bg-gradient-to-b from-white via-white to-gray-400">
-              Fondements Scientifiques
-            </span>
-          </h1>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-            Découvrez l'histoire, la méthodologie et les bases scientifiques du modèle{' '}
-            <span className="text-[rgb(255,30,90)] font-semibold">LeVerre</span> Labs
-          </p>
-        </motion.div>
-
-        {/* Histoire du modèle */}
-        <section id="histoire" className="mb-24 scroll-mt-24">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
-          >
-            <div className="flex items-center gap-4 mb-8">
-              <div className="p-3 bg-[rgb(255,30,90)]/10 rounded-xl border border-[rgb(255,30,90)]/20">
-                <BookOpen className="w-8 h-8 text-[rgb(255,30,90)]" />
-              </div>
-              <h2 className="text-4xl font-bold text-white">Histoire du modèle</h2>
-            </div>
-
-            <div className="prose prose-invert prose-lg max-w-none">
-              <div className="bg-gradient-to-br from-gray-900/50 to-gray-800/30 rounded-2xl p-8 border border-white/10">
-                <h3 className="text-2xl font-semibold text-white mb-4">La genèse</h3>
-                <p className="text-gray-300 leading-relaxed mb-6">
-                  [À compléter avec votre storytelling - comment l'idée est née, les premiers constats sur le terrain, 
-                  les difficultés rencontrées avec les méthodes traditionnelles...]
-                </p>
-                
-                <h3 className="text-2xl font-semibold text-white mb-4">L'inspiration</h3>
-                <p className="text-gray-300 leading-relaxed mb-6">
-                  [À compléter - pourquoi la métaphore du verre ? Comment cette idée a-t-elle émergé ? 
-                  Les discussions, les itérations...]
-                </p>
-
-                <h3 className="text-2xl font-semibold text-white mb-4">Le développement</h3>
-                <p className="text-gray-300 leading-relaxed">
-                  [À compléter - les étapes de conception, les tests terrain, les ajustements, 
-                  les retours des utilisateurs...]
-                </p>
-              </div>
-            </div>
-          </motion.div>
-        </section>
-
-        {/* Pourquoi cette métaphore */}
-        <section id="metaphore" className="mb-24 scroll-mt-24">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="flex items-center gap-4 mb-8">
-              <div className="p-3 bg-purple-500/10 rounded-xl border border-purple-500/20">
-                <Lightbulb className="w-8 h-8 text-purple-400" />
-              </div>
-              <h2 className="text-4xl font-bold text-white">Pourquoi cette métaphore ?</h2>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-gradient-to-br from-blue-900/20 to-blue-800/10 rounded-2xl p-6 border border-blue-400/20">
-                <h3 className="text-xl font-semibold text-blue-400 mb-3">Universellement compréhensible</h3>
-                <p className="text-gray-300">
-                  Le concept d'un verre qui se remplit est immédiatement accessible à tous, 
-                  du directeur à l'opérateur, créant un langage commun.
-                </p>
-              </div>
-
-              <div className="bg-gradient-to-br from-green-900/20 to-green-800/10 rounded-2xl p-6 border border-green-400/20">
-                <h3 className="text-xl font-semibold text-green-400 mb-3">Visuellement puissant</h3>
-                <p className="text-gray-300">
-                  La métaphore visuelle permet de comprendre instantanément les concepts complexes 
-                  de charge de travail et de récupération.
-                </p>
-              </div>
-
-              <div className="bg-gradient-to-br from-purple-900/20 to-purple-800/10 rounded-2xl p-6 border border-purple-400/20">
-                <h3 className="text-xl font-semibold text-purple-400 mb-3">Dynamique et interactif</h3>
-                <p className="text-gray-300">
-                  Le modèle montre les interactions en temps réel entre les différents facteurs, 
-                  rendant l'ergonomie tangible.
-                </p>
-              </div>
-
-              <div className="bg-gradient-to-br from-yellow-900/20 to-yellow-800/10 rounded-2xl p-6 border border-yellow-400/20">
-                <h3 className="text-xl font-semibold text-yellow-400 mb-3">Pédagogiquement efficace</h3>
-                <p className="text-gray-300">
-                  La métaphore facilite la mémorisation et l'appropriation des concepts ergonomiques 
-                  par tous les acteurs.
-                </p>
-              </div>
-            </div>
-          </motion.div>
-        </section>
-
-        {/* Méthodologie */}
-        <section id="methodologie" className="mb-24 scroll-mt-24">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="flex items-center gap-4 mb-8">
-              <div className="p-3 bg-blue-500/10 rounded-xl border border-blue-500/20">
-                <FlaskConical className="w-8 h-8 text-blue-400" />
-              </div>
-              <h2 className="text-4xl font-bold text-white">Méthodologie de développement</h2>
-            </div>
-
-            <div className="space-y-6">
-              <div className="bg-gradient-to-br from-gray-900/50 to-gray-800/30 rounded-2xl p-8 border border-white/10">
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[rgb(255,30,90)]/20 flex items-center justify-center text-[rgb(255,30,90)] font-bold">
-                    1
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold text-white mb-2">Revue de littérature scientifique</h3>
-                    <p className="text-gray-300">
-                      Analyse approfondie des publications scientifiques sur les TMS, l'ergonomie, 
-                      la physiologie du travail et les facteurs de risque professionnels.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-gradient-to-br from-gray-900/50 to-gray-800/30 rounded-2xl p-8 border border-white/10">
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[rgb(255,30,90)]/20 flex items-center justify-center text-[rgb(255,30,90)] font-bold">
-                    2
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold text-white mb-2">Observations terrain</h3>
-                    <p className="text-gray-300">
-                      Études de situations de travail réelles pour identifier les besoins concrets 
-                      et les limites des approches existantes.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-gradient-to-br from-gray-900/50 to-gray-800/30 rounded-2xl p-8 border border-white/10">
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[rgb(255,30,90)]/20 flex items-center justify-center text-[rgb(255,30,90)] font-bold">
-                    3
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold text-white mb-2">Conception itérative</h3>
-                    <p className="text-gray-300">
-                      Développement progressif du modèle avec tests utilisateurs, ajustements 
-                      et validation par des experts en ergonomie.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-gradient-to-br from-gray-900/50 to-gray-800/30 rounded-2xl p-8 border border-white/10">
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[rgb(255,30,90)]/20 flex items-center justify-center text-[rgb(255,30,90)] font-bold">
-                    4
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold text-white mb-2">Validation empirique</h3>
-                    <p className="text-gray-300">
-                      Tests en conditions réelles dans différents secteurs d'activité pour 
-                      valider l'efficacité et l'acceptabilité du modèle.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </section>
-
-        {/* Références scientifiques */}
-        <section id="references" className="mb-24 scroll-mt-24">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="flex items-center gap-4 mb-8">
-              <div className="p-3 bg-green-500/10 rounded-xl border border-green-500/20">
-                <Award className="w-8 h-8 text-green-400" />
-              </div>
-              <h2 className="text-4xl font-bold text-white">Références scientifiques</h2>
-            </div>
-
-            <div className="space-y-12">
-              {/* Verre - Facteurs individuels */}
-              <div className="bg-gradient-to-br from-gray-900/50 to-gray-800/30 rounded-2xl p-8 border border-gray-400/20">
-                <h3 className="text-2xl font-semibold text-gray-300 mb-6 flex items-center gap-3">
-                  <span className="text-4xl">🥃</span>
-                  Le Verre - Facteurs Individuels
-                </h3>
-                <div className="space-y-4 text-sm text-gray-400">
-                  <p>[1] Cruz-Jentoft, A. J., et al. (2019). Sarcopenia: revised European consensus on definition and diagnosis. <em>Age and Ageing</em>, 48(1), 16-31.</p>
-                  <p>[2] Jerban, S., Ma, Y., Namiranian, B. et al. (2019). Age-related decrease in collagen proton fraction in tibial tendons. <em>Sci Rep</em> 9, 17974.</p>
-                  <p>[3] Loeser, R. F., et al. (2012). Osteoarthritis: a disease of the joint as an organ. <em>Arthritis & Rheumatology</em>, 64(6), 1697-1707.</p>
-                  <p>[4] Andersen, L. L., et al. (2017). Physical fitness in relation to transport to school in adolescents: the HELENA study. <em>International Journal of Behavioral Nutrition and Physical Activity</em>, 14(1), 96.</p>
-                  <p>[5] Nordander, C., et al. (2016). Fish processing work: the impact of two sex dependent exposure profiles on musculoskeletal health. <em>Occupational and Environmental Medicine</em>, 73(11), 722-728.</p>
-                  <p>[6] Côté, J. N. (2012). A critical review on physical factors and functional characteristics that may explain a sex/gender difference in work-related neck/shoulder disorders. <em>Ergonomics</em>, 55(2), 173-182.</p>
-                  <p>[7] Viegas, F., et al. (2022). The sleep as a predictor of musculoskeletal injuries in adolescent athletes. <em>Sleep science</em>, 15(3), 305–311.</p>
-                  <p>[8] Webster, J., et al. (2023). Nutritional strategies to optimise musculoskeletal health. <em>Bone reports</em>, 19, 101684.</p>
-                </div>
-              </div>
-
-              {/* Robinet - Charge de travail */}
-              <div className="bg-gradient-to-br from-gray-900/50 to-gray-800/30 rounded-2xl p-8 border border-blue-400/20">
-                <h3 className="text-2xl font-semibold text-blue-400 mb-6 flex items-center gap-3">
-                  <span className="text-4xl">🚰</span>
-                  Le Robinet - Charge de Travail
-                </h3>
-                <div className="space-y-4 text-sm text-gray-400">
-                  <p>[9] Kumar, S. (2001). Theories of musculoskeletal injury causation. <em>Ergonomics</em>, 44(1), 17-47.</p>
-                  <p>[10] Waters, T. R., et al. (1993). Revised NIOSH equation for the design and evaluation of manual lifting tasks. <em>Ergonomics</em>, 36(7), 749-776.</p>
-                  <p>[11] Liu, F., et al. (2025). Mixed adverse ergonomic factors exposure in relation to work-related musculoskeletal disorders. <em>Sci Rep</em> 15, 14705.</p>
-                  <p>[12] Buckle, P. W., & Devereux, J. J. (2002). The nature of work-related neck and upper limb musculoskeletal disorders. <em>Applied Ergonomics</em>, 33(3), 207-217.</p>
-                  <p>[13] Hart, S. G., & Staveland, L. E. (1988). Development of NASA-TLX. <em>Advances in Psychology</em>, 52, 139-183.</p>
-                  <p>[14] Karasek, R., et al. (1998). The Job Content Questionnaire (JCQ): an instrument for internationally comparative assessments of psychosocial job characteristics. <em>Journal of Occupational Health Psychology</em>, 3(4), 322.</p>
-                </div>
-              </div>
-
-              {/* Bulle - Environnement */}
-              <div className="bg-gradient-to-br from-gray-900/50 to-gray-800/30 rounded-2xl p-8 border border-purple-400/20">
-                <h3 className="text-2xl font-semibold text-purple-400 mb-6 flex items-center gap-3">
-                  <span className="text-4xl">🫧</span>
-                  La Bulle - Environnement de Travail
-                </h3>
-                <div className="space-y-4 text-sm text-gray-400">
-                  <p>[15] Bovenzi, M., & Hulshof, C. T. J. (1999). An updated review of epidemiologic studies on whole-body vibration and low back pain. <em>Int Arch Occup Environ Health</em>, 72(6), 351-365.</p>
-                  <p>[16] Magnavita, N., et al. (2011). Environmental discomfort and musculoskeletal disorders. <em>Occupational medicine</em>, 61(3), 196-201.</p>
-                  <p>[17] Hedge, A., et al. (1995). Effects of lensed-indirect and parabolic lighting on the satisfaction, visual health, and productivity of office workers. <em>Ergonomics</em>, 38(2), 260-280.</p>
-                </div>
-              </div>
-
-              {/* Orage - Aléas */}
-              <div className="bg-gradient-to-br from-gray-900/50 to-gray-800/30 rounded-2xl p-8 border border-yellow-400/20">
-                <h3 className="text-2xl font-semibold text-yellow-400 mb-6 flex items-center gap-3">
-                  <span className="text-4xl">⛈️</span>
-                  L'Orage - Aléas et Imprévus
-                </h3>
-                <div className="space-y-4 text-sm text-gray-400">
-                  <p>[18] Berthet, M., & Cru, D. (2003). Travail prescrit, travail réel et santé au travail. <em>Travail et emploi</em>, 96, 85-96.</p>
-                </div>
-              </div>
-
-              {/* Paille - Récupération */}
-              <div className="bg-gradient-to-br from-gray-900/50 to-gray-800/30 rounded-2xl p-8 border border-green-400/20">
-                <h3 className="text-2xl font-semibold text-green-400 mb-6 flex items-center gap-3">
-                  <span className="text-4xl">🥤</span>
-                  La Paille - Stratégies de Récupération
-                </h3>
-                <div className="space-y-4 text-sm text-gray-400">
-                  <p>[19] Ding, Y., et al. (2020). It is time to have rest: how do break types affect muscular activity during prolonged sitting work. <em>Safety and health at work</em>, 11(2), 207-214.</p>
-                  <p>[20] INRS. (2018). Pratique d'exercices physiques au travail et prévention des TMS - Revue de la littérature. Brochure TC 161.</p>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </section>
-
-        {/* Call to action */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center bg-gradient-to-br from-[rgb(255,30,90)]/10 to-[rgb(255,60,120)]/10 rounded-2xl p-12 border border-[rgb(255,30,90)]/20"
+          transition={{ duration: 0.8 }}
+          className="max-w-4xl mx-auto text-center"
         >
-          <h2 className="text-3xl font-bold text-white mb-4">
-            Prêt à transformer votre approche de la prévention ?
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-8 tracking-tight leading-tight">
+            Rejoignez les premières organisations qui transforment leur prévention
           </h2>
-          <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
-            Découvrez comment le modèle LeVerre Labs peut vous aider à améliorer 
-            la santé et la performance de vos équipes.
+          <p className="text-xl text-gray-200 mb-12 leading-relaxed">
+            LeVerre Labs accompagne des entreprises pilotes pour déployer une approche innovante et mesurer l'impact réel. Échangeons sur votre contexte.
           </p>
-          <a
-            href="/vitrine"
-            className="inline-flex items-center px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-[rgb(255,30,90)] to-[rgb(255,60,120)] rounded-full hover:shadow-[0_0_30px_rgba(255,30,90,0.5)] transition-all duration-300"
-          >
-            Découvrir le modèle
+          <a href="mailto:contact@leverrelabs.com?subject=Devenir organisation partenaire LeVerre Labs">
+            <InteractiveHoverButton 
+              text="Devenir partenaire"
+              className="w-auto px-8 py-4 text-lg bg-[rgb(255,30,90)] text-white border-[rgb(255,30,90)] hover:bg-[rgb(255,60,120)]"
+            />
           </a>
         </motion.div>
-      </div>
+      </section>
     </div>
   )
 }
