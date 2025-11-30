@@ -66,7 +66,7 @@ export default function HeroSection() {
                 
                 <div className="relative inline-block">
                   <p className="text-xl md:text-2xl lg:text-3xl text-[rgb(255,30,90)] font-semibold">
-                    tous liés à l'activité physique.
+                    tous liés à l'activité physique au travail.
                   </p>
                   {/* Underline effect */}
                   <div className="absolute -bottom-2 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[rgb(255,30,90)] to-transparent" />
@@ -74,16 +74,15 @@ export default function HeroSection() {
               </div>
               
               {/* Separator */}
-              <div className="relative py-6">
-                <div className="absolute inset-0 flex items-center" aria-hidden="true">
-                  <div className="w-full border-t border-white/5" />
-                </div>
-                <div className="relative flex justify-center">
-                  <span className="bg-gray-900 px-4">
-                    <svg className="h-5 w-5 text-[rgb(255,30,90)]" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
-                    </svg>
-                  </span>
+              <div className="relative py-8">
+                <div className="flex items-center gap-8">
+                  <div className="flex-1 border-t border-white/5" />
+                  <img 
+                    src="/photo%20video/logo_noir-removebg-preview.png" 
+                    alt="LeVerre Labs Logo" 
+                    className="h-20 w-20 md:h-24 md:w-24 object-contain brightness-0 invert"
+                  />
+                  <div className="flex-1 border-t border-white/5" />
                 </div>
               </div>
               

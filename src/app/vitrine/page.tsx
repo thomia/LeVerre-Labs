@@ -65,7 +65,7 @@ export default function VitrinePage() {
         posterSrc="/photo%20video/TMSsht-1-1372841116.jpg"
         bgImageSrc="/photo%20video/TMSsht-1-1372841116.jpg"
         title="LeVerre Labs"
-        date="The Powerful Digital Ergonomic Lab"
+        date="The Powerful Digital Ergonomic Tool"
         scrollToExpand="Faites défiler pour découvrir notre solution"
         textBlend
       >
@@ -91,7 +91,7 @@ export default function VitrinePage() {
               <span className="text-[rgb(255,30,90)] drop-shadow-[0_0_8px_rgba(255,30,90,0.5)]">LeVerre</span> <span className="text-gray-400">Labs</span>
             </h1>
             <p className="text-2xl md:text-3xl text-white mb-4 max-w-4xl mx-auto font-bold leading-relaxed">
-              The Powerful Digital Ergonomic Lab
+              The Powerful Digital Ergonomic Tool
             </p>
           </motion.div>
 

@@ -1,8 +1,7 @@
 "use client"
 
-import { motion, AnimatePresence } from 'framer-motion'
-import { useState, useEffect, useRef } from 'react'
-import { cn } from '@/lib/utils'
+import { motion } from 'framer-motion'
+import { useEffect, useRef } from 'react'
 import { getLocalStorage, setLocalStorage, emitStorageEvent } from '@/lib/localStorage'
 
 interface StormComponentProps {
@@ -12,16 +11,7 @@ interface StormComponentProps {
 }
 
 export default function StormComponent({ intensity, onIntensityChange, hideIntensityLabel = false }: StormComponentProps) {
-  const [showDetails, setShowDetails] = useState(false)
   const intensityRef = useRef(0)
-  
-  // Obtenir la classe de couleur en fonction du niveau d'intensité
-  const getIntensityColor = (value: number) => {
-    if (value >= 80) return "text-red-500";
-    if (value >= 60) return "text-amber-500";
-    if (value >= 40) return "text-yellow-500";
-    return "text-green-500";
-  }
   
   // Charger l'intensité depuis localStorage
   useEffect(() => {
@@ -64,10 +54,6 @@ export default function StormComponent({ intensity, onIntensityChange, hideInten
     emitStorageEvent();
   }, [intensity, onIntensityChange]);
   
-  const handleClick = () => {
-    setShowDetails(!showDetails)
-  }
-  
   // Obtenir la description de l'intensité
   const getIntensityDescription = () => {
     if (intensity < 40) return "Faible";
@@ -93,7 +79,6 @@ export default function StormComponent({ intensity, onIntensityChange, hideInten
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
-        onClick={handleClick}
       >
         {/* Nuage d'orage - décalé vers la gauche */}
         <motion.div 
@@ -243,64 +228,6 @@ export default function StormComponent({ intensity, onIntensityChange, hideInten
             </>
           )}
         </motion.div>
-        
-        {/* Affichage des détails au clic */}
-        <AnimatePresence>
-          {showDetails && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              transition={{ duration: 0.3 }}
-              className="absolute inset-0 flex items-center justify-center z-30 bg-black/60 backdrop-blur-md rounded-lg"
-              style={{ width: '300px', height: '300px', top: '-70px', left: '-70px' }}
-            >
-              <div className="text-center p-6 bg-black/80 rounded-xl border border-[#D4A017]/50 shadow-xl">
-                <h3 className="text-2xl font-bold text-white mb-4">Facteurs d'aléas</h3>
-                
-                <div className="flex flex-col gap-3 mb-4">
-                  <div className="flex justify-between items-center">
-                    <span className="text-white">Interruptions:</span>
-                    <span className={cn("text-xl font-bold", getIntensityColor(intensity))}>
-                      {Math.round(intensity * 0.8)}%
-                    </span>
-                  </div>
-                  
-                  <div className="flex justify-between items-center">
-                    <span className="text-white">Changements:</span>
-                    <span className={cn("text-xl font-bold", getIntensityColor(intensity))}>
-                      {Math.round(intensity * 1.1)}%
-                    </span>
-                  </div>
-                  
-                  <div className="flex justify-between items-center">
-                    <span className="text-white">Problèmes techniques:</span>
-                    <span className={cn("text-xl font-bold", getIntensityColor(intensity))}>
-                      {Math.round(intensity * 0.9)}%
-                    </span>
-                  </div>
-                </div>
-                
-                <div className="mt-4 border-t border-[#D4A017]/30 pt-3">
-                  <div className="flex justify-between items-center">
-                    <span className="text-white">Intensité résultante:</span>
-                    <span className={cn(
-                      "text-2xl font-bold",
-                      intensity >= 80 ? "text-red-500" : 
-                      intensity >= 60 ? "text-orange-500" : 
-                      intensity >= 40 ? "text-yellow-500" : 
-                      "text-green-500"
-                    )}>
-                      {Math.round(intensity)}%
-                    </span>
-                  </div>
-                </div>
-                
-                <p className="text-[#D4A017] mt-3 text-sm">Cliquez pour fermer</p>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </motion.div>
     </div>
   )

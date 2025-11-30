@@ -16,6 +16,7 @@ import BubbleComponent from '@/components/dashboard/bubble-component'
 import StormComponent from '@/components/dashboard/storm-component'
 import StrawComponent from '@/components/dashboard/straw-component'
 import { Slider } from '@/components/ui/slider-number-flow'
+import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button'
 
 interface SectionProps {
   expandedSections: Record<string, boolean>
@@ -223,7 +224,7 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
               
               <div className="mt-32 text-center space-y-4">
                 <div>
-                  <div className="text-purple-400 text-xl font-medium mb-2">Qualité environnementale</div>
+                  <div className="text-purple-400 text-xl font-medium mb-2">Qualité de l'environnement de travail</div>
                   <div className="text-gray-400 text-base mb-12">Ajustez pour voir le nombre et la vitesse des particules</div>
                 </div>
                 <Slider
@@ -253,7 +254,7 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
               />
               <div className="mt-32 text-center space-y-4">
                 <div>
-                  <div className="text-yellow-400 text-xl font-medium mb-2">Intensité des aléas</div>
+                  <div className="text-yellow-400 text-xl font-medium mb-2">Impact des aléas sur la charge globale</div>
                   <div className="text-gray-400 text-base mb-12">Ajustez pour voir la fréquence des éclairs</div>
                 </div>
                 <Slider
@@ -363,6 +364,30 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
             </div>
           </div>
         </div>
+      </section>
+
+      {/* CTA - Demander une démonstration */}
+      <section className="relative py-32 px-6 bg-gradient-to-br from-slate-900 to-black">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="max-w-3xl mx-auto text-center"
+        >
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-8 tracking-tight">
+            Voyez LeVerre Labs en action
+          </h2>
+          <p className="text-xl text-gray-300 mb-12 leading-relaxed">
+            Découvrez comment notre approche transforme la prévention à travers une démonstration personnalisée de l'outil et de son utilisation concrète.
+          </p>
+          <a href="mailto:contact@leverrelabs.com?subject=Demande de démonstration LeVerre Labs">
+            <InteractiveHoverButton 
+              text="Demander une démonstration"
+              className="w-auto px-8 py-4 text-lg bg-[rgb(255,30,90)] text-white border-[rgb(255,30,90)] hover:bg-[rgb(255,60,120)]"
+            />
+          </a>
+        </motion.div>
       </section>
     </div>
   )
