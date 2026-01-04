@@ -106,11 +106,8 @@ export default function FeaturesCards() {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-light text-white mb-6">
-            Un Outil Complet pour la Prévention
+            Un Outil Complet
           </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            Basé sur les connaissances scientifiques actuelles, <span className="font-bold"><span className="text-[rgb(255,30,90)]">LeVerre</span> <span className="text-gray-400">Labs</span></span> transforme l'analyse ergonomique en outil stratégique au service de votre organisation
-          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

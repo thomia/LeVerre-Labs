@@ -145,19 +145,22 @@ export function EnvironmentParticles({ score, isPaused = false }: EnvironmentPar
       }
     }
 
+    // Annuler toute animation en cours avant de démarrer une nouvelle
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current)
+      animationFrameRef.current = undefined
+    }
+
     // Gérer l'animation en fonction de l'état de pause
     if (isPaused) {
-      // Si en pause, annuler l'animation en cours et dessiner une dernière fois
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current)
-        animationFrameRef.current = undefined
-      }
+      // Si en pause, dessiner les particules sans animation
+      initParticles()
       if (ctx) {
         ctx.clearRect(0, 0, canvas.width, canvas.height)
         drawParticles(ctx)
       }
     } else {
-      // Si pas en pause, démarrer/continuer l'animation
+      // Si pas en pause, réinitialiser et démarrer l'animation
       initParticles()
       animate()
     }

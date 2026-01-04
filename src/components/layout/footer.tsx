@@ -27,7 +27,7 @@ export default function Footer() {
               </h3>
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed">
-              The Powerful Digital Ergonomic Lab. Transformez votre approche de la prévention avec une métaphore visuelle innovante.
+              The Powerful Digital Ergonomic Tool. Transformez votre approche de la prévention avec une métaphore visuelle innovante.
             </p>
           </div>
 
@@ -42,7 +42,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/fondements" className="text-gray-400 hover:text-white transition-colors text-sm">
-                  Fondements Scientifiques
+                  Fondements
                 </Link>
               </li>
             </ul>
@@ -54,17 +54,17 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link href="/fondements#histoire" className="text-gray-400 hover:text-white transition-colors text-sm">
-                  Histoire du modèle
+                  Histoire
                 </Link>
               </li>
               <li>
-                <Link href="/fondements#methodologie" className="text-gray-400 hover:text-white transition-colors text-sm">
-                  Méthodologie
+                <Link href="/fondements#approche" className="text-gray-400 hover:text-white transition-colors text-sm">
+                  Approche
                 </Link>
               </li>
               <li>
                 <Link href="/fondements#references" className="text-gray-400 hover:text-white transition-colors text-sm">
-                  Références
+                  Mission
                 </Link>
               </li>
             </ul>
@@ -75,12 +75,12 @@ export default function Footer() {
             <h4 className="text-white font-semibold mb-4">Contact</h4>
             <ul className="space-y-3">
               <li className="text-gray-400 text-sm">
-                <a href="mailto:contact@leverrelabs.com" className="hover:text-white transition-colors">
-                  contact@leverrelabs.com
+                <a href="mailto:leverrelabs@gmail.com" className="hover:text-white transition-colors">
+                  leverrelabs@gmail.com
                 </a>
               </li>
               <li className="text-gray-400 text-sm">
-                Développé avec ❤️ pour la prévention
+                Développé avec ❤️
               </li>
             </ul>
           </div>
@@ -92,14 +92,6 @@ export default function Footer() {
             <p className="text-gray-500 text-sm">
               © {currentYear} LeVerre Labs. Tous droits réservés.
             </p>
-            <div className="flex items-center gap-6">
-              <Link href="/mentions-legales" className="text-gray-500 hover:text-gray-300 transition-colors text-sm">
-                Mentions légales
-              </Link>
-              <Link href="/confidentialite" className="text-gray-500 hover:text-gray-300 transition-colors text-sm">
-                Confidentialité
-              </Link>
-            </div>
           </div>
         </div>
       </div>

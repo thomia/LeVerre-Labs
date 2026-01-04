@@ -22,6 +22,7 @@ export default function Navbar() {
   const navItems = [
     { name: 'Accueil', href: '/vitrine' },
     { name: 'Fondements', href: '/fondements' },
+    { name: 'Offres', href: '/offres' },
   ]
 
   return (

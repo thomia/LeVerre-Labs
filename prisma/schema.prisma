@@ -1,0 +1,136 @@
+// This is your Prisma schema file
+// Documentation: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// ============================================
+// MODÈLE UTILISATEUR
+// ============================================
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String // Hash bcrypt
+  role      String   @default("BETA_TESTEUR") // "BETA_TESTEUR" | "ADMIN"
+  
+  // Profil
+  nom       String
+  prenom    String
+  entreprise String?
+  poste     String?
+  
+  // Dates
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  lastLogin DateTime @default(now())
+  
+  // Relations
+  analyses  Analysis[]
+  scenarios Scenario[]
+  
+  @@map("users")
+}
+
+// ============================================
+// MODÈLE ANALYSE
+// ============================================
+
+model Analysis {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Métadonnées
+  poste     String
+  tache     String
+  duree     Int // En minutes
+  date      DateTime
+  operateur String?
+  notes     String?
+  
+  // Scores des 5 éléments (JSON String)
+  scores    String // JSON stringifié - Structure définie dans types/analysis.types.ts
+  
+  // Résultats calculés (JSON String)
+  results   String // JSON stringifié - { remplissageMax, tempsDebordement?, risqueTMS, risqueAccident, niveauGlobal }
+  
+  // Recommandations (JSON String)
+  recommendations String // JSON stringifié - string[]
+  
+  // Dates
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("analyses")
+  @@index([userId])
+  @@index([createdAt])
+}
+
+// ============================================
+// MODÈLE SCÉNARIO (Mode Présentation)
+// ============================================
+
+model Scenario {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Informations
+  name        String
+  description String?
+  shareCode   String?  @unique // Pour partage
+  
+  // Configuration (JSON String)
+  settings    String // JSON stringifié - { robinet, verre, paille, bulle, orage }
+  
+  // Dates
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("scenarios")
+  @@index([userId])
+  @@index([shareCode])
+}
+
+// ============================================
+// MODÈLE CONFIGURATION FACTEURS
+// (Pour personnalisation des facteurs d'analyse)
+// ============================================
+
+model FactorConfig {
+  id          String   @id @default(uuid())
+  
+  // Type d'élément
+  element     String // "ROBINET" | "VERRE" | "PAILLE" | "BULLE" | "ORAGE"
+  
+  // Facteur
+  factorId    String // Ex: "chargePhysique"
+  label       String
+  enabled     Boolean  @default(true)
+  weight      Float    @default(1.0)
+  min         Int      @default(0)
+  max         Int      @default(100)
+  description String?
+  
+  // Pour quel utilisateur ou entreprise (null = global)
+  userId      String?
+  entreprise  String?
+  
+  // Dates
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("factor_configs")
+  @@unique([element, factorId, userId])
+  @@unique([element, factorId, entreprise])
+  @@index([element])
+  @@index([userId])
+  @@index([entreprise])
+}

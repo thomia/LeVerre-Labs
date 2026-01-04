@@ -78,7 +78,7 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
               <div className="mt-32 text-center space-y-4">
                 <div>
                   <div className="text-gray-300 text-xl font-medium mb-2">Capacité d'absorption</div>
-                  <div className="text-gray-400 text-base mb-12">Ajustez pour voir la largeur du verre changer</div>
+                  <div className="text-gray-400 text-base mb-12">Ajustez le score pour voir comment le modèle réagit</div>
                 </div>
                 <Slider
                   value={glassScore}
@@ -114,7 +114,7 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
               <div className="mt-32 text-center space-y-4">
                 <div>
                   <div className="text-blue-400 text-xl font-medium mb-2">Charge de travail</div>
-                  <div className="text-gray-400 text-base mb-12">Ajustez pour voir le débit changer</div>
+                  <div className="text-gray-400 text-base mb-12">Ajustez le score pour voir comment le modèle réagit</div>
                 </div>
                 <Slider
                   value={tapScore}
@@ -225,7 +225,7 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
               <div className="mt-32 text-center space-y-4">
                 <div>
                   <div className="text-purple-400 text-xl font-medium mb-2">Qualité de l'environnement de travail</div>
-                  <div className="text-gray-400 text-base mb-12">Ajustez pour voir le nombre et la vitesse des particules</div>
+                  <div className="text-gray-400 text-base mb-12">Ajustez le score pour voir comment le modèle réagit</div>
                 </div>
                 <Slider
                   value={bubbleScore}
@@ -255,7 +255,7 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
               <div className="mt-32 text-center space-y-4">
                 <div>
                   <div className="text-yellow-400 text-xl font-medium mb-2">Impact des aléas sur la charge globale</div>
-                  <div className="text-gray-400 text-base mb-12">Ajustez pour voir la fréquence des éclairs</div>
+                  <div className="text-gray-400 text-base mb-12">Ajustez le score pour voir comment le modèle réagit</div>
                 </div>
                 <Slider
                   value={stormScore}
@@ -310,7 +310,7 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
             <h2 className="text-6xl font-extrabold text-green-400 mb-8">La Paille</h2>
             <h3 className="text-3xl font-bold text-white mb-6 tracking-tight">Les Stratégies de Récupération</h3>
             <p className="text-gray-300 text-lg leading-relaxed mb-6">
-              La récupération n'est pas un luxe, c'est une nécessité physiologique pour maintenir l'intégrité des structures corporelles [19,20]. Elle regroupe l'ensemble des mécanismes qui permettent à l'organisme de dissiper progressivement l'accumulation de fatigue et de sollicitations. Bien que ces stratégies interviennent après l'exposition aux contraintes, elles réduisent significativement les effets résiduels et diminuent le risque cumulatif de blessures professionnelles.
+              La récupération n'est pas un luxe, c'est une nécessité physiologique pour maintenir l'intégrité des structures corporelles [19,20]. Elle regroupe l'ensemble des mécanismes qui permettent à l'organisme de dissiper progressivement l'accumulation de fatigue et de sollicitations. Bien que ces stratégies interviennent après l'exposition aux contraintes, elles réduisent significativement les effets résiduels et diminuent le risque de blessures professionnelles.
             </p>
             
             <div className="bg-gray-900/50 p-4 rounded-lg border border-green-400/20 mb-6">
@@ -349,7 +349,7 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
               <div className="mt-32 text-center space-y-4">
                 <div>
                   <div className="text-green-400 text-xl font-medium mb-2">Capacité de récupération</div>
-                  <div className="text-gray-400 text-base mb-12">Ajustez pour voir la vitesse d'absorption</div>
+                  <div className="text-gray-400 text-base mb-12">Ajustez le score pour voir comment le modèle réagit</div>
                 </div>
                 <Slider
                   value={strawScore}

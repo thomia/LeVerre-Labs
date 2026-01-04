@@ -67,17 +67,6 @@ export default function TapComponent({ flowRate, onFlowRateChange, hideDebitLabe
 
   // Gérer le changement de débit
   useEffect(() => {
-    // Lire le débit depuis localStorage lors du premier montage
-    if (flowRateRef.current === 0) {
-      const savedFlowRate = getLocalStorage('flowRate');
-      if (savedFlowRate && onFlowRateChange) {
-        const parsedRate = parseInt(savedFlowRate);
-        if (!isNaN(parsedRate)) {
-          onFlowRateChange(parsedRate);
-        }
-      }
-    }
-
     // Mettre à jour la référence du débit actuel
     flowRateRef.current = flowRate;
     
@@ -86,7 +75,7 @@ export default function TapComponent({ flowRate, onFlowRateChange, hideDebitLabe
     
     // Émettre un événement de stockage pour notifier les autres composants
     emitStorageEvent();
-  }, [flowRate, onFlowRateChange]);
+  }, [flowRate]);
   
   const handleClick = () => {
     setShowConstraints(!showConstraints)

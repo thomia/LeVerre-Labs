@@ -34,25 +34,26 @@ const ParallaxFondementsPage = () => {
   const historySection = {
     title: "Notre Histoire",
     description: [
-      "LeVerre Labs part d'un constat simple : les contraintes physiques au travail restent la première cause d'accidents et de problèmes de santé. Les compétences en ergonomie au travail reste un luxe pour les organisations.",
-      "Le Modèle du Verre a d'abord existé sous sa forme la plus simple : un feutre, un tableau blanc et un message à faire passer. Après plusieurs phases de recherche, validation et design, il a évolué vers une version numérique interactive pour guider n'importe quel utilisateur qui souhaiterais améliorer les conditions de travail."
+      "LeVerre Labs part d'un constat : les contraintes physiques au travail restent la première cause d'accidents et de maladies professionnelles. Pourtant, l'expertise en ergonomie demeure rare et difficilement accessible.",
+      "LeVerre Labs a d'abord existé sous sa forme la plus simple :",
+      "un FEUTRE, un TABLEAU BLANC et un MESSAGE à faire passer.",
+      "Après plusieurs phases de recherche, de validation et de design, il a évolué vers une version numérique interactive pour guider n'importe quel utilisateur qui souhaiterais améliorer les conditions de travail."
     ]
   }
 
   const approachSection = {
     title: "Notre Approche",
     description: [
-      "LeVerre Labs transforme l'invisible en évidence.",
-      "Tout le monde connaît l'expression : \"c'est la goutte d'eau qui fait déborder le vase\". Nous l'utilisons et l'appliquons dans toutes nos fonctionnalités"
+      "\"C'est la goutte d'eau qui fait déborder le vase.\"",
+      "LeVerre Labs utilise cette métaphore pour simplifier ses messages et guider ses fonctionnalités."
     ]
   }
 
   const missionSection = {
     title: "Notre Mission",
     description: [
-      "Démocratiser le savoir. Multiplier le pouvoir d'agir.",
-      "Jour après jour, nous travaillons pour vous proposer une expérience portée par un logiciel fondé sur les meilleurs principes d'UX design.",
-      "LeVerre Labs veut donner à chacun le pouvoir de comprendre simplement l'impact du travail sur sa santé et d'agir concrètement pour le transformer."
+      "Jour après jour, nous travaillons pour vous proposer un logiciel qui simplifie l'analyse et l'optimisation des conditions de travail.",
+      " Garantissant une cohérence scientifique et respectant la règlementation."
     ]
   }
 

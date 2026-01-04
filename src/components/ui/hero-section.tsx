@@ -32,7 +32,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.9 }}
           className="relative text-5xl md:text-6xl lg:text-7xl font-bold mb-16 tracking-tight"
         >
           <span className="bg-clip-text text-transparent bg-gradient-to-b from-white via-white to-gray-400">
@@ -93,8 +93,8 @@ export default function HeroSection() {
                     LeVerre Labs
                     <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-[rgb(255,30,90)]/50 to-transparent" />
                   </span>{' '}
-                  transforme la prévention en la rendant enfin accessible et ludique pour tous. 
-                  Une métaphore visuelle qui simplifie l'ergonomie, permet de{' '}
+                  transforme la prévention et l'ergonomie en la rendant enfin accessible pour tous. 
+                  Une métaphore visuelle qui permet de{' '}
                   <span className="relative inline-block group/word">
                     <span className="text-[rgb(255,30,90)] font-semibold">sensibiliser</span>
                     <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-[rgb(255,30,90)] group-hover/word:w-full transition-all duration-300" />
@@ -114,11 +114,11 @@ export default function HeroSection() {
                     <span className="text-[rgb(255,50,110)] font-semibold">transformer</span>
                     <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-[rgb(255,50,110)] group-hover/word:w-full transition-all duration-300" />
                   </span>
-                  {' '}vos postes de travail —{' '}
+                  {' '}vos postes de travail,{' '}
                   <span className="font-bold text-white px-2 py-0.5 bg-white/5 rounded border border-white/10">
                     100% personnalisable
                   </span>{' '}
-                  à votre organisation — en un seul outil.
+                  à votre organisation, en un seul outil.
                 </p>
               </div>
               
