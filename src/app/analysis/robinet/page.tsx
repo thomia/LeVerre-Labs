@@ -296,4 +296,200 @@ const sectionC_Questions: Question[] = [
   }
 ]
 
-// Suite dans le prochain fichier...
+export default function RobinetAnalysisPage() {
+  const [responses, setResponses] = useState<Record<string, number | number[]>>({})
+  const [currentStep, setCurrentStep] = useState(0)
+
+  const allQuestions = [
+    ...sectionA_Questions,
+    ...sectionB_Questions,
+    ...sectionC_Questions
+  ]
+
+  const handleResponse = (questionId: string, value: number | number[]) => {
+    setResponses(prev => ({ ...prev, [questionId]: value }))
+  }
+
+  const calculateScore = () => {
+    let totalScore = 0
+    
+    const chargesPresence = responses['charges_presence'] as number || 0
+    if (chargesPresence > 0) {
+      const poids = responses['charges_poids'] as number || 0
+      const prehension = responses['charges_prehension'] as number || 0
+      const frequence = responses['charges_frequence'] as number || 0
+      totalScore += poids * (1 + prehension + frequence)
+    }
+
+    const posturesArray = responses['postures_observation'] as number[] || []
+    const posturesSum = posturesArray.reduce((sum, val) => sum + val, 0)
+    const posturesFreq = responses['postures_frequence'] as number || 1
+    totalScore += posturesSum * posturesFreq
+
+    const mentalQuestions = ['mental_exigence', 'mental_physique', 'mental_temporelle', 
+                            'mental_performance', 'mental_effort', 'mental_frustration']
+    const mentalScore = mentalQuestions.reduce((sum, id) => sum + (responses[id] as number || 0), 0)
+    totalScore += (mentalScore / 120) * 100
+
+    return Math.min(100, Math.round(totalScore / 3))
+  }
+
+  const currentQuestion = allQuestions[currentStep]
+  const isLastQuestion = currentStep === allQuestions.length - 1
+  const canProgress = responses[currentQuestion?.id] !== undefined
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900 p-8">
+      <div className="max-w-4xl mx-auto">
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-blue-400 mb-2">
+            🚰 Analyse Robinet - Score R
+          </h1>
+          <p className="text-slate-300">
+            Évaluation de la charge de travail
+          </p>
+          
+          <div className="mt-6 bg-slate-900/50 rounded-lg p-4">
+            <div className="flex justify-between text-sm text-slate-400 mb-2">
+              <span>Question {currentStep + 1} sur {allQuestions.length}</span>
+              <span>{Math.round(((currentStep + 1) / allQuestions.length) * 100)}%</span>
+            </div>
+            <div className="w-full bg-slate-800 rounded-full h-2">
+              <div 
+                className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+                style={{ width: `${((currentStep + 1) / allQuestions.length) * 100}%` }}
+              />
+            </div>
+          </div>
+        </div>
+
+        <AnimatePresence mode="wait">
+          {currentQuestion && (
+            <motion.div
+              key={currentQuestion.id}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              className="bg-slate-900/50 backdrop-blur-sm rounded-xl p-8 border border-slate-800"
+            >
+              <div className="mb-6">
+                <h2 className="text-2xl font-semibold text-white mb-2">
+                  {currentQuestion.question}
+                </h2>
+                {currentQuestion.subtitle && (
+                  <p className="text-slate-400 flex items-start gap-2">
+                    <Info className="w-4 h-4 mt-1 flex-shrink-0" />
+                    {currentQuestion.subtitle}
+                  </p>
+                )}
+              </div>
+
+              {currentQuestion.type === 'single' && currentQuestion.options && (
+                <div className="space-y-3">
+                  {currentQuestion.options.map((option) => (
+                    <button
+                      key={option.value}
+                      onClick={() => handleResponse(currentQuestion.id, option.value)}
+                      className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
+                        responses[currentQuestion.id] === option.value
+                          ? 'border-blue-500 bg-blue-500/10'
+                          : 'border-slate-700 hover:border-slate-600 bg-slate-800/50'
+                      }`}
+                    >
+                      <div className="font-medium text-white">{option.label}</div>
+                      {option.description && (
+                        <div className="text-sm text-slate-400 mt-1">{option.description}</div>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {currentQuestion.type === 'multiple' && currentQuestion.options && (
+                <div className="space-y-3">
+                  {currentQuestion.options.map((option) => {
+                    const selected = (responses[currentQuestion.id] as number[] || []).includes(option.value)
+                    return (
+                      <button
+                        key={option.value}
+                        onClick={() => {
+                          const current = (responses[currentQuestion.id] as number[] || [])
+                          const newValue = selected 
+                            ? current.filter(v => v !== option.value)
+                            : [...current, option.value]
+                          handleResponse(currentQuestion.id, newValue)
+                        }}
+                        className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
+                          selected
+                            ? 'border-blue-500 bg-blue-500/10'
+                            : 'border-slate-700 hover:border-slate-600 bg-slate-800/50'
+                        }`}
+                      >
+                        <div className="font-medium text-white">{option.label}</div>
+                        {option.description && (
+                          <div className="text-sm text-slate-400 mt-1">{option.description}</div>
+                        )}
+                      </button>
+                    )
+                  })}
+                </div>
+              )}
+
+              {currentQuestion.type === 'scale' && (
+                <div className="space-y-4">
+                  <input
+                    type="range"
+                    min={currentQuestion.scaleMin}
+                    max={currentQuestion.scaleMax}
+                    value={responses[currentQuestion.id] as number || 0}
+                    onChange={(e) => handleResponse(currentQuestion.id, parseInt(e.target.value))}
+                    className="w-full"
+                  />
+                  <div className="flex justify-between text-sm text-slate-400">
+                    <span>{currentQuestion.scaleLabels?.min}</span>
+                    <span className="text-blue-400 font-semibold text-lg">
+                      {responses[currentQuestion.id] || 0}
+                    </span>
+                    <span>{currentQuestion.scaleLabels?.max}</span>
+                  </div>
+                </div>
+              )}
+
+              <div className="flex justify-between mt-8">
+                <button
+                  onClick={() => setCurrentStep(prev => Math.max(0, prev - 1))}
+                  disabled={currentStep === 0}
+                  className="px-6 py-2 rounded-lg border border-slate-700 text-slate-300 hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Précédent
+                </button>
+                
+                {isLastQuestion ? (
+                  <button
+                    onClick={() => {
+                      const score = calculateScore()
+                      alert(`Score R calculé : ${score}/100`)
+                    }}
+                    disabled={!canProgress}
+                    className="px-6 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                  >
+                    Calculer le Score
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => setCurrentStep(prev => Math.min(allQuestions.length - 1, prev + 1))}
+                    disabled={!canProgress}
+                    className="px-6 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                  >
+                    Suivant
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
+  )
+}
