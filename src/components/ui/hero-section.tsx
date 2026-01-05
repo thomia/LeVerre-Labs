@@ -1,6 +1,7 @@
 "use client"
 
 import { motion } from 'framer-motion'
+import AnimatedLogo from './animated-logo'
 
 export default function HeroSection() {
   return (
@@ -77,11 +78,7 @@ export default function HeroSection() {
               <div className="relative py-8">
                 <div className="flex items-center gap-8">
                   <div className="flex-1 border-t border-white/5" />
-                  <img 
-                    src="/photo%20video/logo_noir-removebg-preview.png" 
-                    alt="LeVerre Labs Logo" 
-                    className="h-20 w-20 md:h-24 md:w-24 object-contain brightness-0 invert"
-                  />
+                  <AnimatedLogo size={96} className="flex-shrink-0" />
                   <div className="flex-1 border-t border-white/5" />
                 </div>
               </div>
@@ -93,7 +90,7 @@ export default function HeroSection() {
                     LeVerre Labs
                     <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-[rgb(255,30,90)]/50 to-transparent" />
                   </span>{' '}
-                  transforme la prévention et l'ergonomie en la rendant enfin accessible pour tous. 
+                  simplifie la prévention de ce risque. 
                   Une métaphore visuelle qui permet de{' '}
                   <span className="relative inline-block group/word">
                     <span className="text-[rgb(255,30,90)] font-semibold">sensibiliser</span>
@@ -115,10 +112,7 @@ export default function HeroSection() {
                     <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-[rgb(255,50,110)] group-hover/word:w-full transition-all duration-300" />
                   </span>
                   {' '}vos postes de travail,{' '}
-                  <span className="font-bold text-white px-2 py-0.5 bg-white/5 rounded border border-white/10">
-                    100% personnalisable
-                  </span>{' '}
-                  à votre organisation, en un seul outil.
+                  adapté à votre organisation.
                 </p>
               </div>
               

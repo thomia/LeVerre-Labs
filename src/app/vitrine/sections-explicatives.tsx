@@ -381,7 +381,7 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
           <p className="text-xl text-gray-300 mb-12 leading-relaxed">
             Découvrez comment notre approche transforme la prévention à travers une démonstration personnalisée de l'outil et de son utilisation concrète.
           </p>
-          <a href="mailto:contact@leverrelabs.com?subject=Demande de démonstration LeVerre Labs">
+          <a href="mailto:leverrelabs@gmail.com?subject=Demande de démonstration LeVerre Labs">
             <InteractiveHoverButton 
               text="Demander une démonstration"
               className="w-auto px-8 py-4 text-lg bg-[rgb(255,30,90)] text-white border-[rgb(255,30,90)] hover:bg-[rgb(255,60,120)]"

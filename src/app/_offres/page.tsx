@@ -275,7 +275,7 @@ export default function OffresPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.a
-                href="mailto:contact@leverrelabs.com?subject=Demande de devis formation LeVerre Labs"
+                href="mailto:leverrelabs@gmail.com?subject=Demande de devis formation LeVerre Labs"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="px-8 py-4 bg-[rgb(255,30,90)] hover:bg-[rgb(255,60,120)] text-white rounded-lg font-medium flex items-center justify-center gap-2 transition-colors"

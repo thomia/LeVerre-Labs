@@ -1,44 +1,11 @@
 /**
- * PAGE PRINCIPALE - DASHBOARD
+ * PAGE PRINCIPALE - ACCUEIL
  * Route: /
- * Affiche le dashboard interactif avec le modèle ProtoVerreTMS
+ * Page d'accueil - Vitrine du projet LeVerre Labs
  */
 
-import Dashboard from '@/components/dashboard/dashboard-new';
-import Link from 'next/link';
-import { UserCircle, BookOpen } from 'lucide-react';
-import { Button } from "@/components/ui/button"
+import { redirect } from 'next/navigation'
 
-export default function DashboardPage() {
-  return (
-    <main className="flex min-h-screen w-full flex-col items-center justify-start p-0 bg-black">
-      {/* Bouton pour accéder au tutoriel */}
-      <div className="fixed top-64 right-64 z-50">
-        <Link href="/tutorial/glass">
-          <Button variant="outline" className="bg-slate-900/50 backdrop-blur-sm">
-            <BookOpen className="w-4 h-4 mr-2" />
-            Mode Tutoriel
-          </Button>
-        </Link>
-      </div>
-
-      <div className="relative w-full bg-black">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-500/2 via-transparent to-transparent" />
-        <div className="relative w-full max-w-[2000px] mx-auto px-8 py-6">
-          <Dashboard />
-          
-          {/* Bouton d'accès à l'espace personnel */}
-          <div className="flex justify-center mt-8 mb-4">
-            <Link 
-              href="/espace-personnel" 
-              className="flex items-center gap-2 px-6 py-3 rounded-lg bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30 text-blue-400 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/10"
-            >
-              <UserCircle className="h-6 w-6" />
-              <span className="text-lg font-medium">Accéder à mon Espace Personnel</span>
-            </Link>
-          </div>
-        </div>
-      </div>
-    </main>
-  )
+export default function HomePage() {
+  redirect('/vitrine')
 }

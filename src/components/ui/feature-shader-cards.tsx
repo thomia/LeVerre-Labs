@@ -18,15 +18,15 @@ const features: Feature[] = [
   },
   {
     title: "Communiquer",
-    description: "Un langage commun du directeur au technicien. La clé pour transformer votre culture sécurité.",
+    description: "Un langage commun pour tous les collaborateurs. La clé pour transformer votre culture sécurité.",
   },
   {
-    title: "Décider",
-    description: "Simulez et comparez vos solutions. Un outil d'aide à la décision pour guider vos actions de prévention.",
+    title: "Décider & Prioriser",
+    description: "Déterminez les leviers prioritaires et simulez vos solutions. Un outil d'aide à la décision pour guider vos actions de prévention.",
   },
   {
-    title: "Piloter",
-    description: "Cartographiez vos postes à risques et pilotez vos plans d'action. Une vision globale pour une prévention stratégique.",
+    title: "Piloter & Suivre",
+    description: "Cartographiez vos postes à risques et suivez vos plans d'action. Une vision globale pour une prévention stratégique.",
   },
   {
     title: "Personnaliser",
