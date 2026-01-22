@@ -116,18 +116,24 @@ export function SandboxInteractive() {
 
   return (
     <div className="flex flex-col h-screen bg-black">
-      {/* Header avec titre */}
+      {/* Header avec logo et titre */}
       <div className="bg-gradient-to-r from-slate-950 via-black to-slate-950 border-b border-white/10 py-4 px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center">
-            <h1 className="text-3xl font-bold mb-2">
-              <span className="text-[rgb(255,30,90)]">LeVerre</span>{' '}
-              <span className="text-white">Labs</span>{' '}
-              <span className="text-gray-400">- Bac à Sable</span>
-            </h1>
-            <p className="text-gray-400 text-sm">
-              Explorez le modèle du verre et testez différents scénarios de travail
-            </p>
+          <div className="flex items-center justify-center gap-4">
+            <img 
+              src="/photo%20video/logo_noir-removebg-preview.png" 
+              alt="LeVerre Labs Logo" 
+              className="h-12 w-12 object-contain brightness-0 invert"
+            />
+            <div className="text-center">
+              <h1 className="text-3xl font-bold">
+                <span className="text-[rgb(255,30,90)]">LeVerre</span>{' '}
+                <span className="text-white">Labs</span>
+              </h1>
+              <p className="text-gray-400 text-sm mt-1">
+                Explorez le modèle du verre
+              </p>
+            </div>
           </div>
         </div>
       </div>
