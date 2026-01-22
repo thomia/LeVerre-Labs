@@ -108,7 +108,7 @@ export function DashboardWrapper({
           filter: ${visibleElements.includes('storm') && visibleElements.length === 4 ? 'drop-shadow(0 0 20px rgba(251, 191, 36, 0.6)) !important' : 'none !important'};
         }
         .dashboard-presentation-wrapper .straw-container {
-          filter: ${visibleElements.includes('straw') && visibleElements.length === 5 ? 'drop-shadow(0 0 20px rgba(74, 222, 128, 0.6)) !important' : 'none !important'};
+          filter: none !important;
         }
         
         /* Mode présentation: fond plus sombre */

@@ -207,7 +207,7 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
           <div className="flex justify-center items-center">
             <div className="relative flex flex-col items-center">
               <motion.div 
-                className="relative w-96 h-96 rounded-full border-2 border-purple-400/40 overflow-hidden bg-purple-950/20 shadow-[0_0_30px_rgba(168,85,247,0.2)]"
+                className="relative w-96 h-96 rounded-full border-2 border-purple-400/40 overflow-hidden bg-transparent shadow-[0_0_30px_rgba(168,85,247,0.2)]"
                 whileHover={{ 
                   borderColor: 'rgba(168,85,247,0.6)',
                   boxShadow: '0 0 50px rgba(168,85,247,0.4)'
@@ -215,11 +215,6 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
                 transition={{ duration: 0.3 }}
               >
                 <BubbleComponent environmentScore={bubbleScore[0]} isPaused={false} />
-                
-                {/* Effet de lueur intérieure */}
-                <div className="absolute inset-0 rounded-full pointer-events-none">
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-400/10 via-transparent to-purple-600/10" />
-                </div>
               </motion.div>
               
               <div className="mt-32 text-center space-y-4">

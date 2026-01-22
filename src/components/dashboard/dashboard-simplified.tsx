@@ -224,9 +224,12 @@ export default function DashboardSimplified({
             <div className="space-y-3 mt-56">
               {/* 🥃 Score V - Verre */}
               <div className={`p-3 rounded-lg bg-gradient-to-br from-gray-900/50 to-gray-800/30 border border-gray-400/20 ${!activeSliders.includes('scoreV') ? 'opacity-50' : ''}`}>
-                <div className="flex items-center gap-2 mb-8 pb-3 border-b border-gray-600/30">
-                  {!hideIcons && <span className="text-xl">🥃</span>}
-                  <h4 className="text-sm font-medium text-gray-300">Capacité du verre</h4>
+                <div className="flex items-center justify-between mb-8 pb-3 border-b border-gray-600/30">
+                  <div className="flex items-center gap-2">
+                    {!hideIcons && <span className="text-xl">🥃</span>}
+                    <h4 className="text-sm font-medium text-gray-300">Score V</h4>
+                  </div>
+                  <h4 className="text-sm font-medium text-gray-400">Largeur du verre</h4>
                 </div>
                 <Slider
                   value={[scoreV]}
@@ -246,9 +249,12 @@ export default function DashboardSimplified({
 
               {/* 🚰 Score R - Robinet */}
               <div className={`p-3 rounded-lg bg-gradient-to-br from-blue-900/20 to-blue-800/10 border border-blue-400/20 ${!activeSliders.includes('scoreR') ? 'opacity-50' : ''}`}>
-                <div className="flex items-center gap-2 mb-8 pb-3 border-b border-blue-500/30">
-                  {!hideIcons && <span className="text-xl">🚰</span>}
-                  <h4 className="text-sm font-medium text-blue-400">Charge de travail</h4>
+                <div className="flex items-center justify-between mb-8 pb-3 border-b border-blue-500/30">
+                  <div className="flex items-center gap-2">
+                    {!hideIcons && <span className="text-xl">🚰</span>}
+                    <h4 className="text-sm font-medium text-blue-400">Score R</h4>
+                  </div>
+                  <h4 className="text-sm font-medium text-blue-300">Débit du robinet</h4>
                 </div>
                 <Slider
                   value={[scoreR]}
@@ -268,9 +274,12 @@ export default function DashboardSimplified({
 
               {/* 🫧 Score B - Bulle */}
               <div className={`p-3 rounded-lg bg-gradient-to-br from-purple-900/20 to-purple-800/10 border border-purple-400/20 ${!activeSliders.includes('scoreB') ? 'opacity-50' : ''}`}>
-                <div className="flex items-center gap-2 mb-8 pb-3 border-b border-purple-500/30">
-                  {!hideIcons && <span className="text-xl">🫧</span>}
-                  <h4 className="text-sm font-medium text-purple-400">Environnement</h4>
+                <div className="flex items-center justify-between mb-8 pb-3 border-b border-purple-500/30">
+                  <div className="flex items-center gap-2">
+                    {!hideIcons && <span className="text-xl">🫧</span>}
+                    <h4 className="text-sm font-medium text-purple-400">Score B</h4>
+                  </div>
+                  <h4 className="text-sm font-medium text-purple-300">Agitation de l'environnement</h4>
                 </div>
                 <Slider
                   value={[scoreB]}
@@ -290,9 +299,12 @@ export default function DashboardSimplified({
 
               {/* ⛈️ Score O - Orage */}
               <div className={`p-3 rounded-lg bg-gradient-to-br from-amber-900/20 to-amber-800/10 border border-amber-400/20 ${!activeSliders.includes('scoreO') ? 'opacity-50' : ''}`}>
-                <div className="flex items-center gap-2 mb-8 pb-3 border-b border-amber-500/30">
-                  {!hideIcons && <span className="text-xl">⛈️</span>}
-                  <h4 className="text-sm font-medium text-amber-400">Aléas</h4>
+                <div className="flex items-center justify-between mb-8 pb-3 border-b border-amber-500/30">
+                  <div className="flex items-center gap-2">
+                    {!hideIcons && <span className="text-xl">⛈️</span>}
+                    <h4 className="text-sm font-medium text-amber-400">Score O</h4>
+                  </div>
+                  <h4 className="text-sm font-medium text-amber-300">Intensité de la pluie</h4>
                 </div>
                 <Slider
                   value={[scoreO]}
@@ -312,9 +324,12 @@ export default function DashboardSimplified({
 
               {/* 🥤 Score P - Paille */}
               <div className={`p-3 rounded-lg bg-gradient-to-br from-green-900/20 to-green-800/10 border border-green-400/20 ${!activeSliders.includes('scoreP') ? 'opacity-50' : ''}`}>
-                <div className="flex items-center gap-2 mb-8 pb-3 border-b border-green-500/30">
-                  {!hideIcons && <span className="text-xl">🥤</span>}
-                  <h4 className="text-sm font-medium text-green-400">Récupération</h4>
+                <div className="flex items-center justify-between mb-8 pb-3 border-b border-green-500/30">
+                  <div className="flex items-center gap-2">
+                    {!hideIcons && <span className="text-xl">🥤</span>}
+                    <h4 className="text-sm font-medium text-green-400">Score P</h4>
+                  </div>
+                  <h4 className="text-sm font-medium text-green-300">Vitesse d'aspiration</h4>
                 </div>
                 <Slider
                   value={[scoreP]}
