@@ -117,20 +117,20 @@ export function SandboxInteractive() {
   return (
     <div className="flex flex-col h-screen bg-black">
       {/* Header avec logo et titre */}
-      <div className="bg-gradient-to-r from-slate-950 via-black to-slate-950 border-b border-white/10 py-4 px-8">
+      <div className="bg-gradient-to-r from-slate-950 via-black to-slate-950 border-b border-white/10 py-2 px-4 md:py-4 md:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-center gap-4">
+          <div className="flex items-center justify-center gap-2 md:gap-4">
             <img 
               src="/photo%20video/logo_noir-removebg-preview.png" 
               alt="LeVerre Labs Logo" 
-              className="h-12 w-12 object-contain brightness-0 invert"
+              className="h-8 w-8 md:h-12 md:w-12 object-contain brightness-0 invert"
             />
             <div className="text-center">
-              <h1 className="text-3xl font-bold">
+              <h1 className="text-xl md:text-3xl font-bold">
                 <span className="text-[rgb(255,30,90)]">LeVerre</span>{' '}
                 <span className="text-white">Labs</span>
               </h1>
-              <p className="text-gray-400 text-sm mt-1">
+              <p className="text-gray-400 text-xs md:text-sm mt-0.5 md:mt-1 hidden sm:block">
                 Explorez le modèle du verre
               </p>
             </div>
@@ -154,48 +154,51 @@ export function SandboxInteractive() {
       </div>
 
       {/* Contrôles de simulation */}
-      <div className="bg-gradient-to-r from-slate-950 to-black border-t border-white/10 py-4 px-8">
+      <div className="bg-gradient-to-r from-slate-950 to-black border-t border-white/10 py-3 px-4 md:py-4 md:px-8">
         <div className="max-w-6xl mx-auto">
-          <div className="flex items-center justify-between gap-6">
-            {/* Chronomètre */}
-            <div className="flex items-center gap-3 px-6 py-3 rounded-lg bg-gradient-to-br from-gray-900/50 to-gray-800/30 border border-gray-400/20">
-              <Clock className="h-5 w-5 text-[rgb(255,30,90)]" />
-              <span className="text-2xl font-sans font-bold text-white tracking-wide">{formattedWorkTime()}</span>
-            </div>
-            
-            {/* Contrôles principaux */}
-            <div className="flex items-center gap-4">
-              <button
-                onClick={handleResetSimulation}
-                className="flex items-center gap-2 px-6 py-3 rounded-lg bg-[rgb(255,30,90)]/20 hover:bg-[rgb(255,30,90)]/30 text-white text-base transition-all border border-[rgb(255,30,90)]/40 hover:border-[rgb(255,30,90)]/60 hover:scale-105"
-              >
-                <RotateCcw className="h-5 w-5" />
-                <span className="font-medium">Reset</span>
-              </button>
+          <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 md:gap-6">
+            {/* Ligne 1 mobile: Chronomètre + Boutons */}
+            <div className="flex items-center justify-between md:justify-start gap-3 md:gap-6 flex-1">
+              {/* Chronomètre */}
+              <div className="flex items-center gap-2 px-3 py-2 md:px-6 md:py-3 rounded-lg bg-gradient-to-br from-gray-900/50 to-gray-800/30 border border-gray-400/20">
+                <Clock className="h-4 w-4 md:h-5 md:w-5 text-[rgb(255,30,90)]" />
+                <span className="text-lg md:text-2xl font-sans font-bold text-white tracking-wide">{formattedWorkTime()}</span>
+              </div>
               
-              <button
-                onClick={handlePauseToggle}
-                className="flex items-center gap-3 px-8 py-3 rounded-lg bg-[rgb(255,30,90)]/20 hover:bg-[rgb(255,30,90)]/30 text-white text-base transition-all border border-[rgb(255,30,90)]/40 hover:border-[rgb(255,30,90)]/60 hover:scale-105"
-              >
-                {isPaused ? (
-                  <>
-                    <Play className="h-5 w-5" />
-                    <span className="font-medium">Démarrer</span>
-                  </>
-                ) : (
-                  <>
-                    <Pause className="h-5 w-5" />
-                    <span className="font-medium">Pause</span>
-                  </>
-                )}
-              </button>
+              {/* Contrôles principaux */}
+              <div className="flex items-center gap-2 md:gap-4">
+                <button
+                  onClick={handleResetSimulation}
+                  className="flex items-center gap-1.5 md:gap-2 px-3 py-2 md:px-6 md:py-3 rounded-lg bg-[rgb(255,30,90)]/20 hover:bg-[rgb(255,30,90)]/30 text-white text-sm md:text-base transition-all border border-[rgb(255,30,90)]/40 hover:border-[rgb(255,30,90)]/60 active:scale-95 md:hover:scale-105"
+                >
+                  <RotateCcw className="h-4 w-4 md:h-5 md:w-5" />
+                  <span className="font-medium hidden sm:inline">Reset</span>
+                </button>
+                
+                <button
+                  onClick={handlePauseToggle}
+                  className="flex items-center gap-2 md:gap-3 px-4 py-2 md:px-8 md:py-3 rounded-lg bg-[rgb(255,30,90)]/20 hover:bg-[rgb(255,30,90)]/30 text-white text-sm md:text-base transition-all border border-[rgb(255,30,90)]/40 hover:border-[rgb(255,30,90)]/60 active:scale-95 md:hover:scale-105"
+                >
+                  {isPaused ? (
+                    <>
+                      <Play className="h-4 w-4 md:h-5 md:w-5" />
+                      <span className="font-medium">Play</span>
+                    </>
+                  ) : (
+                    <>
+                      <Pause className="h-4 w-4 md:h-5 md:w-5" />
+                      <span className="font-medium">Pause</span>
+                    </>
+                  )}
+                </button>
+              </div>
             </div>
             
-            {/* Vitesse de simulation */}
-            <div className="flex items-center gap-4 px-6 py-3 rounded-lg bg-gradient-to-br from-gray-900/50 to-gray-800/30 border border-gray-400/20">
+            {/* Ligne 2 mobile: Vitesse de simulation */}
+            <div className="flex items-center gap-3 md:gap-4 px-4 py-2 md:px-6 md:py-3 rounded-lg bg-gradient-to-br from-gray-900/50 to-gray-800/30 border border-gray-400/20">
               <div className="flex items-center gap-2">
-                <FastForward className="h-5 w-5 text-[rgb(255,30,90)]" />
-                <span className="text-base text-gray-300 font-medium">Vitesse</span>
+                <FastForward className="h-4 w-4 md:h-5 md:w-5 text-[rgb(255,30,90)]" />
+                <span className="text-sm md:text-base text-gray-300 font-medium whitespace-nowrap">Vitesse</span>
               </div>
               <input
                 type="range"
@@ -204,14 +207,14 @@ export function SandboxInteractive() {
                 step="1"
                 value={simulationSpeed}
                 onChange={(e) => handleSpeedChange(Number(e.target.value))}
-                className="w-32 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[rgb(255,30,90)]"
+                className="flex-1 md:w-32 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[rgb(255,30,90)]"
               />
-              <span className="text-base font-semibold text-[rgb(255,30,90)] min-w-[3rem] text-right">x{simulationSpeed}</span>
+              <span className="text-sm md:text-base font-semibold text-[rgb(255,30,90)] min-w-[2.5rem] text-right">x{simulationSpeed}</span>
             </div>
           </div>
 
-          {/* Indicateur raccourcis clavier */}
-          <div className="flex items-center justify-center gap-4 mt-4 text-xs text-gray-500">
+          {/* Indicateur raccourcis clavier - masqué sur mobile */}
+          <div className="hidden md:flex items-center justify-center gap-4 mt-4 text-xs text-gray-500">
             <div className="flex items-center gap-2">
               <kbd className="px-2 py-1 bg-gray-800/50 rounded border border-gray-700">Espace</kbd>
               <span>Pause/Reprendre</span>
