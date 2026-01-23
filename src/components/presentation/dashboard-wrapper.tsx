@@ -50,17 +50,8 @@ export function DashboardWrapper({
     <div key={key} className="dashboard-presentation-wrapper relative">
       {/* Overlay pour contrôler la visibilité avec CSS */}
       <style jsx global>{`
-        /* Réduire la taille du modèle sur mobile */
+        /* Optimisations mobile */
         @media (max-width: 768px) {
-          .dashboard-presentation-wrapper .tap-container,
-          .dashboard-presentation-wrapper .glass-container,
-          .dashboard-presentation-wrapper .straw-container,
-          .dashboard-presentation-wrapper .storm-container,
-          .dashboard-presentation-wrapper .bubble-container {
-            transform: scale(0.7);
-            transform-origin: center top;
-          }
-          
           /* Réduire les sliders sur mobile */
           .dashboard-presentation-wrapper input[type="range"] {
             height: 0.375rem !important;
