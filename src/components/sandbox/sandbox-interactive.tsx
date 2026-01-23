@@ -115,7 +115,7 @@ export function SandboxInteractive() {
   }, [isPaused])
 
   return (
-    <div className="flex flex-col h-screen bg-black">
+    <div className="flex flex-col min-h-screen md:h-screen bg-black">
       {/* Header avec logo et titre */}
       <div className="bg-gradient-to-r from-slate-950 via-black to-slate-950 border-b border-white/10 py-2 px-4 md:py-4 md:px-8">
         <div className="max-w-7xl mx-auto">
@@ -139,7 +139,7 @@ export function SandboxInteractive() {
       </div>
 
       {/* Zone principale : Modèle du verre */}
-      <div className="flex-1 overflow-hidden">
+      <div className="flex-1 overflow-auto md:overflow-hidden">
         <DashboardWrapper 
           visibleElements={visibleElements}
           activeSliders={activeSliders}
