@@ -115,9 +115,9 @@ export function SandboxInteractive() {
   }, [isPaused])
 
   return (
-    <div className="flex flex-col min-h-screen md:h-screen bg-black">
+    <div className="bg-black min-h-screen md:h-screen md:flex md:flex-col md:overflow-hidden">
       {/* Header avec logo et titre */}
-      <div className="bg-gradient-to-r from-slate-950 via-black to-slate-950 border-b border-white/10 py-2 px-4 md:py-4 md:px-8">
+      <div className="bg-gradient-to-r from-slate-950 via-black to-slate-950 border-b border-white/10 py-2 px-4 md:py-4 md:px-8 flex-shrink-0">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-center gap-2 md:gap-4">
             <img 
@@ -139,7 +139,7 @@ export function SandboxInteractive() {
       </div>
 
       {/* Zone principale : Modèle du verre */}
-      <div className="flex-1 overflow-auto md:overflow-hidden">
+      <div className="md:flex-1 md:overflow-hidden py-4 md:py-0">
         <DashboardWrapper 
           visibleElements={visibleElements}
           activeSliders={activeSliders}
@@ -154,40 +154,40 @@ export function SandboxInteractive() {
       </div>
 
       {/* Contrôles de simulation */}
-      <div className="bg-gradient-to-r from-slate-950 to-black border-t border-white/10 py-3 px-4 md:py-4 md:px-8">
+      <div className="bg-gradient-to-r from-slate-950 to-black border-t border-white/10 py-2 px-3 md:py-4 md:px-8 flex-shrink-0">
         <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 md:gap-6">
+          <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-2 md:gap-6">
             {/* Ligne 1 mobile: Chronomètre + Boutons */}
-            <div className="flex items-center justify-between md:justify-start gap-3 md:gap-6 flex-1">
+            <div className="flex items-center justify-between md:justify-start gap-2 md:gap-6 flex-1">
               {/* Chronomètre */}
-              <div className="flex items-center gap-2 px-3 py-2 md:px-6 md:py-3 rounded-lg bg-gradient-to-br from-gray-900/50 to-gray-800/30 border border-gray-400/20">
-                <Clock className="h-4 w-4 md:h-5 md:w-5 text-[rgb(255,30,90)]" />
-                <span className="text-lg md:text-2xl font-sans font-bold text-white tracking-wide">{formattedWorkTime()}</span>
+              <div className="flex items-center gap-1.5 px-2 py-1.5 md:px-6 md:py-3 rounded-lg bg-gradient-to-br from-gray-900/50 to-gray-800/30 border border-gray-400/20">
+                <Clock className="h-3.5 w-3.5 md:h-5 md:w-5 text-[rgb(255,30,90)]" />
+                <span className="text-base md:text-2xl font-sans font-bold text-white tracking-wide">{formattedWorkTime()}</span>
               </div>
               
               {/* Contrôles principaux */}
-              <div className="flex items-center gap-2 md:gap-4">
+              <div className="flex items-center gap-1.5 md:gap-4">
                 <button
                   onClick={handleResetSimulation}
-                  className="flex items-center gap-1.5 md:gap-2 px-3 py-2 md:px-6 md:py-3 rounded-lg bg-[rgb(255,30,90)]/20 hover:bg-[rgb(255,30,90)]/30 text-white text-sm md:text-base transition-all border border-[rgb(255,30,90)]/40 hover:border-[rgb(255,30,90)]/60 active:scale-95 md:hover:scale-105"
+                  className="flex items-center gap-1 md:gap-2 px-2 py-1.5 md:px-6 md:py-3 rounded-lg bg-[rgb(255,30,90)]/20 hover:bg-[rgb(255,30,90)]/30 text-white text-xs md:text-base transition-all border border-[rgb(255,30,90)]/40 hover:border-[rgb(255,30,90)]/60 active:scale-95 md:hover:scale-105"
                 >
-                  <RotateCcw className="h-4 w-4 md:h-5 md:w-5" />
+                  <RotateCcw className="h-3.5 w-3.5 md:h-5 md:w-5" />
                   <span className="font-medium hidden sm:inline">Reset</span>
                 </button>
                 
                 <button
                   onClick={handlePauseToggle}
-                  className="flex items-center gap-2 md:gap-3 px-4 py-2 md:px-8 md:py-3 rounded-lg bg-[rgb(255,30,90)]/20 hover:bg-[rgb(255,30,90)]/30 text-white text-sm md:text-base transition-all border border-[rgb(255,30,90)]/40 hover:border-[rgb(255,30,90)]/60 active:scale-95 md:hover:scale-105"
+                  className="flex items-center gap-1.5 md:gap-3 px-3 py-1.5 md:px-8 md:py-3 rounded-lg bg-[rgb(255,30,90)]/20 hover:bg-[rgb(255,30,90)]/30 text-white text-xs md:text-base transition-all border border-[rgb(255,30,90)]/40 hover:border-[rgb(255,30,90)]/60 active:scale-95 md:hover:scale-105"
                 >
                   {isPaused ? (
                     <>
-                      <Play className="h-4 w-4 md:h-5 md:w-5" />
-                      <span className="font-medium">Play</span>
+                      <Play className="h-3.5 w-3.5 md:h-5 md:w-5" />
+                      <span className="font-medium text-xs md:text-base">Play</span>
                     </>
                   ) : (
                     <>
-                      <Pause className="h-4 w-4 md:h-5 md:w-5" />
-                      <span className="font-medium">Pause</span>
+                      <Pause className="h-3.5 w-3.5 md:h-5 md:w-5" />
+                      <span className="font-medium text-xs md:text-base">Pause</span>
                     </>
                   )}
                 </button>
@@ -195,10 +195,10 @@ export function SandboxInteractive() {
             </div>
             
             {/* Ligne 2 mobile: Vitesse de simulation */}
-            <div className="flex items-center gap-3 md:gap-4 px-4 py-2 md:px-6 md:py-3 rounded-lg bg-gradient-to-br from-gray-900/50 to-gray-800/30 border border-gray-400/20">
-              <div className="flex items-center gap-2">
-                <FastForward className="h-4 w-4 md:h-5 md:w-5 text-[rgb(255,30,90)]" />
-                <span className="text-sm md:text-base text-gray-300 font-medium whitespace-nowrap">Vitesse</span>
+            <div className="flex items-center gap-2 md:gap-4 px-3 py-1.5 md:px-6 md:py-3 rounded-lg bg-gradient-to-br from-gray-900/50 to-gray-800/30 border border-gray-400/20">
+              <div className="flex items-center gap-1.5">
+                <FastForward className="h-3.5 w-3.5 md:h-5 md:w-5 text-[rgb(255,30,90)]" />
+                <span className="text-xs md:text-base text-gray-300 font-medium whitespace-nowrap">Vitesse</span>
               </div>
               <input
                 type="range"
@@ -207,9 +207,9 @@ export function SandboxInteractive() {
                 step="1"
                 value={simulationSpeed}
                 onChange={(e) => handleSpeedChange(Number(e.target.value))}
-                className="flex-1 md:w-32 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[rgb(255,30,90)]"
+                className="flex-1 md:w-32 h-1.5 md:h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[rgb(255,30,90)]"
               />
-              <span className="text-sm md:text-base font-semibold text-[rgb(255,30,90)] min-w-[2.5rem] text-right">x{simulationSpeed}</span>
+              <span className="text-xs md:text-base font-semibold text-[rgb(255,30,90)] min-w-[2rem] md:min-w-[2.5rem] text-right">x{simulationSpeed}</span>
             </div>
           </div>
 

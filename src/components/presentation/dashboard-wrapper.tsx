@@ -50,6 +50,37 @@ export function DashboardWrapper({
     <div key={key} className="dashboard-presentation-wrapper relative">
       {/* Overlay pour contrôler la visibilité avec CSS */}
       <style jsx global>{`
+        /* Réduire la taille du modèle sur mobile */
+        @media (max-width: 768px) {
+          .dashboard-presentation-wrapper .tap-container,
+          .dashboard-presentation-wrapper .glass-container,
+          .dashboard-presentation-wrapper .straw-container,
+          .dashboard-presentation-wrapper .storm-container,
+          .dashboard-presentation-wrapper .bubble-container {
+            transform: scale(0.7);
+            transform-origin: center top;
+          }
+          
+          /* Réduire les sliders sur mobile */
+          .dashboard-presentation-wrapper input[type="range"] {
+            height: 0.375rem !important;
+          }
+          
+          /* Réduire l'espacement des sliders sur mobile */
+          .dashboard-presentation-wrapper .space-y-6 {
+            gap: 0.75rem !important;
+          }
+          
+          /* Réduire la police des labels sur mobile */
+          .dashboard-presentation-wrapper .text-sm {
+            font-size: 0.75rem !important;
+          }
+          
+          .dashboard-presentation-wrapper .text-2xl {
+            font-size: 1.25rem !important;
+          }
+        }
+        
         /* Masquer tous les éléments par défaut en mode présentation */
         .dashboard-presentation-wrapper .tap-container {
           display: ${visibleElements.includes('tap') ? 'block' : 'none'} !important;
