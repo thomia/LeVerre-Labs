@@ -34,7 +34,7 @@ export default function HeroSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.9 }}
-          className="relative text-5xl md:text-6xl lg:text-7xl font-bold mb-16 tracking-tight"
+          className="relative text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-12 md:mb-16 tracking-tight px-4"
         >
           <span className="bg-clip-text text-transparent bg-gradient-to-b from-white via-white to-gray-400">
             Comprendre pour transformer
@@ -53,7 +53,7 @@ export default function HeroSection() {
           <div className="absolute -inset-0.5 bg-gradient-to-r from-[rgb(255,30,90)] via-purple-500 to-[rgb(255,30,90)] rounded-3xl opacity-20 group-hover:opacity-40 blur-xl transition-all duration-500" />
           
           {/* Main card */}
-          <div className="relative bg-gradient-to-br from-gray-900/95 via-gray-900/90 to-black/95 backdrop-blur-xl rounded-3xl p-10 md:p-12 max-w-5xl mx-auto border border-white/10 shadow-2xl">
+          <div className="relative bg-gradient-to-br from-gray-900/95 via-gray-900/90 to-black/95 backdrop-blur-xl rounded-2xl md:rounded-3xl p-6 md:p-10 lg:p-12 max-w-5xl mx-auto border border-white/10 shadow-2xl">
             {/* Top highlight bar */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-1 bg-gradient-to-r from-transparent via-[rgb(255,30,90)] to-transparent rounded-full" />
             
@@ -61,12 +61,12 @@ export default function HeroSection() {
             <div className="space-y-8">
               {/* Stats */}
               <div className="relative">
-                <p className="text-2xl md:text-3xl lg:text-4xl text-white font-bold mb-2 leading-relaxed">
+                <p className="text-lg md:text-2xl lg:text-3xl xl:text-4xl text-white font-bold mb-2 leading-relaxed">
                   88% des maladies professionnelles et 50% des accidents du travail :
                 </p>
                 
                 <div className="relative inline-block">
-                  <p className="text-xl md:text-2xl lg:text-3xl text-[rgb(255,30,90)] font-semibold">
+                  <p className="text-base md:text-xl lg:text-2xl xl:text-3xl text-[rgb(255,30,90)] font-semibold">
                     tous liés à l'activité physique au travail.
                   </p>
                   {/* Underline effect */}
@@ -85,7 +85,7 @@ export default function HeroSection() {
               
               {/* Description */}
               <div className="relative">
-                <p className="text-lg md:text-xl lg:text-2xl text-gray-100 leading-relaxed">
+                <p className="text-base md:text-lg lg:text-xl xl:text-2xl text-gray-100 leading-relaxed">
                   <span className="font-bold text-white relative">
                     LeVerre Labs
                     <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-[rgb(255,30,90)]/50 to-transparent" />

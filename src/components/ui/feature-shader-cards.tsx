@@ -132,13 +132,13 @@ export default function FeaturesCards() {
                   />
                 </div>
 
-                <div className="relative z-10 p-10 rounded-3xl h-full flex flex-col items-center justify-center text-center bg-black/80 border border-white/20 hover:border-white/30 hover:bg-black/90 transition-all duration-500 group">
+                <div className="relative z-10 p-6 md:p-10 rounded-3xl h-full flex flex-col items-center justify-center text-center bg-black/80 border border-white/20 hover:border-white/30 hover:bg-black/90 transition-all duration-500 group">
                   {/* Gradient accent bar */}
                   <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-transparent via-white/40 to-transparent rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   
-                  <h3 className="text-2xl md:text-3xl font-bold mb-6 text-white tracking-tight whitespace-nowrap">{feature.title}</h3>
+                  <h3 className="text-xl md:text-2xl lg:text-3xl font-bold mb-4 md:mb-6 text-white tracking-tight whitespace-nowrap">{feature.title}</h3>
 
-                  <p className="leading-relaxed text-gray-200 font-normal text-xl">{feature.description}</p>
+                  <p className="leading-relaxed text-gray-200 font-normal text-base md:text-lg lg:text-xl">{feature.description}</p>
                   
                   {/* Bottom accent */}
                   <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-0.5 bg-gradient-to-r from-transparent via-white/20 to-transparent rounded-full" />

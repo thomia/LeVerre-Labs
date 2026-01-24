@@ -32,14 +32,14 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
   const [strawScore, setStrawScore] = useState([50])
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-16 space-y-24">
+    <div className="max-w-7xl mx-auto px-4 md:px-6 py-12 md:py-16 space-y-16 md:space-y-24">
       {/* Section Verre */}
-      <section id="glass-section" className="scroll-mt-20 pb-32 pt-16 px-8 bg-gradient-to-br from-gray-900/20 to-gray-800/10 rounded-3xl shadow-lg">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <section id="glass-section" className="scroll-mt-20 pb-16 md:pb-32 pt-8 md:pt-16 px-4 md:px-8 bg-gradient-to-br from-gray-900/20 to-gray-800/10 rounded-3xl shadow-lg">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
           <div>
-            <h2 className="text-6xl font-extrabold text-gray-300 mb-8">Le Verre</h2>
-            <h3 className="text-3xl font-bold text-white mb-6 tracking-tight">Les Facteurs Individuels</h3>
-            <p className="text-gray-300 text-lg leading-relaxed mb-6">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-300 mb-4 md:mb-8">Le Verre</h2>
+            <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 md:mb-6 tracking-tight">Les Facteurs Individuels</h3>
+            <p className="text-gray-300 text-base md:text-lg leading-relaxed mb-4 md:mb-6">
               Chaque individu est défini par des facteurs individuels physiologiques et psychologiques qui déterminent sa tolérance aux contraintes [1,2,3]. Cette « capacité d'absorption » personnelle, défini un certain seuil au-delà duquel des dommages aux structures musculaires, tendineuses et articulaires peuvent survenir. Intégrer cette réalité biologique dans l'analyse de l'activité est indispensable pour adapter efficacement les postes de travail [4,5,6].
             </p>
             
@@ -89,8 +89,8 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
                   className="mx-auto w-[250px]"
                   valueColor="text-gray-300"
                   style={{
-                    '--slider-range-bg': 'rgb(209 213 219)',
-                    '--slider-thumb-ring': 'rgb(209 213 219 / 0.2)'
+                    '--slider-range-bg': 'rgb(156 163 175)',
+                    '--slider-thumb-ring': 'rgb(156 163 175 / 0.2)'
                   } as React.CSSProperties}
                 />
               </div>
@@ -100,8 +100,8 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
       </section>
 
       {/* Section Robinet */}
-      <section id="tap-section" className="scroll-mt-20 pb-32 pt-16 px-8 bg-gradient-to-br from-blue-900/20 to-blue-800/10 rounded-3xl shadow-lg">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <section id="tap-section" className="scroll-mt-20 pb-16 md:pb-32 pt-8 md:pt-16 px-4 md:px-8 bg-gradient-to-br from-blue-900/20 to-blue-800/10 rounded-3xl shadow-lg">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
           <div className="order-2 lg:order-1 flex justify-center items-center">
             <div className="relative flex flex-col items-center">
               <div className="scale-90 mt-8">
@@ -122,17 +122,21 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
                   min={0}
                   max={100}
                   step={1}
-                  className="mx-auto w-[250px] [&_.bg-black]:!bg-blue-500 [&_.dark\\:bg-white]:!bg-blue-500"
+                  className="mx-auto w-[250px]"
                   valueColor="text-blue-400"
+                  style={{
+                    '--slider-range-bg': 'rgb(96 165 250)',
+                    '--slider-thumb-ring': 'rgb(96 165 250 / 0.2)'
+                  } as React.CSSProperties}
                 />
               </div>
             </div>
           </div>
           
           <div className="order-1 lg:order-2">
-            <h2 className="text-6xl font-extrabold text-blue-400 mb-8">Le Robinet</h2>
-            <h3 className="text-3xl font-bold text-white mb-6 tracking-tight">Les Contraintes du Travail</h3>
-            <p className="text-gray-300 text-lg leading-relaxed mb-6">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-blue-400 mb-4 md:mb-8">Le Robinet</h2>
+            <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 md:mb-6 tracking-tight">Les Contraintes du Travail</h3>
+            <p className="text-gray-300 text-base md:text-lg leading-relaxed mb-4 md:mb-6">
               Chaque jour, votre corps et votre esprit sont sollicités par des contraintes multiples et interdépendantes [10,11]. Ces sollicitations se manifestent sous deux formes : les contraintes biomécaniques et physiologiques, et les contraintes cognitives et psychosociales. Leurs actions combinées et prolongées tout au long de la journée, forment une charge globale de travail que votre corps accumule progressivement et doit absorber [12,13,14].
             </p>
             
@@ -166,12 +170,12 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
       </section>
 
       {/* Section Bulle */}
-      <section id="bubble-section" className="scroll-mt-20 pb-32 pt-16 px-8 bg-gradient-to-br from-purple-900/20 to-purple-800/10 rounded-3xl shadow-lg">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <section id="bubble-section" className="scroll-mt-20 pb-16 md:pb-32 pt-8 md:pt-16 px-4 md:px-8 bg-gradient-to-br from-purple-900/20 to-purple-800/10 rounded-3xl shadow-lg">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
           <div>
-            <h2 className="text-6xl font-extrabold text-purple-400 mb-8">La Bulle</h2>
-            <h3 className="text-3xl font-bold text-white mb-6 tracking-tight">L'Environnement de Travail</h3>
-            <p className="text-gray-300 text-lg leading-relaxed mb-6">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-purple-400 mb-4 md:mb-8">La Bulle</h2>
+            <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 md:mb-6 tracking-tight">L'Environnement de Travail</h3>
+            <p className="text-gray-300 text-base md:text-lg leading-relaxed mb-4 md:mb-6">
               L'environnement physique agit comme un amplificateur ou un modérateur des risques professionnels [15,16]. Les données scientifiques démontrent que certains facteurs environnementaux augmentent le risque de troubles musculosquelettiques. Tandis d'autres favorisent un cadre favorable à un travail efficient liant santé et performance au travail [17].
             </p>
             
@@ -228,8 +232,12 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
                   min={0}
                   max={100}
                   step={1}
-                  className="mx-auto w-[250px] [&_.bg-black]:!bg-purple-500 [&_.dark\\:bg-white]:!bg-purple-500"
+                  className="mx-auto w-[250px]"
                   valueColor="text-purple-400"
+                  style={{
+                    '--slider-range-bg': 'rgb(192 132 252)',
+                    '--slider-thumb-ring': 'rgb(192 132 252 / 0.2)'
+                  } as React.CSSProperties}
                 />
               </div>
             </div>
@@ -238,8 +246,8 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
       </section>
 
       {/* Section Orage */}
-      <section id="storm-section" className="scroll-mt-20 pb-32 pt-16 px-8 bg-gradient-to-br from-yellow-900/20 to-yellow-800/10 rounded-3xl shadow-lg">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <section id="storm-section" className="scroll-mt-20 pb-16 md:pb-32 pt-8 md:pt-16 px-4 md:px-8 bg-gradient-to-br from-yellow-900/20 to-yellow-800/10 rounded-3xl shadow-lg">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
           <div className="order-2 lg:order-1 flex justify-center items-center">
             <div className="relative scale-110 flex flex-col items-center">
               <StormComponent 
@@ -258,17 +266,21 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
                   min={0}
                   max={100}
                   step={1}
-                  className="mx-auto w-[250px] [&_.bg-black]:!bg-yellow-500 [&_.dark\\:bg-white]:!bg-yellow-500"
+                  className="mx-auto w-[250px]"
                   valueColor="text-yellow-400"
+                  style={{
+                    '--slider-range-bg': 'rgb(250 204 21)',
+                    '--slider-thumb-ring': 'rgb(250 204 21 / 0.2)'
+                  } as React.CSSProperties}
                 />
               </div>
             </div>
           </div>
           
           <div className="order-1 lg:order-2">
-            <h2 className="text-6xl font-extrabold text-yellow-400 mb-8">L'Orage</h2>
-            <h3 className="text-3xl font-bold text-white mb-6 tracking-tight">Les Imprévus</h3>
-            <p className="text-gray-300 text-lg leading-relaxed mb-6">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-yellow-400 mb-4 md:mb-8">L'Orage</h2>
+            <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 md:mb-6 tracking-tight">Les Imprévus</h3>
+            <p className="text-gray-300 text-base md:text-lg leading-relaxed mb-4 md:mb-6">
               Les situations imprévisibles sont une réalité du travail qui est souvent sous-estimée [18]. Ces perturbations creusent l'écart entre le travail prescrit et la réalité opérationnelle, impliquant la mobilisation des ressources additionnelles cognitives et physiques pour maintenir le niveau de performance attendu. Ces sollicitations supplémentaires imposées à l'organisme s'ajoutent à la charge globale de travail initiale.
             </p>
             
@@ -299,12 +311,12 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
       </section>
 
       {/* Section Paille */}
-      <section id="straw-section" className="scroll-mt-20 pb-32 pt-16 px-8 bg-gradient-to-br from-green-900/20 to-green-800/10 rounded-3xl">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <section id="straw-section" className="scroll-mt-20 pb-16 md:pb-32 pt-8 md:pt-16 px-4 md:px-8 bg-gradient-to-br from-green-900/20 to-green-800/10 rounded-3xl">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
           <div>
-            <h2 className="text-6xl font-extrabold text-green-400 mb-8">La Paille</h2>
-            <h3 className="text-3xl font-bold text-white mb-6 tracking-tight">Les Stratégies de Récupération</h3>
-            <p className="text-gray-300 text-lg leading-relaxed mb-6">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-green-400 mb-4 md:mb-8">La Paille</h2>
+            <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 md:mb-6 tracking-tight">Les Stratégies de Récupération</h3>
+            <p className="text-gray-300 text-base md:text-lg leading-relaxed mb-4 md:mb-6">
               La récupération n'est pas un luxe, c'est une nécessité physiologique pour maintenir l'intégrité des structures corporelles [19,20]. Elle regroupe l'ensemble des mécanismes qui permettent à l'organisme de dissiper progressivement l'accumulation de fatigue et de sollicitations. Bien que ces stratégies interviennent après l'exposition aux contraintes, elles réduisent significativement les effets résiduels et diminuent le risque de blessures professionnelles.
             </p>
             
@@ -352,8 +364,12 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
                   min={0}
                   max={100}
                   step={1}
-                  className="mx-auto w-[250px] [&_.bg-black]:!bg-green-500 [&_.dark\\:bg-white]:!bg-green-500"
+                  className="mx-auto w-[250px]"
                   valueColor="text-green-400"
+                  style={{
+                    '--slider-range-bg': 'rgb(74 222 128)',
+                    '--slider-thumb-ring': 'rgb(74 222 128 / 0.2)'
+                  } as React.CSSProperties}
                 />
               </div>
             </div>
