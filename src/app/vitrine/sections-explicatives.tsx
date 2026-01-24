@@ -40,7 +40,7 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-300 mb-4 md:mb-8">Le Verre</h2>
             <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 md:mb-6 tracking-tight">Les Facteurs Individuels</h3>
             <p className="text-gray-300 text-base md:text-lg leading-relaxed mb-4 md:mb-6">
-              Chaque individu est défini par des facteurs individuels physiologiques et psychologiques qui déterminent sa tolérance aux contraintes [1,2,3]. Cette « capacité d'absorption » personnelle, défini un certain seuil au-delà duquel des dommages aux structures musculaires, tendineuses et articulaires peuvent survenir. Intégrer cette réalité biologique dans l'analyse de l'activité est indispensable pour adapter efficacement les postes de travail [4,5,6].
+              Chaque individu est défini par des facteurs individuels physiologiques et psychologiques qui déterminent sa tolérance aux contraintes. Cette « capacité d'absorption » personnelle, défini un certain seuil au-delà duquel des dommages aux structures musculaires, tendineuses et articulaires peuvent survenir. Intégrer cette réalité biologique dans l'analyse de l'activité est indispensable pour adapter efficacement les postes de travail.
             </p>
             
             <div className="bg-gray-900/50 p-4 rounded-lg border border-gray-400/20 mb-6">
@@ -137,7 +137,7 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-blue-400 mb-4 md:mb-8">Le Robinet</h2>
             <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 md:mb-6 tracking-tight">Les Contraintes du Travail</h3>
             <p className="text-gray-300 text-base md:text-lg leading-relaxed mb-4 md:mb-6">
-              Chaque jour, votre corps et votre esprit sont sollicités par des contraintes multiples et interdépendantes [10,11]. Ces sollicitations se manifestent sous deux formes : les contraintes biomécaniques et physiologiques, et les contraintes cognitives et psychosociales. Leurs actions combinées et prolongées tout au long de la journée, forment une charge globale de travail que votre corps accumule progressivement et doit absorber [12,13,14].
+              Chaque jour, votre corps et votre esprit sont sollicités par des contraintes multiples et interdépendantes. Ces sollicitations se manifestent sous deux formes : les contraintes biomécaniques et physiologiques, et les contraintes cognitives et psychosociales. Leurs actions combinées et prolongées tout au long de la journée, forment une charge globale de travail que votre corps accumule progressivement et doit absorber.
             </p>
             
             <div className="bg-gray-900/50 p-4 rounded-lg border border-blue-400/20 mb-6">
@@ -176,7 +176,7 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-purple-400 mb-4 md:mb-8">La Bulle</h2>
             <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 md:mb-6 tracking-tight">L'Environnement de Travail</h3>
             <p className="text-gray-300 text-base md:text-lg leading-relaxed mb-4 md:mb-6">
-              L'environnement physique agit comme un amplificateur ou un modérateur des risques professionnels [15,16]. Les données scientifiques démontrent que certains facteurs environnementaux augmentent le risque de troubles musculosquelettiques. Tandis d'autres favorisent un cadre favorable à un travail efficient liant santé et performance au travail [17].
+              L'environnement physique agit comme un amplificateur ou un modérateur des risques professionnels. Les données scientifiques démontrent que certains facteurs environnementaux augmentent le risque de troubles musculosquelettiques. Tandis d'autres favorisent un cadre favorable à un travail efficient liant santé et performance au travail.
             </p>
             
             <div className="bg-gray-900/50 p-4 rounded-lg border border-purple-400/20 mb-6">
@@ -281,7 +281,7 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-yellow-400 mb-4 md:mb-8">L'Orage</h2>
             <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 md:mb-6 tracking-tight">Les Imprévus</h3>
             <p className="text-gray-300 text-base md:text-lg leading-relaxed mb-4 md:mb-6">
-              Les situations imprévisibles sont une réalité du travail qui est souvent sous-estimée [18]. Ces perturbations creusent l'écart entre le travail prescrit et la réalité opérationnelle, impliquant la mobilisation des ressources additionnelles cognitives et physiques pour maintenir le niveau de performance attendu. Ces sollicitations supplémentaires imposées à l'organisme s'ajoutent à la charge globale de travail initiale.
+              Les situations imprévisibles sont une réalité du travail qui est souvent sous-estimée. Ces perturbations creusent l'écart entre le travail prescrit et la réalité opérationnelle, impliquant la mobilisation des ressources additionnelles cognitives et physiques pour maintenir le niveau de performance attendu. Ces sollicitations supplémentaires imposées à l'organisme s'ajoutent à la charge globale de travail initiale.
             </p>
             
             <div className="bg-gray-900/50 p-4 rounded-lg border border-yellow-400/20 mb-6">
@@ -317,7 +317,7 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-green-400 mb-4 md:mb-8">La Paille</h2>
             <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 md:mb-6 tracking-tight">Les Stratégies de Récupération</h3>
             <p className="text-gray-300 text-base md:text-lg leading-relaxed mb-4 md:mb-6">
-              La récupération n'est pas un luxe, c'est une nécessité physiologique pour maintenir l'intégrité des structures corporelles [19,20]. Elle regroupe l'ensemble des mécanismes qui permettent à l'organisme de dissiper progressivement l'accumulation de fatigue et de sollicitations. Bien que ces stratégies interviennent après l'exposition aux contraintes, elles réduisent significativement les effets résiduels et diminuent le risque de blessures professionnelles.
+              La récupération n'est pas un luxe, c'est une nécessité physiologique pour maintenir l'intégrité des structures corporelles. Elle regroupe l'ensemble des mécanismes qui permettent à l'organisme de dissiper progressivement l'accumulation de fatigue et de sollicitations. Bien que ces stratégies interviennent après l'exposition aux contraintes, elles réduisent significativement les effets résiduels et diminuent le risque de blessures professionnelles.
             </p>
             
             <div className="bg-gray-900/50 p-4 rounded-lg border border-green-400/20 mb-6">
