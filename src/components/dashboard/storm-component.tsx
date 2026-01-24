@@ -33,17 +33,6 @@ export default function StormComponent({ intensity, onIntensityChange, hideInten
 
   // Gérer le changement d'intensité
   useEffect(() => {
-    // Lire l'intensité depuis localStorage lors du premier montage
-    if (intensityRef.current === 0) {
-      const savedIntensity = getLocalStorage('stormIntensity');
-      if (savedIntensity && onIntensityChange) {
-        const parsedIntensity = parseInt(savedIntensity);
-        if (!isNaN(parsedIntensity)) {
-          onIntensityChange(Math.round(parsedIntensity));
-        }
-      }
-    }
-
     // Mettre à jour la référence de l'intensité actuelle
     intensityRef.current = Math.round(intensity);
     

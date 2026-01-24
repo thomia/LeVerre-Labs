@@ -1,0 +1,131 @@
+"use client"
+
+import React, { useState, useEffect } from 'react'
+import { motion, useAnimation } from 'framer-motion'
+
+interface AnimatedLogoProps {
+  className?: string
+  size?: number
+  color?: string
+}
+
+const AnimatedLogo: React.FC<AnimatedLogoProps> = ({ className = "", size = 300, color = "white" }) => {
+  const [clipLWidth, setClipLWidth] = useState(0)
+  const [clipWaveWidth, setClipWaveWidth] = useState(0)
+
+  useEffect(() => {
+    // Animation du L
+    const animateL = setTimeout(() => {
+      let start = 0
+      const duration = 2500
+      const startTime = Date.now()
+      
+      const animate = () => {
+        const elapsed = Date.now() - startTime
+        const progress = Math.min(elapsed / duration, 1)
+        
+        // Easing easeInOut
+        const eased = progress < 0.5 
+          ? 2 * progress * progress 
+          : 1 - Math.pow(-2 * progress + 2, 2) / 2
+        
+        setClipLWidth(eased * 3000)
+        
+        if (progress < 1) {
+          requestAnimationFrame(animate)
+        }
+      }
+      
+      animate()
+    }, 300)
+
+    // Animation de la vague
+    const animateWave = setTimeout(() => {
+      let start = 0
+      const duration = 4000
+      const startTime = Date.now()
+      
+      const animate = () => {
+        const elapsed = Date.now() - startTime
+        const progress = Math.min(elapsed / duration, 1)
+        
+        // Easing easeInOut
+        const eased = progress < 0.5 
+          ? 2 * progress * progress 
+          : 1 - Math.pow(-2 * progress + 2, 2) / 2
+        
+        setClipWaveWidth(eased * 3000)
+        
+        if (progress < 1) {
+          requestAnimationFrame(animate)
+        }
+      }
+      
+      animate()
+    }, 2800)
+
+    return () => {
+      clearTimeout(animateL)
+      clearTimeout(animateWave)
+    }
+  }, [])
+
+  return (
+    <motion.div
+      className={className}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+    >
+      <svg
+        width={size}
+        height={size}
+        viewBox="0 0 300 300"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          {/* Masque pour révéler le L de gauche à droite */}
+          <clipPath id="clipL">
+            <rect
+              x="0"
+              y="0"
+              width={clipLWidth}
+              height="3000"
+            />
+          </clipPath>
+          
+          {/* Masque pour révéler la vague de gauche à droite */}
+          <clipPath id="clipWave">
+            <rect
+              x="0"
+              y="0"
+              width={clipWaveWidth}
+              height="3000"
+            />
+          </clipPath>
+        </defs>
+        
+        <g transform="translate(0, 300) scale(0.1, -0.1)">
+          {/* Le L - Verre (première partie) */}
+          <g clipPath="url(#clipL)">
+            <path
+              d="M1032 1378 c3 -672 3 -673 25 -714 31 -58 103 -119 160 -135 37 -11 125 -14 368 -14 318 0 320 0 369 24 83 41 146 120 161 204 l7 37 -45 0 c-44 0 -45 -1 -52 -37 -9 -48 -70 -108 -126 -123 -26 -7 -146 -10 -344 -8 l-303 3 -43 30 c-83 59 -79 21 -79 705 l0 606 -50 47 -51 48 3 -673z m52 573 c4 -5 8 -280 11 -610 4 -575 5 -603 24 -640 24 -45 86 -98 133 -112 53 -15 626 -11 670 5 42 15 91 52 107 81 36 62 39 66 46 56 8 -13 -28 -76 -65 -112 -14 -14 -47 -35 -72 -48 -45 -21 -55 -22 -367 -21 -289 0 -324 2 -363 19 -51 22 -85 52 -118 106 l-25 40 -2 623 c-3 574 0 648 21 613z"
+              fill={color}
+            />
+          </g>
+          
+          {/* La vague (deuxième partie) */}
+          <g clipPath="url(#clipWave)">
+            <path
+              d="M2193 2385 c-104 -45 -232 -230 -343 -495 -58 -137 -160 -437 -160 -470 0 -42 19 -8 50 92 36 115 66 203 80 233 5 11 17 45 28 75 20 53 120 265 145 305 77 123 123 178 183 219 49 33 66 33 107 -4 57 -50 78 -125 157 -570 13 -69 33 -178 45 -243 21 -112 19 -164 -4 -95 -14 41 -42 146 -46 173 -8 47 -53 257 -75 350 -6 22 -12 56 -15 75 -16 101 -56 223 -82 253 -21 23 -64 22 -96 -3 -27 -22 -111 -134 -127 -172 -6 -13 -19 -38 -30 -56 -11 -18 -20 -34 -20 -37 -1 -3 -12 -28 -25 -57 -14 -29 -25 -59 -25 -65 0 -7 -4 -13 -8 -13 -5 0 -9 -6 -9 -12 -1 -7 -24 -74 -51 -148 -82 -218 -142 -425 -142 -484 0 -56 -20 -12 -54 121 -144 555 -592 936 -1176 1003 -110 12 -241 11 -170 -2 19 -3 73 -11 120 -17 183 -23 411 -118 581 -242 275 -201 483 -528 569 -897 12 -53 38 -82 72 -82 25 0 61 38 54 57 -4 9 -2 21 3 27 6 7 30 81 55 166 72 249 161 490 245 660 73 148 177 274 206 250 21 -17 52 -99 70 -185 10 -44 21 -98 26 -120 5 -22 11 -51 14 -65 12 -70 59 -292 71 -340 9 -30 17 -65 20 -78 10 -52 58 -191 85 -248 27 -57 106 -160 116 -151 2 3 -6 21 -17 40 -34 58 -89 258 -106 387 -3 19 -9 51 -14 70 -5 19 -16 76 -24 125 -26 161 -66 368 -88 455 -34 136 -70 200 -125 221 -30 11 -31 11 -70 -6z m-1110 -255 c65 -41 141 -102 206 -163 57 -55 151 -163 151 -175 0 -4 12 -20 26 -37 61 -70 211 -424 220 -520 8 -88 -32 -101 -55 -17 -39 137 -131 385 -150 402 -4 3 -13 19 -21 35 -67 136 -228 326 -378 446 -78 63 -77 79 1 29z"
+              fill={color}
+            />
+          </g>
+        </g>
+      </svg>
+    </motion.div>
+  )
+}
+
+export default AnimatedLogo

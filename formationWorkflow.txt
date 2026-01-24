@@ -1,0 +1,348 @@
+Formation sur site
+
+2.2. Déroulé type (workflow pédagogique)
+3 grands blocs, avec un fil rouge très concret :
+Module 1 – Découverte (30–45 min)
+* Introduction+importance
+* Présentation du modèle
+* Chacun s'auto-évalue MAINTENANT ("Où est ton verre là, en formation ?")
+Module 2 – Analyse de la journée d'hier (Matin/Midi, ~3h)
+* En sous-groupes ou individuellement :
+* Raconter/décrire la journée d'hier
+* Utiliser LeVerre pour l'analyser
+* Identifier où/quand le verre s'est rempli, où/quand la paille a vidé, etc.
+Module 3 – Actions (Après-midi, ~2h)
+* À partir de cette analyse :
+* "Comment je aurais pu faire différemment hier ?"
+* "Qu'est-ce que je peux changer dès aujourd'hui / cette semaine ?"
+Résultat : ils repartent avec une analyse super concrète et des actions ultra pertinentes.
+
+
+Chaque participant à un téléphone ou un ordi
+Scan de qr code avec telephone ou lien site internet
+Il arrive sur le logiciel d’analyse
+- 1ere chose qu’on leur demande d’évaluer leurs taille de verre
+- 2eme chose jauger leurs niveau initial
+- 3eme chose analyser actuellement dans la salle le robinet puis le noter
+- 4eme chose analsyer l’environnement de travail puis le noter
+- 5eme chose analyser les aléas potentiels qui peuvent arriver et évaluer leurs impacts sur la charge globale (eau dans le verre supplémentaire)
+- 6eme, identifier les moment dans la journée ou la paille est active
+Lancer une simulation sur la durée de formation
+On arrive à la conclusion que le verre est resté dans le vert ou orange, rien d’alarmant une journée de formation assis.
+
+identifier ce qu’on peux améliorer : posture quand on est assis, varier les postures, activé la paille + souvent, aller marcher. Ranger son bureau, mettre l’écran à la bonne hauteur (améliore l’environnement de travail). Je suis en formation, je coupe mon téléphone pro comme ca pas d’aléa qui pourrait venir me déranger et me stresser d’avantage.
+
+C’est pour l’analyse en temps réel. 
+Ensuite on peux leur montrer que cette approche est applicable partout, tout le temps, sur tous les postes de travail, ce qui changera c’est : 
+Quel facteur va ajouter le plus d’eau dans le verre, les facteurs vont être tous différents en fonction du métier (on va en retrouver, mais d’autre différents et sont spécifique à votre travail)
+Maintenant à vous de jouer pour essayer de retracer votre journée d’hier
+Timeline 1ere étape : diviser la journée de travail en plusieurs étapes/tâches et noter chaque facteur pour chaque tâche,
+A la fin on lance la simulation. Et on regarde l’évolution du verre sur une journée de travail
+, on peut à ce moment la demander a qqun de venir décrire sa journée d’hier
+
+Ensuite étape sur le terrain, on y va en groupe et on observe une tâche de qqun qui travaille, le but du groupe est d’analyser, d’observer et de mettre les facteurs de chaque éléments robinet, bulle, orage, paille. Déterminé une durée, je demande si je peux filmer
+Ensuite retour en salle et retex et échange.
+Puis simulation de sa tâche.
+Ensuite échange sur quel leviers on pourrait regardé : ou les notes sont elles élevés ? que peux on mettre en place pour améliorer cette tâche. Faire les changement puis lancer la simulation.
+mettre un avant/ après et comparer les scores.
+« ahh oui si il se positionne comme ca il a moinde remplissage à la fin » comportement actionnable par le travailleur
+« ahh oui si on rapproche ça ici, ca lui facilite la vie et l’empeche d’avoir cet aléa » solution organisationnelle que l’employeur peux mettre en place..
+
+et voila un peu les étapes que je vois, peux tu les reformuler et les organiser de manières claires en les détaillant au max
+
+Workflow Détaillé de formation
+
+Objectif de la formation
+Comprendre et visualiser le risque lié à l’activité physique dans différents contextes. Identifier les facteurs impliqués, proposer des solutions d’améliorations applicables. Tester en direct l’impact de leurs solutions.
+Vue d'ensemble
+Une formation 1 jour immersive où les participants :
+* Expérimentent le modèle du Verre en temps réel - en salle
+* L’appliquent à leur propre journée de travail (leurs journée d’hier) - en salle
+* L’appliquent à des situations observées sur le terrain - sur un poste de travail de l’entreprise
+* Identifient des leviers d’action – retour en salle
+* Testent les leviers d’action et découvrent leurs gains à travers le logiciel – en salle
+
+PHASE 1 : DECOUVERTE – 1 TÂCHE (1h30–2h)
+
+Cette étape commence par l’introduction à la formation, présentation de l’entreprise et du formateur (formations, background, expériences)
+Atelier brise-glace
+
+Chacun met son prénom sur un chevalet.
+
+Rapide introduction sur les TMS risque à long terme
+Rapide introduction sur les AT risque à court terme
+
+Tous lié à l’activité physique au travail.
+
+1 problème = 1 solution ?
+Ex : c’est la faute des salariés ils se positionnent mal -> formation gestes et postures
+Ex : c’est la faute de l’organisation ils ne mettent pas les moyens pour adapter les postes de travail -> X entreprise qui vends des sièges, des tables, des souris
+Ex : c’est plus compliqué que ça : faisons des modèles (présenter les modèles complexe des TMS)
+
+Quand un accident intervient, blocage de dos, douleurs épaules…
+Vous connaissez l’expression c’est la goutte qui fait déborder le vase ?
+Tout le monde à tendance à confondre la dernière goutte … et le vase qui est plein.
+
+
+Ensemble on va enfin y voir plus clair. Je vous propose qu’on se prêtent à un petit exercice, en fait on va reproduire exactement ce que je faisait en formation il y a deux ans mais en un peu améliorer.
+
+Demander aux participants de flasher un QR-code ou de rentrer un lien pour entrer dans l’interface.
+Ajouter que le formateur fait l’exercice en même temps qu’eux.
+
+Sur cette interface les participants vont avoir une 1ere question d’onboarding
+
+Quelle est la largeur de votre verre ? 
+Devra se jauger sur ces différents aspects : 
+Age, antécédents médicaux, qualité de sommeil, alimentation équilibré et suffisante, condition physique (sportif) 
+
+Apres avoir enregistrer ces information, les participants ont tous un Verre au centre de leurs écran avec une note sur 100 : le scoreV
+
+Petit temps d’arrêt ici et explication, et oui nous sommes tous différents et notre corps réagi différemment et nous ne sommes pas tous égaux faces aux contraintes de tous les jours.
+
+Ensuite,
+
+Les participants devront suivrent une autre question :
+
+A quel niveau tu estimes que ton verre est, là tout de suite ?, place une jauge au niveau du verre (explication en amont de chaque niveau 60 ;80 ;90 ;100), dès l’application de la jauge, l’utilisateur voit l’eau directement montée à ce niveau-là.
+
+
+Petit temps d’arrêt ici et explication, et oui nous sommes confrontés chaque jour à des évènements, des choses qui vont déjà remplir le verre. Soit parce que je n’ai pas assez vidé celui de la veille, soit parce qu’avant de venir au boulot, j’ai fait une séance de sport, mes enfants m’ont pris la tete, j’ai mal dormi etc…
+
+Il est faux d’imaginer que chaque employé d’une entreprise arrive au travail avec le verre vide, on passe 8h au travail normalement, il ne faut jamais oublier qu’une journée c’est 24h.
+
+
+
+Ensuite,
+
+Evidemment il y a des choses qui vont remplir ce verre ou pas d’ailleurs. Discutons ensemble des choses qu’on fait au travail qui peuvent remplir le verre ? 
+
+Les participants doivent trouver en les guidant: 
+- La charge manipulée, qui répond à la question QU’EST-CE QUE JE FAIS ? 
+- La posture de travail utilisé, qui répond à la question COMMENT JE LE FAIS
+- La fréquence/durée, qui répond à la question COMBIEN DE TEMPS JE LE FAIS ?
+- La charge mentale, qui répond à la question QUELLE RESSOURCES MENTALE SONT NECESSAIRE POUR CE QUE JE FAIS
+- La charge psycho-sociale, qui répond à la question DANS QUEL ETAT EMOTIONNEL JE LE FAIS 
+
+Alors les participants doivent essayer de se projeter dans leurs états actuels, « vous êtes avec moi en salle, essayons de décrire ce que nous faisons »
+
+Autant avant je les laissais faire, (aussi parce qu’ils rentraient des infos persos, mais c’est important de les laisser s’immerger dans le logiciel sans moi. A partir de cette étape, le formateur les guide.
+
+- Alors Quelle charge on soulève on pousse, on tire.. : à priori 0, question suivante
+- Comment est notre posture de travail : assis, assis comment avachi, plutôt droit ? on évalue sa posture
+- Combien de temps ? alors on va être en formation toute la journée mais on va inscrire jusqu’à la prochaine pause car l’état du verre aura surement évolué après ca : mettont 1h
+- Quelle ressources cognitives ca vous demande de m’écouter ? de la concentration, de l’attention, de la mémoire, en plus vous devez faire des choses sur une interface.. c’est pas mal : les laisser évaluer ou coché des choses (à définir en terme de process)
+- Dans quel état émotionnel vous faite tout ça ? stress , relation avec les gens de la salle, est ce que le formateur il vous crie dessus et vous met la pression ? évaluation par les participants
+
+
+Appuyer sur enregistrer et maintenant en plus du verre avec l’eau rempli au niveau que les participants ont indiqué, il voit le robinet apparaitre, avec un scoreR.
+
+Continuer le storytelling avec : ok on a répondu à plusieurs questions QUOI ? COMBIEN ? COMMENT ? 
+Qu’est ce qui peux être important quand on travaille aussi ? 
+OU
+Abosulument, la question du OU est cruciale, dans quel environnement je travail , dans quelle disposition, donner moi des exemple de facteur de notre environnement de travail qui peux faire que le travail est plus ou moins difficile, ces éléments sont des accélérateur de fatigue.
+
+Lumiere
+Bruit
+Hygiene
+Espace
+Vibration
+Temperature
+Odeur
+Couleur
+Intérieur,Dehors
+Etc.. plein d’exemple spécifique à l’entreprise peuvent être évoqués.
+
+Génial analysons donc notre environnement de travail de , qui est l’évaluation de cette salle de formation: L’interface leur demande d’évaluer plusieurs critères (parmi ceux évoqués)
+
+Quand ils cliquent sur enregistrer,
+
+Ils voient désormais la bulle avec les billes qui rebondissent. Un nouvel élément et donc un nouveau score : le scoreB
+
+Ensuite, on continue le story telling.
+Ok on a bien avancé sur la description d’une situation de travail mais si on s’arrête là on manque beaucoup de chose. 
+Est-ce que qqun peux me dire quelque chose qui l’énerve par-dessus tout au travail ? 
+Si pas de débouché sur aléa
+Est-ce que ca vous arrive de pas pouvoir faire votre job ? Pourquoi ? 
+
+Slide travail prescris / travail réel.
+
+Après speech sur les aléas et imprévus, et oui ce sont eux qui vous demandent EN PLUS DU ROBINET qui est le travail normal, d’un coup ces aléas vous demandent de mettre plus de ressources, d’aller plus vite pour rattraper le retard...
+
+L’interface demande aux participants quel aléas peuvent intervenir pendant cette tâche. Donner un exemple et évaluer son impact sur votre charge globale
+
+Après avoir cliqué sur enregistrer, les participants voit l’orage apparaître sur leurs écrans avec un scoreO.
+
+On y est presque et ont garde les bonnes nouvelles pour la fin. 
+A votre avis c’est quoi ? 
+Quelqu’un es censé dire, il manque qqch pour le vidé ce verre 
+
+Abosolument fort heureusement notre corps absorbe des contraintes mais il est suffisamment bien fait pour qu’il soit capable des les évacuer via plusieurs chose
+Avez-vous des exemples en tête ?
+
+Pause
+Dormir
+S’étirer
+Discuter
+Marcher
+Prendre l’air.
+
+
+
+L’interface demande aux utilisateurs de donner des exemple des aspects de récupération leurs permettant de vider le verre dans le contexte de notre tâche de formation :
+
+Et d’évaluer son impact
+(note ici, penser bien souvent un levier efficace c’est qqch qui a un effet contraire à la tâche) je suis assis, alors qqch d’efficace est le contraire je me leve ou je marche)
+
+Apres avoir appuyer sur enregistrer, l’utilisateur voit une paille apparaitre sur son modele désormais complet avec un ScoreP
+
+Félicitation vous avez
+Analyser un poste de travail : la tâche écouter une formation LeVerreLabs dans la salle .. le .. pendant 1h
+
+Maintenant voyons comment votre verre évolue ou est sensé évoluer pendant la prochaine heure ?
+
+Les utilisateur entre la durée de simulation (1h). Lance la simulation en clicant sur play et voit leur verre monté petit à petit en 10 secondes
+
+A la fin récap, votre verre à évoluer de .. à ..
+….
+
+PHASE 2 : APPROPRIATION – 3 TÂCHES
+
+Cette étape est maintenant la validation de l’outil mais les participants doivent l’appliquer sur leurs journée de travail la plus récente.
+Ils découvriront une plus value de l’outil lorsqu’on analyse plusieurs tâche et qu’on les mets bout à bout.
+
+Demander aux participants maintenant de se remémorer leurs journée de travail la plus récente. 
+L’idée est qu’ils appliquent le même processus sur 3 tâche différentes de leurs quotidiens
+
+Le score V est à évaluer une fois (au début de leurs journée exemple)
+
+Ensuite les scoreR, scoreB, scoreO, scoreP sont a évaluer pour chaque tâche
+
+Question d’orga ici, est ce que ça va être fastidieux de faire ça ou est-ce qu’on ferais pas l’exercice beaucoup plus simplement cad les participants « sautent une étape » et évaluent eux même les différents scores au lieu que les scores soient calculées après leurs évaluation de chaque détail composant ces scores ?
+
+Ils auraient juste à donner un nom de tâche, une durée, un score pour chaque élément
+X 3
+
+Car ici ce qu’on veux c’est qu’ils observent que des tâches ont des impacts différents, remplissent plus ou moins le verre, le vide, etc..
+
+Et que tout au long de notre journée de travail, l’objectif est de minimiser le remplissage de ce verre.
+Car un verre rempli est un risque élevé d’at ou de développer une faiblesse ou un TMS à long terme.
+
+PHASE 3 : OBSERVATION – 1 TÂCHE sur le terrain
+
+Process à définir
+
+Prendre une vidéo de la tâche
+Revenir en salle et brainstormer sur les observations de chacun
+
+On remplit ensemble les éléments qu’on a pu observer pour définir le modèle de la tâche observer,
+Ici le formateur se positionne en tant que personne qui écoute et qui applique.
+Est-ce qu’appliquer la moyenne entre les avis du groupe est une bonne solution dans l’évaluation des détails des scores ? à définir
+
+A la fin on se retrouve avec un modèle complet de la tâche analysé par le groupe.
+
+PHASE 4 : IDENTIFICATION DE SOLUTIONS 
+On lance la simulation avec le groupe de la tâche analysé.
+
+Maintenant l’objectif c’est comment on peux limiter le remplissage du verre pour cette tâche ?
+On regarde les scores les plus élevé = priorise les actions
+Si tout est plus ou moins équivalent, et bien on va tous balayer
+
+On va se prêter à l’exercice et passer en revue chaque élément pour voir à chaque fois ce qu’on peux améliorer :
+
+Leviers du robinets - exemples
+Modifier la posture (ex : "Et si on posait ça à hauteur des coudes au lieu du sol ?")
+- Réduire la fréquence (ex : "Et si on groupait les manutentions pour moins de répétition ?")
+- Aider l'effort physique (ex : "Et si on utilisait un chariot plutôt que porter ?" ? charge réduite)
+- Diminuer la charge mentale (ex : "Et si on affichait clairement l'ordre des tâches ?")
+- Réduire la pression (ex : "Et si on augmentait les délais pour cette tâche ?")
+
+Leviers de la bulle - exemples
+- Augmenter l'éclairage (ex : "Et si on ajoutait une lampe ici ?")
+- Réduire le bruit (ex : "Et si on mettait un silencieux ?" ou "On isole l'atelier ?")
+- Améliorer la température (ex : "Et si on ouvrait une fenêtre / mettait un ventilateur ?")
+- Organiser l'espace (ex : "Et si on rapprochait les outils ?" ? moins de déplacement)
+
+Leviers de l’orage - exemples
+- Maintenance préventive (ex : "Et si on maintenait l'outil régulièrement pour éviter les pannes ?")
+- Communication claire (ex : "Et si on prévenait les urgences 30 min avant ?" ? moins de stress)
+- Planification (ex : "Et si on groupait les tâches urgentes à un moment clé ?")
+
+Leviers de l’orage - exemples
+- Ajouter des pauses (ex : "Et si on prenait une pause de 5 min toutes les 45 min ?")
+- Varier les postures (ex : "Et si on faisait du travail debout puis assis en alternant ?")
+- Mouvements actifs (ex : "Et si on marchait 5 min toutes les 2h ?")
+- Étirements simples (ex : "Et si on faisait 2 min d'étirements après la tâche ?")
+
+Voici toute les actions qu’on peut mettre en place pour limiter le remplissage du verre = limiter l’accidentologie sur cette tâche = améliorer les conditions de travail sur cette tâche
+
+Ensuite on prend deux couleurs, et on souligne que des actions peuvent êtres mise en place par l’opérateur directement et l’organisation/management (a l’échelle de l’équipe, de la direction...).
+Vous ou votre équipe avez le pouvoir de réduire l’impact de votre travail sur votre santé.
+Autant que vos chefs, votre hiérarchie ont leurs rôles à jouer dans cet objectif
+
+PHASE 5 : SIMULATION DE SOLUTIONS 
+L’objectif de cette phase est d’amener les salariés à se projeter sur des solutions et leurs potentiels résultats.
+
+Après avoir lister, identifier tous ces outils, il faudrait pouvoir les hiérarchiser, et si on a un budget à allouer, laquelle de ces actions choisir ?
+
+- Gains potentiels les plus élevé
+- Faisabilité
+- Coûts
+- Pilote de l’action
+
+Notre outil permet aussi de simuler des gains potentiel
+
+
+**Exemple 1** : "On ajoute une paille plus efficace (pause de 10 min toutes les 45 min)"
+- Dans l'interface, augmenter le score "Paille" (ex : de 30 à 60)
+- Relancer la simulation ? Voir le verre descendre
+
+**Exemple 2** : "On améliore l'ergonomie du poste (posture meilleure)"
+- Dans l'interface, réduire le score "Robinet posture" (ex : de 70 à 50)
+- Relancer la simulation ? Voir le verre descendre encore
+
+**Exemple 3** : "On isole l'atelier pour réduire le bruit"
+- Dans l'interface, réduire le score "Bulle bruit" (ex : de 80 à 40)
+- Relancer la simulation ? Voir le verre descendre
+
+Les exemples sont à titre informatif, évidemment il faudra le faire avec les spécificité de la tâche observé.
+
+L’idée est de monter aux participants la fonctionnalité de comparaison.
+
+Car à la fin on veux une courbe ou un score qui compare avant / après
+Avec une simulation avec le avant / après côte à côte
+
+On a un chiffre de contrainte à la fin de la tâche AVANT et on a son homologue APRES les solutions proposée
+
+
+PHASE 6 : CONCLUSION 
+Pour chaque participant:
+- "Quel levier tu vas appliquer demain sur TON poste ?"
+- Chacun s'engage sur 1 action simple, applicable immédiatement
+- Exemples :
+  - "Je vais varier mes postures toutes les 30 min"
+  - "Je vais demander à mon manager si on peut ajouter une pause"
+  - "Je vais ranger mon bureau pour gagner de l'espace"
+
+
+
+
+
+**Message clé de généralisation** :
+
+"Cette approche, vous pouvez l'appliquer partout :
+- Sur VOTRE poste (analysez une journée type)
+- Sur d'autres postes de votre équipe
+- Sur n'importe quelle situation de travail
+
+**Ce qui change** : Les facteurs du Robinet/Bulle/Orage. Chaque métier, chaque poste a ses propres défis. Mais le modèle reste le même. Vous savez maintenant l'utiliser."
+
+
+Ressources et suivi
+**À remettre / à prévoir** :
+
+
+
+
+Cette présentation serais le déroulement idéal d’une formation avec son contenue et ses attendues
+
+Réserve : objectivité de la démarche, on peux faire dire n’importe quoi à ces chiffres.

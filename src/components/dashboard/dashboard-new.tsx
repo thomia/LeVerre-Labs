@@ -655,17 +655,6 @@ export default function Dashboard() {
                   <span>x10</span>
                 </div>
               </div>
-              
-              {/* Chronomètre de travail */}
-              <div className="flex items-center justify-between p-3 rounded-md bg-gray-900/50 border border-gray-800/30">
-                <div className="flex items-center gap-2">
-                  <Clock className="h-5 w-5 text-gray-400" />
-                  <span className="text-sm text-gray-300">Temps de travail</span>
-                </div>
-                <span className="text-lg font-medium text-white">
-                  {formattedWorkTime()}
-                </span>
-              </div>
             </div>
             
             {/* Sections de paramètres */}

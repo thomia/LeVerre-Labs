@@ -110,7 +110,7 @@ export default function VitrinePage() {
                 style={{ top: '53%', transform: 'translate(-50%, -50%)' }}
               >
                 <motion.div
-                  className="w-[700px] h-[700px] rounded-full overflow-hidden border-2 border-purple-400/40 bg-purple-950/10 shadow-[0_0_20px_rgba(168,85,247,0.15)] cursor-pointer transition-transform duration-300"
+                  className="w-[700px] h-[700px] rounded-full overflow-hidden border-2 border-purple-400/40 bg-transparent shadow-[0_0_20px_rgba(168,85,247,0.15)] cursor-pointer transition-transform duration-300"
                   onClick={() => scrollToSection('bubble-section')}
                   whileHover={{ scale: 1.05 }}
                 >
@@ -119,11 +119,6 @@ export default function VitrinePage() {
                       environmentScore={environmentScore} 
                       isPaused={isPaused}
                     />
-                  </div>
-                  
-                  {/* Effet de lueur intérieure */}
-                  <div className="absolute inset-0 rounded-full pointer-events-none">
-                    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-400/5 via-transparent to-purple-600/5" />
                   </div>
                 </motion.div>
               </div>

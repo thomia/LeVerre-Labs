@@ -78,7 +78,7 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
               <div className="mt-32 text-center space-y-4">
                 <div>
                   <div className="text-gray-300 text-xl font-medium mb-2">Capacité d'absorption</div>
-                  <div className="text-gray-400 text-base mb-12">Ajustez pour voir la largeur du verre changer</div>
+                  <div className="text-gray-400 text-base mb-12">Ajustez le score pour voir comment le modèle réagit</div>
                 </div>
                 <Slider
                   value={glassScore}
@@ -114,7 +114,7 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
               <div className="mt-32 text-center space-y-4">
                 <div>
                   <div className="text-blue-400 text-xl font-medium mb-2">Charge de travail</div>
-                  <div className="text-gray-400 text-base mb-12">Ajustez pour voir le débit changer</div>
+                  <div className="text-gray-400 text-base mb-12">Ajustez le score pour voir comment le modèle réagit</div>
                 </div>
                 <Slider
                   value={tapScore}
@@ -207,7 +207,7 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
           <div className="flex justify-center items-center">
             <div className="relative flex flex-col items-center">
               <motion.div 
-                className="relative w-96 h-96 rounded-full border-2 border-purple-400/40 overflow-hidden bg-purple-950/20 shadow-[0_0_30px_rgba(168,85,247,0.2)]"
+                className="relative w-96 h-96 rounded-full border-2 border-purple-400/40 overflow-hidden bg-transparent shadow-[0_0_30px_rgba(168,85,247,0.2)]"
                 whileHover={{ 
                   borderColor: 'rgba(168,85,247,0.6)',
                   boxShadow: '0 0 50px rgba(168,85,247,0.4)'
@@ -215,17 +215,12 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
                 transition={{ duration: 0.3 }}
               >
                 <BubbleComponent environmentScore={bubbleScore[0]} isPaused={false} />
-                
-                {/* Effet de lueur intérieure */}
-                <div className="absolute inset-0 rounded-full pointer-events-none">
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-400/10 via-transparent to-purple-600/10" />
-                </div>
               </motion.div>
               
               <div className="mt-32 text-center space-y-4">
                 <div>
                   <div className="text-purple-400 text-xl font-medium mb-2">Qualité de l'environnement de travail</div>
-                  <div className="text-gray-400 text-base mb-12">Ajustez pour voir le nombre et la vitesse des particules</div>
+                  <div className="text-gray-400 text-base mb-12">Ajustez le score pour voir comment le modèle réagit</div>
                 </div>
                 <Slider
                   value={bubbleScore}
@@ -255,7 +250,7 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
               <div className="mt-32 text-center space-y-4">
                 <div>
                   <div className="text-yellow-400 text-xl font-medium mb-2">Impact des aléas sur la charge globale</div>
-                  <div className="text-gray-400 text-base mb-12">Ajustez pour voir la fréquence des éclairs</div>
+                  <div className="text-gray-400 text-base mb-12">Ajustez le score pour voir comment le modèle réagit</div>
                 </div>
                 <Slider
                   value={stormScore}
@@ -310,7 +305,7 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
             <h2 className="text-6xl font-extrabold text-green-400 mb-8">La Paille</h2>
             <h3 className="text-3xl font-bold text-white mb-6 tracking-tight">Les Stratégies de Récupération</h3>
             <p className="text-gray-300 text-lg leading-relaxed mb-6">
-              La récupération n'est pas un luxe, c'est une nécessité physiologique pour maintenir l'intégrité des structures corporelles [19,20]. Elle regroupe l'ensemble des mécanismes qui permettent à l'organisme de dissiper progressivement l'accumulation de fatigue et de sollicitations. Bien que ces stratégies interviennent après l'exposition aux contraintes, elles réduisent significativement les effets résiduels et diminuent le risque cumulatif de blessures professionnelles.
+              La récupération n'est pas un luxe, c'est une nécessité physiologique pour maintenir l'intégrité des structures corporelles [19,20]. Elle regroupe l'ensemble des mécanismes qui permettent à l'organisme de dissiper progressivement l'accumulation de fatigue et de sollicitations. Bien que ces stratégies interviennent après l'exposition aux contraintes, elles réduisent significativement les effets résiduels et diminuent le risque de blessures professionnelles.
             </p>
             
             <div className="bg-gray-900/50 p-4 rounded-lg border border-green-400/20 mb-6">
@@ -349,7 +344,7 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
               <div className="mt-32 text-center space-y-4">
                 <div>
                   <div className="text-green-400 text-xl font-medium mb-2">Capacité de récupération</div>
-                  <div className="text-gray-400 text-base mb-12">Ajustez pour voir la vitesse d'absorption</div>
+                  <div className="text-gray-400 text-base mb-12">Ajustez le score pour voir comment le modèle réagit</div>
                 </div>
                 <Slider
                   value={strawScore}
@@ -381,7 +376,7 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
           <p className="text-xl text-gray-300 mb-12 leading-relaxed">
             Découvrez comment notre approche transforme la prévention à travers une démonstration personnalisée de l'outil et de son utilisation concrète.
           </p>
-          <a href="mailto:contact@leverrelabs.com?subject=Demande de démonstration LeVerre Labs">
+          <a href="mailto:leverrelabs@gmail.com?subject=Demande de démonstration LeVerre Labs">
             <InteractiveHoverButton 
               text="Demander une démonstration"
               className="w-auto px-8 py-4 text-lg bg-[rgb(255,30,90)] text-white border-[rgb(255,30,90)] hover:bg-[rgb(255,60,120)]"

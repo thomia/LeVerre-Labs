@@ -12,26 +12,19 @@ interface StrawComponentProps {
   absorptionRate: number;
   setAbsorptionRate: (rate: number) => void;
   isInsideGlass?: boolean; // Indique si la paille est à l'intérieur du verre
+  isPaused?: boolean; // Indique si la simulation est en pause
 }
 
 export default function StrawComponent({ 
   absorptionRate, 
   setAbsorptionRate, 
-  isInsideGlass = false 
+  isInsideGlass = false,
+  isPaused = false
 }: StrawComponentProps) {
   const [isEnabled, setIsEnabled] = useState(true)
 
   // Charger les valeurs initiales de localStorage
   useEffect(() => {
-    // Charger le taux d'absorption
-    const savedRate = getLocalStorage('absorptionRate')
-    if (savedRate) {
-      const rate = parseInt(savedRate)
-      if (!isNaN(rate)) {
-        setAbsorptionRate(rate)
-      }
-    }
-
     // Écouter les événements personnalisés
     const handleStrawUpdate = (e: CustomEvent<{recoveryCapacity: number}>) => {
       if (e.detail && typeof e.detail.recoveryCapacity === 'number') {
@@ -43,11 +36,6 @@ export default function StrawComponent({
     // Vérifier si la paille est activée (toujours true si dans le verre de la vitrine)
     if (isInsideGlass) {
       setIsEnabled(true)
-    } else {
-      const savedEnabled = getLocalStorage('strawEnabled')
-      if (savedEnabled !== null) {
-        setIsEnabled(savedEnabled === 'true')
-      }
     }
 
     // Ajouter l'écouteur d'événement
@@ -57,7 +45,7 @@ export default function StrawComponent({
     return () => {
       window.removeEventListener('strawUpdateEvent', handleStrawUpdate as EventListener)
     }
-  }, [setAbsorptionRate])
+  }, [setAbsorptionRate, isInsideGlass])
 
   // Gérer le changement d'état
   const handleToggle = () => {
@@ -126,7 +114,7 @@ export default function StrawComponent({
               </div>
               
               {/* Animation de l'absorption */}
-              {isEnabled && (
+              {isEnabled && !isPaused && (
                 <motion.div
                   className="absolute top-[36px] right-[10px] w-2 h-[220px] overflow-visible z-20"
                   initial={{ opacity: 0 }}
@@ -188,7 +176,7 @@ export default function StrawComponent({
               </div>
               
               {/* Animation de l'absorption */}
-              {isEnabled && (
+              {isEnabled && !isPaused && (
                 <motion.div
                   className="absolute top-0 left-1/2 transform -translate-x-1/2 w-2 h-[120px] overflow-hidden"
                   initial={{ opacity: 0 }}

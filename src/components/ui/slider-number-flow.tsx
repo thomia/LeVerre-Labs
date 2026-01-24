@@ -14,10 +14,14 @@ export default function Slider({ value, className, valueColor, ...props }: Slide
 			className={clsx(className, 'relative flex h-6 w-[200px] touch-none select-none items-center')}
 		>
 			<RadixSlider.Track className="relative h-[4px] grow rounded-full bg-zinc-100 dark:bg-zinc-800">
-				<RadixSlider.Range className="absolute h-full rounded-full bg-black dark:bg-white" />
+				<RadixSlider.Range 
+					className="absolute h-full rounded-full" 
+					style={{ backgroundColor: 'var(--slider-range-bg, black)' }}
+				/>
 			</RadixSlider.Track>
 			<RadixSlider.Thumb
-				className="relative block h-6 w-6 rounded-[1rem] bg-white shadow-md ring ring-black/10"
+				className="relative block h-6 w-6 rounded-[1rem] bg-white shadow-md ring"
+				style={{ '--tw-ring-color': 'var(--slider-thumb-ring, rgba(0,0,0,0.1))' } as React.CSSProperties}
 				aria-label="Volume"
 			>
 				{value?.[0] != null && (
