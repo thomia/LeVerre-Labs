@@ -116,68 +116,40 @@ export function SandboxInteractive() {
 
   return (
     <div className="bg-black min-h-screen md:h-screen flex flex-col overflow-hidden">
-      {/* Styles spécifiques sandbox - forcer layout mobile vertical sur tous les écrans */}
+      {/* Styles spécifiques sandbox - optimisé pour tous les écrans */}
       <style jsx global>{`
-        /* Forcer le layout en colonne (mobile) même sur desktop */
-        .dashboard-presentation-wrapper .grid-cols-1.lg\\:grid-cols-12 {
-          grid-template-columns: 1fr !important;
+        /* Sliders pleine largeur sur tous les écrans */
+        .dashboard-presentation-wrapper .lg\\:col-span-4 {
+          width: 100% !important;
+          max-width: 100% !important;
         }
         
-        .dashboard-presentation-wrapper .lg\\:col-span-4,
+        /* Réduire drastiquement l'espacement pour tout voir sur une page */
+        .dashboard-presentation-wrapper .gap-8 {
+          gap: 0.5rem !important;
+        }
+        
+        /* Compacter les sliders */
+        .dashboard-presentation-wrapper .space-y-3 {
+          margin-top: 0 !important;
+          gap: 0.5rem !important;
+        }
+        
+        /* Réduire la hauteur du modèle pour qu'il rentre avec les sliders */
+        .dashboard-presentation-wrapper .min-h-\\[600px\\] {
+          min-height: 300px !important;
+          height: 300px !important;
+        }
+        
+        .dashboard-presentation-wrapper .relative.w-full.h-full {
+          height: 300px !important;
+          min-height: 300px !important;
+        }
+        
+        /* Padding vertical minimal */
         .dashboard-presentation-wrapper .lg\\:col-span-8 {
-          grid-column: span 1 !important;
-        }
-        
-        @media (max-width: 768px) {
-          /* Réduire la taille du modèle 3D sur mobile - sandbox uniquement */
-          /* Appliquer un scale global au conteneur de visualisation */
-          .dashboard-presentation-wrapper > div > div > div > div > div {
-            transform: scale(0.65) !important;
-            transform-origin: center center !important;
-          }
-          
-          /* Ajuster la hauteur du conteneur principal pour éviter le débordement */
-          .dashboard-presentation-wrapper > div > div > div > div > div {
-            min-height: 300px !important;
-          }
-          
-          /* Réduire la hauteur minimale de la zone de visualisation */
-          .dashboard-presentation-wrapper .min-h-\\[600px\\] {
-            min-height: 280px !important;
-            height: 280px !important;
-          }
-          
-          /* Cibler directement le conteneur de visualisation pour réduire l'espace */
-          .dashboard-presentation-wrapper .relative.w-full.h-full {
-            height: 280px !important;
-            min-height: 280px !important;
-          }
-          
-          /* Réduire l'espacement vertical global */
-          .dashboard-presentation-wrapper .space-y-4 {
-            gap: 0.5rem !important;
-          }
-          
-          /* Supprimer le padding vertical de la zone de visualisation */
-          .dashboard-presentation-wrapper .lg\\:col-span-8 {
-            padding-top: 0 !important;
-            padding-bottom: 0 !important;
-          }
-          
-          /* Réduire l'espacement entre colonnes */
-          .dashboard-presentation-wrapper .gap-8 {
-            gap: 0.5rem !important;
-          }
-          
-          /* Rapprocher les sliders du modèle sur mobile sans modifier leur design */
-          .dashboard-presentation-wrapper .space-y-3 {
-            margin-top: 0 !important;
-          }
-          
-          /* Réduire l'espacement de la grille */
-          .dashboard-presentation-wrapper .gap-8 {
-            gap: 1rem !important;
-          }
+          padding-top: 0 !important;
+          padding-bottom: 0 !important;
         }
       `}</style>
       
