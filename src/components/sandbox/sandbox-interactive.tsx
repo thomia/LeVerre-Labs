@@ -194,7 +194,7 @@ export function SandboxInteractive() {
       </div>
 
       {/* Zone principale : Modèle du verre - avec scroll bidirectionnel */}
-      <div className="flex-1 overflow-auto pb-20">
+      <div className="flex-1 overflow-auto pb-2">
         <div className="min-w-max px-8 md:px-0">
           <DashboardWrapper 
           visibleElements={visibleElements}
@@ -210,8 +210,8 @@ export function SandboxInteractive() {
         </div>
       </div>
 
-      {/* Contrôles de simulation - fixed en bas */}
-      <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-slate-950 to-black border-t border-white/10 py-2 px-3 md:py-4 md:px-8 z-30">
+      {/* Contrôles de simulation - sticky en bas pour qu'il suive le contenu */}
+      <div className="sticky bottom-0 left-0 right-0 bg-gradient-to-r from-slate-950 to-black border-t border-white/10 py-2 px-3 md:py-4 md:px-8 z-30">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-2 md:gap-6">
             {/* Ligne 1 mobile: Chronomètre + Boutons */}
