@@ -194,7 +194,7 @@ export function SandboxInteractive() {
       </div>
 
       {/* Zone principale : Modèle du verre - avec scroll bidirectionnel */}
-      <div className="flex-1 overflow-auto pb-24 md:pb-32">
+      <div className="flex-1 overflow-auto pb-20">
         <div className="min-w-max px-8 md:px-0">
           <DashboardWrapper 
           visibleElements={visibleElements}
