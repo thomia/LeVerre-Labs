@@ -116,8 +116,18 @@ export function SandboxInteractive() {
 
   return (
     <div className="bg-black min-h-screen md:h-screen flex flex-col overflow-hidden">
-      {/* Styles spécifiques sandbox pour mobile */}
+      {/* Styles spécifiques sandbox - forcer layout mobile vertical sur tous les écrans */}
       <style jsx global>{`
+        /* Forcer le layout en colonne (mobile) même sur desktop */
+        .dashboard-presentation-wrapper .grid-cols-1.lg\\:grid-cols-12 {
+          grid-template-columns: 1fr !important;
+        }
+        
+        .dashboard-presentation-wrapper .lg\\:col-span-4,
+        .dashboard-presentation-wrapper .lg\\:col-span-8 {
+          grid-column: span 1 !important;
+        }
+        
         @media (max-width: 768px) {
           /* Réduire la taille du modèle 3D sur mobile - sandbox uniquement */
           /* Appliquer un scale global au conteneur de visualisation */
