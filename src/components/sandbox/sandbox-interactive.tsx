@@ -128,7 +128,45 @@ export function SandboxInteractive() {
           
           /* Ajuster la hauteur du conteneur principal pour éviter le débordement */
           .dashboard-presentation-wrapper > div > div > div > div > div {
-            min-height: 450px !important;
+            min-height: 300px !important;
+          }
+          
+          /* Réduire la hauteur minimale de la zone de visualisation */
+          .dashboard-presentation-wrapper .min-h-\\[600px\\] {
+            min-height: 280px !important;
+            height: 280px !important;
+          }
+          
+          /* Cibler directement le conteneur de visualisation pour réduire l'espace */
+          .dashboard-presentation-wrapper .relative.w-full.h-full {
+            height: 280px !important;
+            min-height: 280px !important;
+          }
+          
+          /* Réduire l'espacement vertical global */
+          .dashboard-presentation-wrapper .space-y-4 {
+            gap: 0.5rem !important;
+          }
+          
+          /* Supprimer le padding vertical de la zone de visualisation */
+          .dashboard-presentation-wrapper .lg\\:col-span-8 {
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+          }
+          
+          /* Réduire l'espacement entre colonnes */
+          .dashboard-presentation-wrapper .gap-8 {
+            gap: 0.5rem !important;
+          }
+          
+          /* Rapprocher les sliders du modèle sur mobile sans modifier leur design */
+          .dashboard-presentation-wrapper .space-y-3 {
+            margin-top: 0 !important;
+          }
+          
+          /* Réduire l'espacement de la grille */
+          .dashboard-presentation-wrapper .gap-8 {
+            gap: 1rem !important;
           }
         }
       `}</style>
