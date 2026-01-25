@@ -1,17 +1,17 @@
 /**
  * Layout pour la page Sandbox
  * Sans navbar/footer - interface isolée pour QR code public
- * Force l'affichage desktop même sur mobile
+ * Force l'affichage desktop avec zoom 125% même sur mobile
  */
 
-import { Metadata, Viewport } from 'next'
+import { Viewport } from 'next'
 
 export const viewport: Viewport = {
   width: 1200,
-  initialScale: 0.5,
-  minimumScale: 0.3,
-  maximumScale: 2,
-  userScalable: true,
+  initialScale: 1.25,
+  minimumScale: 1.25,
+  maximumScale: 1.25,
+  userScalable: false,
 }
 
 export default function SandboxLayout({
