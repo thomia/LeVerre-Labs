@@ -116,40 +116,52 @@ export function SandboxInteractive() {
 
   return (
     <div className="bg-black min-h-screen md:h-screen flex flex-col overflow-hidden">
-      {/* Styles spécifiques sandbox - optimisé pour tous les écrans */}
+      {/* Styles spécifiques sandbox - forcer layout vertical sur tous les écrans */}
       <style jsx global>{`
-        /* Sliders pleine largeur sur tous les écrans */
-        .dashboard-presentation-wrapper .lg\\:col-span-4 {
+        /* FORCER layout 1 colonne sur tous les écrans - empêcher le layout desktop */
+        .dashboard-presentation-wrapper .grid {
+          grid-template-columns: 1fr !important;
+          display: flex !important;
+          flex-direction: column !important;
+        }
+        
+        /* Tous les enfants de la grille prennent 100% de largeur */
+        .dashboard-presentation-wrapper .lg\\:col-span-4,
+        .dashboard-presentation-wrapper .lg\\:col-span-8 {
+          grid-column: auto !important;
           width: 100% !important;
           max-width: 100% !important;
         }
         
-        /* Réduire drastiquement l'espacement pour tout voir sur une page */
+        /* Espacement minimal */
         .dashboard-presentation-wrapper .gap-8 {
           gap: 0.5rem !important;
         }
         
-        /* Compacter les sliders */
+        /* Sliders compacts */
         .dashboard-presentation-wrapper .space-y-3 {
           margin-top: 0 !important;
           gap: 0.5rem !important;
         }
         
-        /* Réduire la hauteur du modèle pour qu'il rentre avec les sliders */
+        .dashboard-presentation-wrapper .p-3 {
+          padding: 0.5rem !important;
+        }
+        
+        /* Modèle plus petit */
         .dashboard-presentation-wrapper .min-h-\\[600px\\] {
-          min-height: 300px !important;
-          height: 300px !important;
+          min-height: 250px !important;
+          height: 250px !important;
         }
         
         .dashboard-presentation-wrapper .relative.w-full.h-full {
-          height: 300px !important;
-          min-height: 300px !important;
+          height: 250px !important;
+          min-height: 250px !important;
         }
         
-        /* Padding vertical minimal */
+        /* Supprimer padding */
         .dashboard-presentation-wrapper .lg\\:col-span-8 {
-          padding-top: 0 !important;
-          padding-bottom: 0 !important;
+          padding: 0 !important;
         }
       `}</style>
       
