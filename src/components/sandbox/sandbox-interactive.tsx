@@ -193,9 +193,10 @@ export function SandboxInteractive() {
         </div>
       </div>
 
-      {/* Zone principale : Modèle du verre - avec scroll bidirectionnel */}
-      <div className="flex-1 overflow-auto pb-2">
+      {/* Zone principale : Modèle du verre + Panneau de contrôle - avec scroll bidirectionnel */}
+      <div className="flex-1 overflow-auto">
         <div className="min-w-max px-8 md:px-0">
+          {/* Modèle et sliders */}
           <DashboardWrapper 
           visibleElements={visibleElements}
           activeSliders={activeSliders}
@@ -207,11 +208,9 @@ export function SandboxInteractive() {
           simulationSpeed={simulationSpeed}
           resetTrigger={resetTrigger}
           />
-        </div>
-      </div>
-
-      {/* Contrôles de simulation - positionnement relatif pour visibilité avec zoom */}
-      <div className="relative bg-gradient-to-r from-slate-950 to-black border-t border-white/10 py-2 px-3 md:py-4 md:px-8 mt-2">
+          
+          {/* Contrôles de simulation - intégré dans le flux après le modèle */}
+          <div className="bg-gradient-to-r from-slate-950 to-black border-t border-white/10 py-2 px-3 md:py-4 md:px-8 mt-4 mb-4">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-2 md:gap-6">
             {/* Ligne 1 mobile: Chronomètre + Boutons */}
@@ -282,6 +281,10 @@ export function SandboxInteractive() {
             </div>
           </div>
         </div>
+      </div>
+          {/* Fin contrôles */}
+        </div>
+        {/* Fin zone scrollable */}
       </div>
     </div>
   )
