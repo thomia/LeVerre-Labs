@@ -404,10 +404,9 @@ export function SandboxInteractive() {
           min-height: 250px;
         }
         
-        /* 3. Control panel en bas - compact */
+        /* 3. Control panel en bas - désolidarisé, intégré au contenu */
         .sandbox-controls {
           order: 3;
-          width: 100%;
           flex-shrink: 0;
         }
         
@@ -533,8 +532,8 @@ export function SandboxInteractive() {
             />
           </div>
           
-          {/* 3. CONTROL PANEL EN BAS - ultra compact */}
-          <div className="sandbox-controls bg-gradient-to-r from-slate-950 to-black border-t border-white/10 py-2 px-2">
+          {/* 3. CONTROL PANEL EN BAS - désolidarisé */}
+          <div className="sandbox-controls mx-2 mb-2 rounded-lg bg-gradient-to-br from-slate-900/80 to-slate-800/60 border border-white/20 py-2 px-3 shadow-lg">
             <div className="flex items-center justify-between gap-2">
               {/* Chronomètre */}
               <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-gray-900/50 border border-gray-400/20">
