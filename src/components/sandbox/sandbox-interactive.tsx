@@ -209,8 +209,8 @@ function ModelVisualization({
   }, [savedScores, isPaused, simulationSpeed])
 
   return (
-    <div className="relative w-full flex items-center justify-center overflow-hidden" style={{ height: '300px' }}>
-      <div className="relative w-full max-w-[800px] mx-auto" style={{ transform: 'scale(0.6)', transformOrigin: 'center center' }}>
+    <div className="relative w-full flex items-center justify-center overflow-hidden" style={{ height: '220px' }}>
+      <div className="relative w-full max-w-[800px] mx-auto" style={{ transform: 'scale(0.45)', transformOrigin: 'center center' }}>
         {/* Bulle environnementale */}
         <div className="bubble-container absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full overflow-hidden border-2 border-purple-400/40 bg-transparent shadow-[0_0_20px_rgba(168,85,247,0.15)] z-0" style={{ top: '70%' }}>
           <EnvironmentParticles 
@@ -394,14 +394,13 @@ export function SandboxInteractive() {
           flex-shrink: 0;
         }
         
-        /* 2. Modèle au milieu - flexible */
+        /* 2. Modèle au milieu - compact */
         .sandbox-model {
           order: 2;
           width: 100%;
           padding: 0;
           background: transparent;
-          flex-shrink: 1;
-          min-height: 250px;
+          flex-shrink: 0;
         }
         
         /* 3. Control panel en bas - désolidarisé, intégré au contenu */
@@ -423,12 +422,11 @@ export function SandboxInteractive() {
           
           .sandbox-model {
             padding: 0;
-            height: 280px !important;
           }
           
-          /* Scale réduit sur mobile */
+          /* Scale encore plus réduit sur mobile */
           .sandbox-model > div > div {
-            transform: scale(0.5) !important;
+            transform: scale(0.4) !important;
           }
           
           .sandbox-controls {
@@ -533,7 +531,7 @@ export function SandboxInteractive() {
           </div>
           
           {/* 3. CONTROL PANEL EN BAS - désolidarisé */}
-          <div className="sandbox-controls mx-2 mt-8 mb-2 rounded-lg bg-gradient-to-br from-slate-900/80 to-slate-800/60 border border-white/20 py-2 px-3 shadow-lg">
+          <div className="sandbox-controls mx-2 mt-2 mb-2 rounded-lg bg-gradient-to-br from-slate-900/80 to-slate-800/60 border border-white/20 py-2 px-3 shadow-lg">
             <div className="flex items-center justify-between gap-2">
               {/* Chronomètre */}
               <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-gray-900/50 border border-gray-400/20">
