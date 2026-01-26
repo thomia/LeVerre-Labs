@@ -209,10 +209,10 @@ function ModelVisualization({
   }, [savedScores, isPaused, simulationSpeed])
 
   return (
-    <div className="relative w-full flex items-center justify-center px-2" style={{ minHeight: '300px', maxHeight: '300px' }}>
-      <div className="relative w-full max-w-[600px] mx-auto">
+    <div className="relative w-full flex items-center justify-center overflow-hidden" style={{ height: '300px' }}>
+      <div className="relative w-full max-w-[800px] mx-auto" style={{ transform: 'scale(0.6)', transformOrigin: 'center center' }}>
         {/* Bulle environnementale */}
-        <div className="bubble-container absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[70vw] h-[70vw] max-w-[400px] max-h-[400px] rounded-full overflow-hidden border-2 border-purple-400/40 bg-transparent shadow-[0_0_20px_rgba(168,85,247,0.15)] z-0" style={{ top: '60%' }}>
+        <div className="bubble-container absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full overflow-hidden border-2 border-purple-400/40 bg-transparent shadow-[0_0_20px_rgba(168,85,247,0.15)] z-0" style={{ top: '70%' }}>
           <EnvironmentParticles 
             score={savedScores.scoreB} 
             isPaused={isPaused}
@@ -220,9 +220,9 @@ function ModelVisualization({
         </div>
         
         {/* Structure centrale */}
-        <div className="relative" style={{ height: '300px' }}>
+        <div className="relative" style={{ height: '700px' }}>
           {/* Verre avec paille */}
-          <div className="glass-container absolute left-1/2 top-[75%] transform -translate-x-1/2 -translate-y-1/2 z-10">
+          <div className="glass-container absolute left-1/2 top-[87%] transform -translate-x-1/2 -translate-y-1/2 scale-125 z-10">
             <div className="relative">
               <GlassComponent 
                 fillLevel={fillLevel} 
@@ -231,7 +231,7 @@ function ModelVisualization({
               />
               
               {/* Paille */}
-              <div className="straw-container absolute top-[-180px] right-[-5px] z-20">
+              <div className="straw-container absolute top-[-230px] right-[-5px] z-20">
                 <StrawComponent 
                   absorptionRate={savedScores.scoreP} 
                   setAbsorptionRate={() => {}}
@@ -243,7 +243,7 @@ function ModelVisualization({
           </div>
           
           {/* Robinet */}
-          <div className="tap-container absolute left-1/2 top-[25%] transform -translate-x-1/2 z-20">
+          <div className="tap-container absolute left-1/2 top-[35%] transform -translate-x-1/2 z-20">
             <TapComponent 
               flowRate={savedScores.scoreR} 
               onFlowRateChange={() => {}}
@@ -252,7 +252,7 @@ function ModelVisualization({
           </div>
           
           {/* Orage */}
-          <div className="storm-container absolute left-[45%] top-[45%] transform -translate-x-1/2 z-20">
+          <div className="storm-container absolute left-[45%] top-[53%] transform -translate-x-1/2 scale-110 z-20">
             <StormComponent 
               intensity={savedScores.scoreO} 
               onIntensityChange={() => {}}
@@ -424,8 +424,12 @@ export function SandboxInteractive() {
           
           .sandbox-model {
             padding: 0;
-            min-height: 220px;
-            max-height: 250px;
+            height: 280px !important;
+          }
+          
+          /* Scale réduit sur mobile */
+          .sandbox-model > div > div {
+            transform: scale(0.5) !important;
           }
           
           .sandbox-controls {
