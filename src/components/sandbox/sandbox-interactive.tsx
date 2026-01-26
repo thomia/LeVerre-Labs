@@ -33,15 +33,15 @@ function SlidersPanel({
   activeSliders: string[]
 }) {
   return (
-    <div className="space-y-3">
+    <div className="space-y-1.5">
       {/* Score V - Verre */}
-      <div className="p-4 rounded-lg bg-gradient-to-br from-gray-900/50 to-gray-800/30 border border-gray-400/20">
-        <div className="flex items-center justify-between mb-4 pb-2 border-b border-gray-600/30">
-          <div className="flex items-center gap-2">
-            <span className="text-xl">🥃</span>
-            <h4 className="text-sm font-medium text-gray-300">Score V</h4>
+      <div className="p-2 rounded-lg bg-gradient-to-br from-gray-900/50 to-gray-800/30 border border-gray-400/20">
+        <div className="flex items-center justify-between mb-2 pb-1 border-b border-gray-600/30">
+          <div className="flex items-center gap-1.5">
+            <span className="text-base">🥃</span>
+            <h4 className="text-xs font-medium text-gray-300">Score V</h4>
           </div>
-          <h4 className="text-sm font-medium text-gray-400">Largeur du verre</h4>
+          <h4 className="text-xs font-medium text-gray-400">Largeur du verre</h4>
         </div>
         <Slider
           value={[savedScores.scoreV]}
@@ -59,13 +59,13 @@ function SlidersPanel({
       </div>
 
       {/* Score R - Robinet */}
-      <div className="p-4 rounded-lg bg-gradient-to-br from-blue-900/20 to-blue-800/10 border border-blue-400/20">
-        <div className="flex items-center justify-between mb-4 pb-2 border-b border-blue-500/30">
-          <div className="flex items-center gap-2">
-            <span className="text-xl">🚰</span>
-            <h4 className="text-sm font-medium text-blue-400">Score R</h4>
+      <div className="p-2 rounded-lg bg-gradient-to-br from-blue-900/20 to-blue-800/10 border border-blue-400/20">
+        <div className="flex items-center justify-between mb-2 pb-1 border-b border-blue-500/30">
+          <div className="flex items-center gap-1.5">
+            <span className="text-base">🚰</span>
+            <h4 className="text-xs font-medium text-blue-400">Score R</h4>
           </div>
-          <h4 className="text-sm font-medium text-blue-300">Débit du robinet</h4>
+          <h4 className="text-xs font-medium text-blue-300">Débit du robinet</h4>
         </div>
         <Slider
           value={[savedScores.scoreR]}
@@ -83,13 +83,13 @@ function SlidersPanel({
       </div>
 
       {/* Score B - Bulle */}
-      <div className="p-4 rounded-lg bg-gradient-to-br from-purple-900/20 to-purple-800/10 border border-purple-400/20">
-        <div className="flex items-center justify-between mb-4 pb-2 border-b border-purple-500/30">
-          <div className="flex items-center gap-2">
-            <span className="text-xl">🫧</span>
-            <h4 className="text-sm font-medium text-purple-400">Score B</h4>
+      <div className="p-2 rounded-lg bg-gradient-to-br from-purple-900/20 to-purple-800/10 border border-purple-400/20">
+        <div className="flex items-center justify-between mb-2 pb-1 border-b border-purple-500/30">
+          <div className="flex items-center gap-1.5">
+            <span className="text-base">🫧</span>
+            <h4 className="text-xs font-medium text-purple-400">Score B</h4>
           </div>
-          <h4 className="text-sm font-medium text-purple-300">Agitation de l'environnement</h4>
+          <h4 className="text-xs font-medium text-purple-300">Agitation de l'environnement</h4>
         </div>
         <Slider
           value={[savedScores.scoreB]}
@@ -107,13 +107,13 @@ function SlidersPanel({
       </div>
 
       {/* Score O - Orage */}
-      <div className="p-4 rounded-lg bg-gradient-to-br from-amber-900/20 to-amber-800/10 border border-amber-400/20">
-        <div className="flex items-center justify-between mb-4 pb-2 border-b border-amber-500/30">
-          <div className="flex items-center gap-2">
-            <span className="text-xl">⛈️</span>
-            <h4 className="text-sm font-medium text-amber-400">Score O</h4>
+      <div className="p-2 rounded-lg bg-gradient-to-br from-amber-900/20 to-amber-800/10 border border-amber-400/20">
+        <div className="flex items-center justify-between mb-2 pb-1 border-b border-amber-500/30">
+          <div className="flex items-center gap-1.5">
+            <span className="text-base">⛈️</span>
+            <h4 className="text-xs font-medium text-amber-400">Score O</h4>
           </div>
-          <h4 className="text-sm font-medium text-amber-300">Intensité de la pluie</h4>
+          <h4 className="text-xs font-medium text-amber-300">Intensité de la pluie</h4>
         </div>
         <Slider
           value={[savedScores.scoreO]}
@@ -131,13 +131,13 @@ function SlidersPanel({
       </div>
 
       {/* Score P - Paille */}
-      <div className="p-4 rounded-lg bg-gradient-to-br from-green-900/20 to-green-800/10 border border-green-400/20">
-        <div className="flex items-center justify-between mb-4 pb-2 border-b border-green-500/30">
-          <div className="flex items-center gap-2">
-            <span className="text-xl">🥤</span>
-            <h4 className="text-sm font-medium text-green-400">Score P</h4>
+      <div className="p-2 rounded-lg bg-gradient-to-br from-green-900/20 to-green-800/10 border border-green-400/20">
+        <div className="flex items-center justify-between mb-2 pb-1 border-b border-green-500/30">
+          <div className="flex items-center gap-1.5">
+            <span className="text-base">🥤</span>
+            <h4 className="text-xs font-medium text-green-400">Score P</h4>
           </div>
-          <h4 className="text-sm font-medium text-green-300">Vitesse d'aspiration</h4>
+          <h4 className="text-xs font-medium text-green-300">Vitesse d'aspiration</h4>
         </div>
         <Slider
           value={[savedScores.scoreP]}
@@ -209,10 +209,10 @@ function ModelVisualization({
   }, [savedScores, isPaused, simulationSpeed])
 
   return (
-    <div className="relative w-full flex items-center justify-center px-4" style={{ minHeight: '450px' }}>
+    <div className="relative w-full flex items-center justify-center px-2" style={{ minHeight: '300px', maxHeight: '300px' }}>
       <div className="relative w-full max-w-[600px] mx-auto">
         {/* Bulle environnementale */}
-        <div className="bubble-container absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90vw] h-[90vw] max-w-[600px] max-h-[600px] rounded-full overflow-hidden border-2 border-purple-400/40 bg-transparent shadow-[0_0_20px_rgba(168,85,247,0.15)] z-0" style={{ top: '60%' }}>
+        <div className="bubble-container absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[70vw] h-[70vw] max-w-[400px] max-h-[400px] rounded-full overflow-hidden border-2 border-purple-400/40 bg-transparent shadow-[0_0_20px_rgba(168,85,247,0.15)] z-0" style={{ top: '60%' }}>
           <EnvironmentParticles 
             score={savedScores.scoreB} 
             isPaused={isPaused}
@@ -220,7 +220,7 @@ function ModelVisualization({
         </div>
         
         {/* Structure centrale */}
-        <div className="relative" style={{ height: '450px' }}>
+        <div className="relative" style={{ height: '300px' }}>
           {/* Verre avec paille */}
           <div className="glass-container absolute left-1/2 top-[75%] transform -translate-x-1/2 -translate-y-1/2 z-10">
             <div className="relative">
@@ -369,84 +369,96 @@ export function SandboxInteractive() {
   }, [isPaused])
 
   return (
-    <div className="bg-black min-h-screen flex flex-col">
+    <div className="bg-black h-screen flex flex-col overflow-hidden">
       {/* Styles spécifiques sandbox - layout vertical responsive */}
       <style jsx global>{`
         /* IMPORTANT: Pas de transform scale sur les conteneurs principaux */
         /* Le zoom natif doit fonctionner normalement */
         
-        /* Layout vertical : sliders > modèle > control panel */
+        /* Layout vertical : sliders > modèle > control panel - TOUT EN 1 PAGE */
         .sandbox-layout {
           display: flex;
           flex-direction: column;
           width: 100%;
+          height: 100%;
           gap: 0;
+          overflow: visible;
         }
         
-        /* 1. Sliders en haut */
+        /* 1. Sliders en haut - compacts */
         .sandbox-sliders {
           order: 1;
           width: 100%;
-          padding: 1rem;
+          padding: 0.5rem;
           background: transparent;
+          flex-shrink: 0;
         }
         
-        /* 2. Modèle au milieu */
+        /* 2. Modèle au milieu - flexible */
         .sandbox-model {
           order: 2;
           width: 100%;
-          padding: 0.5rem 0;
+          padding: 0;
           background: transparent;
+          flex-shrink: 1;
+          min-height: 250px;
         }
         
-        /* 3. Control panel en bas */
+        /* 3. Control panel en bas - compact */
         .sandbox-controls {
           order: 3;
           width: 100%;
           flex-shrink: 0;
         }
         
-        /* Adaptations mobile (petits écrans) */
+        /* Sliders ultra-compacts */
+        .sandbox-sliders .space-y-1\\.5 {
+          gap: 0.25rem;
+        }
+        
+        /* Adaptations mobile (petits écrans) - TOUT VISIBLE SANS SCROLL */
         @media (max-width: 640px) {
           .sandbox-sliders {
-            padding: 0.75rem;
-          }
-          
-          .sandbox-sliders .space-y-3 {
-            gap: 0.5rem;
-          }
-          
-          .sandbox-sliders .p-4 {
-            padding: 0.75rem;
+            padding: 0.5rem;
           }
           
           .sandbox-model {
-            padding: 0.25rem 0;
-            min-height: 350px;
-          }
-          
-          /* Adapter la taille des textes sur mobile */
-          .sandbox-sliders h4 {
-            font-size: 0.8rem;
+            padding: 0;
+            min-height: 220px;
+            max-height: 250px;
           }
           
           .sandbox-controls {
-            padding: 0.5rem 0.75rem !important;
+            padding: 0.5rem !important;
           }
           
-          /* Boutons plus compacts sur mobile */
+          /* Boutons ultra-compacts sur mobile */
           .sandbox-controls button {
-            padding: 0.5rem 0.75rem !important;
-            font-size: 0.875rem;
+            padding: 0.4rem 0.6rem !important;
+            font-size: 0.75rem !important;
           }
           
           .sandbox-controls .text-xl {
-            font-size: 1.125rem !important;
+            font-size: 1rem !important;
           }
           
           .sandbox-controls .h-4 {
-            height: 0.875rem;
-            width: 0.875rem;
+            height: 0.75rem;
+            width: 0.75rem;
+          }
+          
+          .sandbox-controls .gap-3 {
+            gap: 0.5rem !important;
+          }
+          
+          .sandbox-controls .px-4 {
+            padding-left: 0.5rem !important;
+            padding-right: 0.5rem !important;
+          }
+          
+          .sandbox-controls .py-2 {
+            padding-top: 0.4rem !important;
+            padding-bottom: 0.4rem !important;
           }
         }
         
@@ -455,10 +467,12 @@ export function SandboxInteractive() {
           .sandbox-sliders {
             max-width: 600px;
             margin: 0 auto;
+            padding: 0.75rem;
           }
           
           .sandbox-model {
-            padding: 1rem 0;
+            padding: 0.5rem 0;
+            min-height: 280px;
           }
         }
         
@@ -467,39 +481,33 @@ export function SandboxInteractive() {
           .sandbox-sliders {
             max-width: 700px;
             margin: 0 auto;
-            padding: 1.5rem;
+            padding: 1rem;
           }
           
           .sandbox-model {
-            padding: 1.5rem 0;
+            padding: 1rem 0;
+            min-height: 350px;
           }
         }
       `}</style>
       
-      {/* Header avec logo et titre */}
-      <div className="bg-gradient-to-r from-slate-950 via-black to-slate-950 border-b border-white/10 py-3 px-4 flex-shrink-0">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-center gap-3">
-            <img 
-              src="/photo%20video/logo_noir-removebg-preview.png" 
-              alt="LeVerre Labs Logo" 
-              className="h-10 w-10 object-contain brightness-0 invert"
-            />
-            <div className="text-center">
-              <h1 className="text-2xl font-bold">
-                <span className="text-[rgb(255,30,90)]">LeVerre</span>{' '}
-                <span className="text-white">Labs</span>
-              </h1>
-              <p className="text-gray-400 text-xs mt-0.5">
-                Explorez le modèle du verre
-              </p>
-            </div>
-          </div>
+      {/* Header avec logo et titre - ultra compact */}
+      <div className="bg-gradient-to-r from-slate-950 via-black to-slate-950 border-b border-white/10 py-1.5 px-3 flex-shrink-0">
+        <div className="flex items-center justify-center gap-2">
+          <img 
+            src="/photo%20video/logo_noir-removebg-preview.png" 
+            alt="LeVerre Labs Logo" 
+            className="h-6 w-6 object-contain brightness-0 invert"
+          />
+          <h1 className="text-lg font-bold">
+            <span className="text-[rgb(255,30,90)]">LeVerre</span>{' '}
+            <span className="text-white">Labs</span>
+          </h1>
         </div>
       </div>
 
-      {/* Layout vertical : Sliders > Modèle > Control Panel */}
-      <div className="flex-1 overflow-y-auto">
+      {/* Layout vertical : Sliders > Modèle > Control Panel - SANS SCROLL */}
+      <div className="flex-1 overflow-hidden">
         <div className="sandbox-layout">
           {/* 1. SLIDERS EN HAUT */}
           <div className="sandbox-sliders">
@@ -521,76 +529,56 @@ export function SandboxInteractive() {
             />
           </div>
           
-          {/* 3. CONTROL PANEL EN BAS */}
-          <div className="sandbox-controls bg-gradient-to-r from-slate-950 to-black border-t border-white/10 py-3 px-4">
-            <div className="max-w-6xl mx-auto">
-              <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
-                {/* Chronomètre + Boutons */}
-                <div className="flex items-center justify-between md:justify-start gap-3 flex-1">
-                  {/* Chronomètre */}
-                  <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-br from-gray-900/50 to-gray-800/30 border border-gray-400/20">
-                    <Clock className="h-4 w-4 text-[rgb(255,30,90)]" />
-                    <span className="text-xl font-sans font-bold text-white tracking-wide">{formattedWorkTime()}</span>
-                  </div>
-                  
-                  {/* Contrôles principaux */}
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={handleResetSimulation}
-                      className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[rgb(255,30,90)]/20 hover:bg-[rgb(255,30,90)]/30 text-white transition-all border border-[rgb(255,30,90)]/40 hover:border-[rgb(255,30,90)]/60"
-                    >
-                      <RotateCcw className="h-4 w-4" />
-                      <span className="font-medium">Reset</span>
-                    </button>
-                    
-                    <button
-                      onClick={handlePauseToggle}
-                      className="flex items-center gap-2 px-5 py-2 rounded-lg bg-[rgb(255,30,90)]/20 hover:bg-[rgb(255,30,90)]/30 text-white transition-all border border-[rgb(255,30,90)]/40 hover:border-[rgb(255,30,90)]/60"
-                    >
-                      {isPaused ? (
-                        <>
-                          <Play className="h-4 w-4" />
-                          <span className="font-medium">Play</span>
-                        </>
-                      ) : (
-                        <>
-                          <Pause className="h-4 w-4" />
-                          <span className="font-medium">Pause</span>
-                        </>
-                      )}
-                    </button>
-                  </div>
-                </div>
-                
-                {/* Vitesse de simulation */}
-                <div className="flex items-center gap-3 px-4 py-2 rounded-lg bg-gradient-to-br from-gray-900/50 to-gray-800/30 border border-gray-400/20">
-                  <div className="flex items-center gap-2">
-                    <FastForward className="h-4 w-4 text-[rgb(255,30,90)]" />
-                    <span className="text-sm text-gray-300 font-medium whitespace-nowrap">Vitesse</span>
-                  </div>
-                  <input
-                    type="range"
-                    min="1"
-                    max="10"
-                    step="1"
-                    value={simulationSpeed}
-                    onChange={(e) => handleSpeedChange(Number(e.target.value))}
-                    className="w-32 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[rgb(255,30,90)]"
-                  />
-                  <span className="text-sm font-semibold text-[rgb(255,30,90)] min-w-[2rem] text-right">x{simulationSpeed}</span>
-                </div>
+          {/* 3. CONTROL PANEL EN BAS - ultra compact */}
+          <div className="sandbox-controls bg-gradient-to-r from-slate-950 to-black border-t border-white/10 py-2 px-2">
+            <div className="flex items-center justify-between gap-2">
+              {/* Chronomètre */}
+              <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-gray-900/50 border border-gray-400/20">
+                <Clock className="h-3 w-3 text-[rgb(255,30,90)]" />
+                <span className="text-sm font-sans font-bold text-white">{formattedWorkTime()}</span>
               </div>
-
-              {/* Indicateur raccourcis clavier */}
-              <div className="hidden md:flex items-center justify-center gap-4 mt-3 text-xs text-gray-500">
-                <div className="flex items-center gap-2">
-                  <kbd className="px-2 py-1 bg-gray-800/50 rounded border border-gray-700">Espace</kbd>
-                  <span>Pause/Reprendre</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <kbd className="px-2 py-1 bg-gray-800/50 rounded border border-gray-700">R</kbd>
-                  <span>Reset</span>
-                </div>
+              
+              {/* Boutons */}
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={handleResetSimulation}
+                  className="flex items-center gap-1 px-2 py-1 rounded bg-[rgb(255,30,90)]/20 hover:bg-[rgb(255,30,90)]/30 text-white transition-all border border-[rgb(255,30,90)]/40"
+                >
+                  <RotateCcw className="h-3 w-3" />
+                  <span className="text-xs font-medium">Reset</span>
+                </button>
+                
+                <button
+                  onClick={handlePauseToggle}
+                  className="flex items-center gap-1 px-2 py-1 rounded bg-[rgb(255,30,90)]/20 hover:bg-[rgb(255,30,90)]/30 text-white transition-all border border-[rgb(255,30,90)]/40"
+                >
+                  {isPaused ? (
+                    <>
+                      <Play className="h-3 w-3" />
+                      <span className="text-xs font-medium">Play</span>
+                    </>
+                  ) : (
+                    <>
+                      <Pause className="h-3 w-3" />
+                      <span className="text-xs font-medium">Pause</span>
+                    </>
+                  )}
+                </button>
+              </div>
+              
+              {/* Vitesse */}
+              <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-gray-900/50 border border-gray-400/20">
+                <FastForward className="h-3 w-3 text-[rgb(255,30,90)]" />
+                <input
+                  type="range"
+                  min="1"
+                  max="10"
+                  step="1"
+                  value={simulationSpeed}
+                  onChange={(e) => handleSpeedChange(Number(e.target.value))}
+                  className="w-20 h-1.5 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[rgb(255,30,90)]"
+                />
+                <span className="text-xs font-semibold text-[rgb(255,30,90)]">x{simulationSpeed}</span>
               </div>
             </div>
           </div>
