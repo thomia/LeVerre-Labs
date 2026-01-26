@@ -375,14 +375,14 @@ export function SandboxInteractive() {
         /* IMPORTANT: Pas de transform scale sur les conteneurs principaux */
         /* Le zoom natif doit fonctionner normalement */
         
-        /* Layout vertical : sliders > modèle > control panel - TOUT EN 1 PAGE */
+        /* Layout vertical : sliders > modèle > control panel */
         .sandbox-layout {
           display: flex;
           flex-direction: column;
           width: 100%;
-          height: 100%;
           gap: 0;
           overflow: visible;
+          padding-bottom: 1rem;
         }
         
         /* 1. Sliders en haut - compacts */
@@ -509,8 +509,8 @@ export function SandboxInteractive() {
         </div>
       </div>
 
-      {/* Layout vertical : Sliders > Modèle > Control Panel - SANS SCROLL */}
-      <div className="flex-1 overflow-hidden">
+      {/* Layout vertical : Sliders > Modèle > Control Panel - Scrollable */}
+      <div className="flex-1 overflow-y-auto">
         <div className="sandbox-layout">
           {/* 1. SLIDERS EN HAUT */}
           <div className="sandbox-sliders">
