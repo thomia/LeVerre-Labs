@@ -432,7 +432,7 @@ export function SandboxInteractive() {
           }
           
           .sandbox-controls {
-            padding: 0.5rem !important;
+            margin-top: 1.5rem !important;
           }
           
           /* Boutons ultra-compacts sur mobile */
@@ -533,7 +533,7 @@ export function SandboxInteractive() {
           </div>
           
           {/* 3. CONTROL PANEL EN BAS - désolidarisé */}
-          <div className="sandbox-controls mx-2 mb-2 rounded-lg bg-gradient-to-br from-slate-900/80 to-slate-800/60 border border-white/20 py-2 px-3 shadow-lg">
+          <div className="sandbox-controls mx-2 mt-8 mb-2 rounded-lg bg-gradient-to-br from-slate-900/80 to-slate-800/60 border border-white/20 py-2 px-3 shadow-lg">
             <div className="flex items-center justify-between gap-2">
               {/* Chronomètre */}
               <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-gray-900/50 border border-gray-400/20">
