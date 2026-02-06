@@ -7,20 +7,67 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
 import { RotateCcw, Play, Pause, Clock, FastForward } from 'lucide-react'
-import { Slider } from '@/components/ui/slider-number-flow'
+import * as RadixSlider from '@radix-ui/react-slider'
 import TapComponent from '@/components/dashboard/tap-component'
 import GlassComponent from '@/components/dashboard/glass-component'
 import StrawComponent from '@/components/dashboard/straw-component'
 import StormComponent from '@/components/dashboard/storm-component'
 import { EnvironmentParticles } from '@/components/dashboard/bubble-component'
 
+interface CompactSliderProps {
+  labelLeft: string
+  labelRight: string
+  value: number
+  valueColorClassName: string
+  rangeClassName: string
+  thumbClassName: string
+  onValueChange: (value: number) => void
+}
+
+function CompactSlider({
+  labelLeft,
+  labelRight,
+  value,
+  valueColorClassName,
+  rangeClassName,
+  thumbClassName,
+  onValueChange,
+}: CompactSliderProps) {
+  return (
+    <div className="grid grid-cols-1 gap-1">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <span className={"text-[clamp(0.7rem,2.6vw,0.8rem)] font-medium " + valueColorClassName}>{labelLeft}</span>
+        </div>
+        <span className="text-[clamp(0.7rem,2.6vw,0.8rem)] font-semibold text-white tabular-nums">{value}</span>
+        <span className={"text-[clamp(0.7rem,2.6vw,0.8rem)] font-medium text-right " + valueColorClassName}>{labelRight}</span>
+      </div>
+
+      <RadixSlider.Root
+        value={[value]}
+        min={0}
+        max={100}
+        step={1}
+        onValueChange={(values) => onValueChange(values[0] ?? 0)}
+        className="relative flex h-12 w-full touch-none select-none items-center"
+      >
+        <RadixSlider.Track className="relative h-1 grow rounded-full bg-white/10">
+          <RadixSlider.Range className={"absolute h-full rounded-full " + rangeClassName} />
+        </RadixSlider.Track>
+        <RadixSlider.Thumb
+          className={"relative block h-5 w-5 rounded-full bg-white shadow-md ring " + thumbClassName}
+          aria-label={labelLeft}
+        />
+      </RadixSlider.Root>
+    </div>
+  )
+}
+
 // Composant pour les sliders
 function SlidersPanel({ 
   savedScores, 
-  setSavedScores, 
-  activeSliders 
+  setSavedScores 
 }: {
   savedScores: {
     scoreV: number
@@ -30,127 +77,71 @@ function SlidersPanel({
     scoreP: number
   }
   setSavedScores: (scores: any) => void
-  activeSliders: string[]
 }) {
   return (
-    <div className="space-y-1.5">
+    <div className="grid grid-cols-1 gap-1.5">
       {/* Score V - Verre */}
-      <div className="p-2 rounded-lg bg-gradient-to-br from-gray-900/50 to-gray-800/30 border border-gray-400/20">
-        <div className="flex items-center justify-between mb-2 pb-1 border-b border-gray-600/30">
-          <div className="flex items-center gap-1.5">
-            <span className="text-base">🥃</span>
-            <h4 className="text-xs font-medium text-gray-300">Score V</h4>
-          </div>
-          <h4 className="text-xs font-medium text-gray-400">Largeur du verre</h4>
-        </div>
-        <Slider
-          value={[savedScores.scoreV]}
-          min={0}
-          max={100}
-          step={1}
-          onValueChange={(values) => setSavedScores({ ...savedScores, scoreV: values[0] })}
-          className="mx-auto w-full"
-          valueColor="text-gray-300"
-          style={{
-            '--slider-range-bg': 'rgb(209 213 219)',
-            '--slider-thumb-ring': 'rgb(209 213 219 / 0.2)'
-          } as React.CSSProperties}
+      <div className="rounded-lg bg-gradient-to-br from-gray-900/50 to-gray-800/30 border border-gray-400/20 px-2">
+        <CompactSlider
+          labelLeft="Score V"
+          labelRight="Largeur du verre"
+          value={savedScores.scoreV}
+          valueColorClassName="text-gray-300"
+          rangeClassName="bg-[rgb(209_213_219)]"
+          thumbClassName="ring-[rgb(209_213_219_/_0.25)]"
+          onValueChange={(nextValue) => setSavedScores({ ...savedScores, scoreV: nextValue })}
         />
       </div>
 
       {/* Score R - Robinet */}
-      <div className="p-2 rounded-lg bg-gradient-to-br from-blue-900/20 to-blue-800/10 border border-blue-400/20">
-        <div className="flex items-center justify-between mb-2 pb-1 border-b border-blue-500/30">
-          <div className="flex items-center gap-1.5">
-            <span className="text-base">🚰</span>
-            <h4 className="text-xs font-medium text-blue-400">Score R</h4>
-          </div>
-          <h4 className="text-xs font-medium text-blue-300">Débit du robinet</h4>
-        </div>
-        <Slider
-          value={[savedScores.scoreR]}
-          min={0}
-          max={100}
-          step={1}
-          onValueChange={(values) => setSavedScores({ ...savedScores, scoreR: values[0] })}
-          className="mx-auto w-full"
-          valueColor="text-blue-400"
-          style={{
-            '--slider-range-bg': 'rgb(96 165 250)',
-            '--slider-thumb-ring': 'rgb(96 165 250 / 0.2)'
-          } as React.CSSProperties}
+      <div className="rounded-lg bg-gradient-to-br from-blue-900/20 to-blue-800/10 border border-blue-400/20 px-2">
+        <CompactSlider
+          labelLeft="Score R"
+          labelRight="Débit du robinet"
+          value={savedScores.scoreR}
+          valueColorClassName="text-blue-400"
+          rangeClassName="bg-[rgb(96_165_250)]"
+          thumbClassName="ring-[rgb(96_165_250_/_0.25)]"
+          onValueChange={(nextValue) => setSavedScores({ ...savedScores, scoreR: nextValue })}
         />
       </div>
 
       {/* Score B - Bulle */}
-      <div className="p-2 rounded-lg bg-gradient-to-br from-purple-900/20 to-purple-800/10 border border-purple-400/20">
-        <div className="flex items-center justify-between mb-2 pb-1 border-b border-purple-500/30">
-          <div className="flex items-center gap-1.5">
-            <span className="text-base">🫧</span>
-            <h4 className="text-xs font-medium text-purple-400">Score B</h4>
-          </div>
-          <h4 className="text-xs font-medium text-purple-300">Agitation de l'environnement</h4>
-        </div>
-        <Slider
-          value={[savedScores.scoreB]}
-          min={0}
-          max={100}
-          step={1}
-          onValueChange={(values) => setSavedScores({ ...savedScores, scoreB: values[0] })}
-          className="mx-auto w-full"
-          valueColor="text-purple-400"
-          style={{
-            '--slider-range-bg': 'rgb(192 132 252)',
-            '--slider-thumb-ring': 'rgb(192 132 252 / 0.2)'
-          } as React.CSSProperties}
+      <div className="rounded-lg bg-gradient-to-br from-purple-900/20 to-purple-800/10 border border-purple-400/20 px-2">
+        <CompactSlider
+          labelLeft="Score B"
+          labelRight="Agitation de l'environnement"
+          value={savedScores.scoreB}
+          valueColorClassName="text-purple-400"
+          rangeClassName="bg-[rgb(192_132_252)]"
+          thumbClassName="ring-[rgb(192_132_252_/_0.25)]"
+          onValueChange={(nextValue) => setSavedScores({ ...savedScores, scoreB: nextValue })}
         />
       </div>
 
       {/* Score O - Orage */}
-      <div className="p-2 rounded-lg bg-gradient-to-br from-amber-900/20 to-amber-800/10 border border-amber-400/20">
-        <div className="flex items-center justify-between mb-2 pb-1 border-b border-amber-500/30">
-          <div className="flex items-center gap-1.5">
-            <span className="text-base">⛈️</span>
-            <h4 className="text-xs font-medium text-amber-400">Score O</h4>
-          </div>
-          <h4 className="text-xs font-medium text-amber-300">Intensité de la pluie</h4>
-        </div>
-        <Slider
-          value={[savedScores.scoreO]}
-          min={0}
-          max={100}
-          step={1}
-          onValueChange={(values) => setSavedScores({ ...savedScores, scoreO: values[0] })}
-          className="mx-auto w-full"
-          valueColor="text-amber-400"
-          style={{
-            '--slider-range-bg': 'rgb(251 191 36)',
-            '--slider-thumb-ring': 'rgb(251 191 36 / 0.2)'
-          } as React.CSSProperties}
+      <div className="rounded-lg bg-gradient-to-br from-amber-900/20 to-amber-800/10 border border-amber-400/20 px-2">
+        <CompactSlider
+          labelLeft="Score O"
+          labelRight="Intensité de la pluie"
+          value={savedScores.scoreO}
+          valueColorClassName="text-amber-400"
+          rangeClassName="bg-[rgb(251_191_36)]"
+          thumbClassName="ring-[rgb(251_191_36_/_0.25)]"
+          onValueChange={(nextValue) => setSavedScores({ ...savedScores, scoreO: nextValue })}
         />
       </div>
 
       {/* Score P - Paille */}
-      <div className="p-2 rounded-lg bg-gradient-to-br from-green-900/20 to-green-800/10 border border-green-400/20">
-        <div className="flex items-center justify-between mb-2 pb-1 border-b border-green-500/30">
-          <div className="flex items-center gap-1.5">
-            <span className="text-base">🥤</span>
-            <h4 className="text-xs font-medium text-green-400">Score P</h4>
-          </div>
-          <h4 className="text-xs font-medium text-green-300">Vitesse d'aspiration</h4>
-        </div>
-        <Slider
-          value={[savedScores.scoreP]}
-          min={0}
-          max={100}
-          step={1}
-          onValueChange={(values) => setSavedScores({ ...savedScores, scoreP: values[0] })}
-          className="mx-auto w-full"
-          valueColor="text-green-400"
-          style={{
-            '--slider-range-bg': 'rgb(74 222 128)',
-            '--slider-thumb-ring': 'rgb(74 222 128 / 0.2)'
-          } as React.CSSProperties}
+      <div className="rounded-lg bg-gradient-to-br from-green-900/20 to-green-800/10 border border-green-400/20 px-2">
+        <CompactSlider
+          labelLeft="Score P"
+          labelRight="Vitesse d'aspiration"
+          value={savedScores.scoreP}
+          valueColorClassName="text-green-400"
+          rangeClassName="bg-[rgb(74_222_128)]"
+          thumbClassName="ring-[rgb(74_222_128_/_0.25)]"
+          onValueChange={(nextValue) => setSavedScores({ ...savedScores, scoreP: nextValue })}
         />
       </div>
     </div>
@@ -159,13 +150,11 @@ function SlidersPanel({
 
 // Composant pour la visualisation 3D
 function ModelVisualization({
-  visibleElements,
   savedScores,
   isPaused,
   simulationSpeed,
   resetTrigger
 }: {
-  visibleElements: string[]
   savedScores: {
     scoreV: number
     scoreR: number
@@ -209,55 +198,57 @@ function ModelVisualization({
   }, [savedScores, isPaused, simulationSpeed])
 
   return (
-    <div className="relative w-full flex items-center justify-center overflow-hidden" style={{ height: '220px' }}>
-      <div className="relative w-full max-w-[800px] mx-auto" style={{ transform: 'scale(0.45)', transformOrigin: 'center center' }}>
-        {/* Bulle environnementale */}
-        <div className="bubble-container absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full overflow-hidden border-2 border-purple-400/40 bg-transparent shadow-[0_0_20px_rgba(168,85,247,0.15)] z-0" style={{ top: '70%' }}>
-          <EnvironmentParticles 
-            score={savedScores.scoreB} 
-            isPaused={isPaused}
-          />
-        </div>
-        
-        {/* Structure centrale */}
-        <div className="relative" style={{ height: '700px' }}>
-          {/* Verre avec paille */}
-          <div className="glass-container absolute left-1/2 top-[87%] transform -translate-x-1/2 -translate-y-1/2 scale-125 z-10">
-            <div className="relative">
-              <GlassComponent 
-                fillLevel={fillLevel} 
-                absorptionRate={savedScores.scoreP}
-                width={glassWidth}
-              />
-              
-              {/* Paille */}
-              <div className="straw-container absolute top-[-230px] right-[-5px] z-20">
-                <StrawComponent 
-                  absorptionRate={savedScores.scoreP} 
-                  setAbsorptionRate={() => {}}
-                  isInsideGlass={true}
-                  isPaused={isPaused}
+    <div className="relative w-full h-full min-h-0 flex items-center justify-center overflow-hidden">
+      <div className="sandbox-model-canvas relative">
+        <div className="sandbox-model-canvas-inner relative">
+          {/* Bulle environnementale */}
+          <div className="bubble-container absolute left-1/2 top-[70%] transform -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full overflow-hidden border-2 border-purple-400/40 bg-transparent shadow-[0_0_20px_rgba(168,85,247,0.15)] z-0">
+            <EnvironmentParticles 
+              score={savedScores.scoreB} 
+              isPaused={isPaused}
+            />
+          </div>
+          
+          {/* Structure centrale */}
+          <div className="relative h-[700px]">
+            {/* Verre avec paille */}
+            <div className="glass-container absolute left-1/2 top-[87%] transform -translate-x-1/2 -translate-y-1/2 scale-125 z-10">
+              <div className="relative">
+                <GlassComponent 
+                  fillLevel={fillLevel} 
+                  absorptionRate={savedScores.scoreP}
+                  width={glassWidth}
                 />
+                
+                {/* Paille */}
+                <div className="straw-container absolute top-[-230px] right-[-5px] z-20">
+                  <StrawComponent 
+                    absorptionRate={savedScores.scoreP} 
+                    setAbsorptionRate={() => {}}
+                    isInsideGlass={true}
+                    isPaused={isPaused}
+                  />
+                </div>
               </div>
             </div>
-          </div>
-          
-          {/* Robinet */}
-          <div className="tap-container absolute left-1/2 top-[35%] transform -translate-x-1/2 z-20">
-            <TapComponent 
-              flowRate={savedScores.scoreR} 
-              onFlowRateChange={() => {}}
-              hideDebitLabel={true}
-            />
-          </div>
-          
-          {/* Orage */}
-          <div className="storm-container absolute left-[45%] top-[53%] transform -translate-x-1/2 scale-110 z-20">
-            <StormComponent 
-              intensity={savedScores.scoreO} 
-              onIntensityChange={() => {}}
-              hideIntensityLabel={true}
-            />
+            
+            {/* Robinet */}
+            <div className="tap-container absolute left-1/2 top-[35%] transform -translate-x-1/2 z-20">
+              <TapComponent 
+                flowRate={savedScores.scoreR} 
+                onFlowRateChange={() => {}}
+                hideDebitLabel={true}
+              />
+            </div>
+            
+            {/* Orage */}
+            <div className="storm-container absolute left-[45%] top-[53%] transform -translate-x-1/2 scale-110 z-20">
+              <StormComponent 
+                intensity={savedScores.scoreO} 
+                onIntensityChange={() => {}}
+                hideIntensityLabel={true}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -282,10 +273,6 @@ export function SandboxInteractive() {
   const [workStartTime, setWorkStartTime] = useState(Date.now())
   const [resetTrigger, setResetTrigger] = useState(0)
   const [hasReachedLimit, setHasReachedLimit] = useState(false)
-
-  // Tous les éléments sont visibles et tous les sliders sont actifs
-  const visibleElements = ['glass', 'tap', 'bubble', 'storm', 'straw']
-  const activeSliders = ['scoreV', 'scoreR', 'scoreB', 'scoreO', 'scoreP']
 
   // Gestion de la pause/reprise
   const handlePauseToggle = () => {
@@ -369,7 +356,7 @@ export function SandboxInteractive() {
   }, [isPaused])
 
   return (
-    <div className="bg-black h-screen flex flex-col overflow-hidden">
+    <div className="bg-black h-[100svh] flex flex-col overflow-hidden">
       {/* Styles spécifiques sandbox - layout vertical responsive */}
       <style jsx global>{`
         /* IMPORTANT: Pas de transform scale sur les conteneurs principaux */
@@ -377,12 +364,12 @@ export function SandboxInteractive() {
         
         /* Layout vertical : sliders > modèle > control panel */
         .sandbox-layout {
-          display: flex;
-          flex-direction: column;
+          display: grid;
+          grid-template-rows: auto minmax(0, 1fr) auto;
           width: 100%;
           gap: 0;
-          overflow: visible;
-          padding-bottom: 1rem;
+          height: 100%;
+          overflow: hidden;
         }
         
         /* 1. Sliders en haut - compacts */
@@ -400,7 +387,7 @@ export function SandboxInteractive() {
           width: 100%;
           padding: 0;
           background: transparent;
-          flex-shrink: 0;
+          min-height: 0;
         }
         
         /* 3. Control panel en bas - désolidarisé, intégré au contenu */
@@ -409,57 +396,14 @@ export function SandboxInteractive() {
           flex-shrink: 0;
         }
         
-        /* Sliders ultra-compacts */
-        .sandbox-sliders .space-y-1\\.5 {
-          gap: 0.25rem;
-        }
-        
         /* Adaptations mobile (petits écrans) - TOUT VISIBLE SANS SCROLL */
         @media (max-width: 640px) {
           .sandbox-sliders {
             padding: 0.5rem;
           }
-          
-          .sandbox-model {
-            padding: 0;
-          }
-          
-          /* Scale encore plus réduit sur mobile */
-          .sandbox-model > div > div {
-            transform: scale(0.4) !important;
-          }
-          
-          .sandbox-controls {
-            margin-top: 1.5rem !important;
-          }
-          
-          /* Boutons ultra-compacts sur mobile */
-          .sandbox-controls button {
-            padding: 0.4rem 0.6rem !important;
-            font-size: 0.75rem !important;
-          }
-          
-          .sandbox-controls .text-xl {
-            font-size: 1rem !important;
-          }
-          
-          .sandbox-controls .h-4 {
-            height: 0.75rem;
-            width: 0.75rem;
-          }
-          
-          .sandbox-controls .gap-3 {
-            gap: 0.5rem !important;
-          }
-          
-          .sandbox-controls .px-4 {
-            padding-left: 0.5rem !important;
-            padding-right: 0.5rem !important;
-          }
-          
-          .sandbox-controls .py-2 {
-            padding-top: 0.4rem !important;
-            padding-bottom: 0.4rem !important;
+
+          .sandbox-model-canvas {
+            --sandbox-model-scale: 0.58;
           }
         }
         
@@ -475,6 +419,10 @@ export function SandboxInteractive() {
             padding: 0.5rem 0;
             min-height: 280px;
           }
+
+          .sandbox-model-canvas {
+            --sandbox-model-scale: 0.68;
+          }
         }
         
         /* Desktop */
@@ -487,8 +435,25 @@ export function SandboxInteractive() {
           
           .sandbox-model {
             padding: 1rem 0;
-            min-height: 350px;
           }
+
+          .sandbox-model-canvas {
+            --sandbox-model-scale: 0.78;
+          }
+        }
+
+        .sandbox-model-canvas {
+          --sandbox-model-scale: 0.58;
+          width: 700px;
+          height: 700px;
+          transform-origin: center center;
+          transform: scale(var(--sandbox-model-scale));
+        }
+
+        .sandbox-model-canvas-inner {
+          width: 700px;
+          height: 700px;
+          position: relative;
         }
       `}</style>
       
@@ -507,22 +472,20 @@ export function SandboxInteractive() {
         </div>
       </div>
 
-      {/* Layout vertical : Sliders > Modèle > Control Panel - Scrollable */}
-      <div className="flex-1 overflow-y-auto">
+      {/* Layout vertical : Sliders > Modèle > Control Panel - Sans scroll */}
+      <div className="flex-1 overflow-hidden">
         <div className="sandbox-layout">
           {/* 1. SLIDERS EN HAUT */}
           <div className="sandbox-sliders">
             <SlidersPanel 
               savedScores={savedScores}
               setSavedScores={setSavedScores}
-              activeSliders={activeSliders}
             />
           </div>
           
           {/* 2. MODÈLE AU MILIEU */}
           <div className="sandbox-model">
             <ModelVisualization 
-              visibleElements={visibleElements}
               savedScores={savedScores}
               isPaused={isPaused}
               simulationSpeed={simulationSpeed}
