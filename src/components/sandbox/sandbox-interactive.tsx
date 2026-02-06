@@ -35,13 +35,13 @@ function CompactSlider({
   onValueChange,
 }: CompactSliderProps) {
   return (
-    <div className="grid grid-cols-1 gap-1">
+    <div className="grid grid-cols-1 gap-0.5">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className={"text-[clamp(0.7rem,2.6vw,0.8rem)] font-medium " + valueColorClassName}>{labelLeft}</span>
+          <span className={"text-[clamp(0.875rem,3vw,1rem)] font-medium " + valueColorClassName}>{labelLeft}</span>
         </div>
-        <span className="text-[clamp(0.7rem,2.6vw,0.8rem)] font-semibold text-white tabular-nums">{value}</span>
-        <span className={"text-[clamp(0.7rem,2.6vw,0.8rem)] font-medium text-right " + valueColorClassName}>{labelRight}</span>
+        <span className="text-[clamp(0.875rem,3vw,1rem)] font-semibold text-white tabular-nums">{value}</span>
+        <span className={"text-[clamp(0.875rem,3vw,1rem)] font-medium text-right " + valueColorClassName}>{labelRight}</span>
       </div>
 
       <RadixSlider.Root
@@ -50,13 +50,13 @@ function CompactSlider({
         max={100}
         step={1}
         onValueChange={(values) => onValueChange(values[0] ?? 0)}
-        className="relative flex h-12 w-full touch-none select-none items-center"
+        className="relative flex h-14 w-full touch-none select-none items-center"
       >
-        <RadixSlider.Track className="relative h-1 grow rounded-full bg-white/10">
+        <RadixSlider.Track className="relative h-1.5 grow rounded-full bg-white/10">
           <RadixSlider.Range className={"absolute h-full rounded-full " + rangeClassName} />
         </RadixSlider.Track>
         <RadixSlider.Thumb
-          className={"relative block h-5 w-5 rounded-full bg-white shadow-md ring " + thumbClassName}
+          className={"relative block h-11 w-11 rounded-full bg-white shadow-md ring " + thumbClassName}
           aria-label={labelLeft}
         />
       </RadixSlider.Root>
@@ -79,9 +79,9 @@ function SlidersPanel({
   setSavedScores: (scores: any) => void
 }) {
   return (
-    <div className="grid grid-cols-1 gap-1.5">
+    <div className="grid grid-cols-1 gap-1">
       {/* Score V - Verre */}
-      <div className="rounded-lg bg-gradient-to-br from-gray-900/50 to-gray-800/30 border border-gray-400/20 px-2">
+      <div className="rounded-lg bg-gradient-to-br from-gray-900/50 to-gray-800/30 border border-gray-400/20 px-2 py-0.5">
         <CompactSlider
           labelLeft="Score V"
           labelRight="Largeur du verre"
@@ -94,7 +94,7 @@ function SlidersPanel({
       </div>
 
       {/* Score R - Robinet */}
-      <div className="rounded-lg bg-gradient-to-br from-blue-900/20 to-blue-800/10 border border-blue-400/20 px-2">
+      <div className="rounded-lg bg-gradient-to-br from-blue-900/20 to-blue-800/10 border border-blue-400/20 px-2 py-0.5">
         <CompactSlider
           labelLeft="Score R"
           labelRight="Débit du robinet"
@@ -107,7 +107,7 @@ function SlidersPanel({
       </div>
 
       {/* Score B - Bulle */}
-      <div className="rounded-lg bg-gradient-to-br from-purple-900/20 to-purple-800/10 border border-purple-400/20 px-2">
+      <div className="rounded-lg bg-gradient-to-br from-purple-900/20 to-purple-800/10 border border-purple-400/20 px-2 py-0.5">
         <CompactSlider
           labelLeft="Score B"
           labelRight="Agitation de l'environnement"
@@ -120,7 +120,7 @@ function SlidersPanel({
       </div>
 
       {/* Score O - Orage */}
-      <div className="rounded-lg bg-gradient-to-br from-amber-900/20 to-amber-800/10 border border-amber-400/20 px-2">
+      <div className="rounded-lg bg-gradient-to-br from-amber-900/20 to-amber-800/10 border border-amber-400/20 px-2 py-0.5">
         <CompactSlider
           labelLeft="Score O"
           labelRight="Intensité de la pluie"
@@ -133,7 +133,7 @@ function SlidersPanel({
       </div>
 
       {/* Score P - Paille */}
-      <div className="rounded-lg bg-gradient-to-br from-green-900/20 to-green-800/10 border border-green-400/20 px-2">
+      <div className="rounded-lg bg-gradient-to-br from-green-900/20 to-green-800/10 border border-green-400/20 px-2 py-0.5">
         <CompactSlider
           labelLeft="Score P"
           labelRight="Vitesse d'aspiration"
@@ -198,7 +198,7 @@ function ModelVisualization({
   }, [savedScores, isPaused, simulationSpeed])
 
   return (
-    <div className="relative w-full h-full min-h-0 flex items-center justify-center overflow-hidden">
+    <div className="relative w-full h-full min-h-0 flex items-start justify-center overflow-hidden">
       <div className="sandbox-model-canvas relative">
         <div className="sandbox-model-canvas-inner relative">
           {/* Bulle environnementale */}
@@ -399,11 +399,11 @@ export function SandboxInteractive() {
         /* Adaptations mobile (petits écrans) - TOUT VISIBLE SANS SCROLL */
         @media (max-width: 640px) {
           .sandbox-sliders {
-            padding: 0.5rem;
+            padding: 0.375rem;
           }
 
           .sandbox-model-canvas {
-            --sandbox-model-scale: 0.58;
+            --sandbox-model-scale: 0.52;
           }
         }
         
@@ -421,7 +421,7 @@ export function SandboxInteractive() {
           }
 
           .sandbox-model-canvas {
-            --sandbox-model-scale: 0.68;
+            --sandbox-model-scale: 0.75;
           }
         }
         
@@ -438,12 +438,12 @@ export function SandboxInteractive() {
           }
 
           .sandbox-model-canvas {
-            --sandbox-model-scale: 0.78;
+            --sandbox-model-scale: 0.85;
           }
         }
 
         .sandbox-model-canvas {
-          --sandbox-model-scale: 0.58;
+          --sandbox-model-scale: 0.52;
           width: 700px;
           height: 700px;
           transform-origin: center center;
@@ -458,14 +458,14 @@ export function SandboxInteractive() {
       `}</style>
       
       {/* Header avec logo et titre - ultra compact */}
-      <div className="bg-gradient-to-r from-slate-950 via-black to-slate-950 border-b border-white/10 py-1.5 px-3 flex-shrink-0">
-        <div className="flex items-center justify-center gap-2">
+      <div className="bg-gradient-to-r from-slate-950 via-black to-slate-950 border-b border-white/10 py-1 px-3 flex-shrink-0">
+        <div className="flex items-center justify-center gap-1.5">
           <img 
             src="/photo%20video/logo_noir-removebg-preview.png" 
             alt="LeVerre Labs Logo" 
-            className="h-6 w-6 object-contain brightness-0 invert"
+            className="h-5 w-5 object-contain brightness-0 invert"
           />
-          <h1 className="text-lg font-bold">
+          <h1 className="text-base font-bold">
             <span className="text-[rgb(255,30,90)]">LeVerre</span>{' '}
             <span className="text-white">Labs</span>
           </h1>
@@ -494,45 +494,45 @@ export function SandboxInteractive() {
           </div>
           
           {/* 3. CONTROL PANEL EN BAS - désolidarisé */}
-          <div className="sandbox-controls mx-2 mt-2 mb-2 rounded-lg bg-gradient-to-br from-slate-900/80 to-slate-800/60 border border-white/20 py-2 px-3 shadow-lg">
+          <div className="sandbox-controls mx-2 mt-1 mb-1 rounded-lg bg-gradient-to-br from-slate-900/80 to-slate-800/60 border border-white/20 py-1.5 px-2 shadow-lg">
             <div className="flex items-center justify-between gap-2">
               {/* Chronomètre */}
-              <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-gray-900/50 border border-gray-400/20">
-                <Clock className="h-3 w-3 text-[rgb(255,30,90)]" />
-                <span className="text-sm font-sans font-bold text-white">{formattedWorkTime()}</span>
+              <div className="flex items-center gap-1.5 px-3 py-2 rounded bg-gray-900/50 border border-gray-400/20">
+                <Clock className="h-4 w-4 text-[rgb(255,30,90)]" />
+                <span className="text-base font-sans font-bold text-white">{formattedWorkTime()}</span>
               </div>
               
               {/* Boutons */}
               <div className="flex items-center gap-1.5">
                 <button
                   onClick={handleResetSimulation}
-                  className="flex items-center gap-1 px-2 py-1 rounded bg-[rgb(255,30,90)]/20 hover:bg-[rgb(255,30,90)]/30 text-white transition-all border border-[rgb(255,30,90)]/40"
+                  className="flex items-center gap-1.5 px-3 py-2 rounded bg-[rgb(255,30,90)]/20 hover:bg-[rgb(255,30,90)]/30 text-white transition-all border border-[rgb(255,30,90)]/40 min-h-[44px]"
                 >
-                  <RotateCcw className="h-3 w-3" />
-                  <span className="text-xs font-medium">Reset</span>
+                  <RotateCcw className="h-4 w-4" />
+                  <span className="text-sm font-medium">Reset</span>
                 </button>
                 
                 <button
                   onClick={handlePauseToggle}
-                  className="flex items-center gap-1 px-2 py-1 rounded bg-[rgb(255,30,90)]/20 hover:bg-[rgb(255,30,90)]/30 text-white transition-all border border-[rgb(255,30,90)]/40"
+                  className="flex items-center gap-1.5 px-3 py-2 rounded bg-[rgb(255,30,90)]/20 hover:bg-[rgb(255,30,90)]/30 text-white transition-all border border-[rgb(255,30,90)]/40 min-h-[44px]"
                 >
                   {isPaused ? (
                     <>
-                      <Play className="h-3 w-3" />
-                      <span className="text-xs font-medium">Play</span>
+                      <Play className="h-4 w-4" />
+                      <span className="text-sm font-medium">Play</span>
                     </>
                   ) : (
                     <>
-                      <Pause className="h-3 w-3" />
-                      <span className="text-xs font-medium">Pause</span>
+                      <Pause className="h-4 w-4" />
+                      <span className="text-sm font-medium">Pause</span>
                     </>
                   )}
                 </button>
               </div>
               
               {/* Vitesse */}
-              <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-gray-900/50 border border-gray-400/20">
-                <FastForward className="h-3 w-3 text-[rgb(255,30,90)]" />
+              <div className="flex items-center gap-1.5 px-3 py-2 rounded bg-gray-900/50 border border-gray-400/20">
+                <FastForward className="h-4 w-4 text-[rgb(255,30,90)]" />
                 <input
                   type="range"
                   min="1"
@@ -540,9 +540,9 @@ export function SandboxInteractive() {
                   step="1"
                   value={simulationSpeed}
                   onChange={(e) => handleSpeedChange(Number(e.target.value))}
-                  className="w-20 h-1.5 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[rgb(255,30,90)]"
+                  className="w-24 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[rgb(255,30,90)]"
                 />
-                <span className="text-xs font-semibold text-[rgb(255,30,90)]">x{simulationSpeed}</span>
+                <span className="text-sm font-semibold text-[rgb(255,30,90)]">x{simulationSpeed}</span>
               </div>
             </div>
           </div>
