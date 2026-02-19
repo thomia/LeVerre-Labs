@@ -3,6 +3,7 @@
  * Route: /sandbox
  * Environnement d'expérimentation pour le grand public
  * Accessible via QR code pour démonstrations et tests
+ * Layout mobile responsive : sliders en haut, modèle en bas, control panel en dessous
  */
 
 'use client'
