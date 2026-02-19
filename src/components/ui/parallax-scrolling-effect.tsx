@@ -55,8 +55,8 @@ const ParallaxFondementsPage = () => {
   const missionSection = {
     title: "Notre Mission",
     description: [
-      "Jour après jour, nous travaillons pour vous proposer un logiciel qui simplifie l'analyse et l'optimisation des conditions de travail.",
-      " Garantissant une cohérence scientifique et respectant la règlementation."
+      "Jour après jour, nous travaillons pour vous proposer un accompagnement qui aborde ce risque différemment : sur le terrain, avec vos équipes, à travers une métaphore visuelle que tout le monde comprend en moins de 5 minutes.",
+      " Garantissant une cohérence scientifique et respectant la réglementation."
     ]
   }
 
