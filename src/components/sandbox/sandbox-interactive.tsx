@@ -18,6 +18,7 @@ import { EnvironmentParticles } from '@/components/dashboard/bubble-component'
 interface CompactSliderProps {
   labelLeft: string
   labelRight: string
+  description: string
   value: number
   valueColorClassName: string
   rangeClassName: string
@@ -28,6 +29,7 @@ interface CompactSliderProps {
 function CompactSlider({
   labelLeft,
   labelRight,
+  description,
   value,
   valueColorClassName,
   rangeClassName,
@@ -35,31 +37,32 @@ function CompactSlider({
   onValueChange,
 }: CompactSliderProps) {
   return (
-    <div className="grid grid-cols-1 gap-0.5">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className={"text-[clamp(0.875rem,3vw,1rem)] font-medium " + valueColorClassName}>{labelLeft}</span>
-        </div>
-        <span className="text-[clamp(0.875rem,3vw,1rem)] font-semibold text-white tabular-nums">{value}</span>
-        <span className={"text-[clamp(0.875rem,3vw,1rem)] font-medium text-right " + valueColorClassName}>{labelRight}</span>
+    <div className="grid grid-cols-1 gap-1">
+      <div className="flex items-center gap-2">
+        <span className={"text-[clamp(0.875rem,3vw,1rem)] font-medium " + valueColorClassName}>{labelLeft}</span>
+        <span className={"text-[clamp(0.875rem,3vw,1rem)] font-medium " + valueColorClassName}>-</span>
+        <span className={"text-[clamp(0.875rem,3vw,1rem)] font-normal " + valueColorClassName}>{description}</span>
       </div>
 
-      <RadixSlider.Root
-        value={[value]}
-        min={0}
-        max={100}
-        step={1}
-        onValueChange={(values) => onValueChange(values[0] ?? 0)}
-        className="relative flex h-14 w-full touch-none select-none items-center"
-      >
-        <RadixSlider.Track className="relative h-1.5 grow rounded-full bg-white/10">
-          <RadixSlider.Range className={"absolute h-full rounded-full " + rangeClassName} />
-        </RadixSlider.Track>
-        <RadixSlider.Thumb
-          className={"relative block h-11 w-11 rounded-full bg-white shadow-md ring " + thumbClassName}
-          aria-label={labelLeft}
-        />
-      </RadixSlider.Root>
+      <div className="flex items-center gap-3">
+        <RadixSlider.Root
+          value={[value]}
+          min={0}
+          max={100}
+          step={1}
+          onValueChange={(values) => onValueChange(values[0] ?? 0)}
+          className="relative flex h-14 flex-1 touch-none select-none items-center"
+        >
+          <RadixSlider.Track className="relative h-1.5 grow rounded-full bg-white/10">
+            <RadixSlider.Range className={"absolute h-full rounded-full " + rangeClassName} />
+          </RadixSlider.Track>
+          <RadixSlider.Thumb
+            className={"relative block h-11 w-11 rounded-full bg-white shadow-md ring " + thumbClassName}
+            aria-label={labelLeft}
+          />
+        </RadixSlider.Root>
+        <span className="text-lg font-semibold text-white tabular-nums min-w-[3rem] text-center">{value}</span>
+      </div>
     </div>
   )
 }
@@ -85,6 +88,7 @@ function SlidersPanel({
         <CompactSlider
           labelLeft="Score V"
           labelRight="Largeur du verre"
+          description="Capacité physiologique et psychologique propre à chacun"
           value={savedScores.scoreV}
           valueColorClassName="text-gray-300"
           rangeClassName="bg-[rgb(209_213_219)]"
@@ -98,6 +102,7 @@ function SlidersPanel({
         <CompactSlider
           labelLeft="Score R"
           labelRight="Débit du robinet"
+          description="Sollicitations physiques et mentales du travail"
           value={savedScores.scoreR}
           valueColorClassName="text-blue-400"
           rangeClassName="bg-[rgb(96_165_250)]"
@@ -110,7 +115,8 @@ function SlidersPanel({
       <div className="rounded-lg bg-gradient-to-br from-purple-900/20 to-purple-800/10 border border-purple-400/20 px-2 py-0.5">
         <CompactSlider
           labelLeft="Score B"
-          labelRight="Agitation de l'environnement"
+          labelRight="Influence de l'environnement"
+          description="L'environnement module le coût biologique de l'activité"
           value={savedScores.scoreB}
           valueColorClassName="text-purple-400"
           rangeClassName="bg-[rgb(192_132_252)]"
@@ -124,6 +130,7 @@ function SlidersPanel({
         <CompactSlider
           labelLeft="Score O"
           labelRight="Intensité de la pluie"
+          description="Imprévus mobilisant des ressources additionnelles"
           value={savedScores.scoreO}
           valueColorClassName="text-amber-400"
           rangeClassName="bg-[rgb(251_191_36)]"
@@ -137,6 +144,7 @@ function SlidersPanel({
         <CompactSlider
           labelLeft="Score P"
           labelRight="Vitesse d'aspiration"
+          description="Stratégies individuelles et organisationnelles"
           value={savedScores.scoreP}
           valueColorClassName="text-green-400"
           rangeClassName="bg-[rgb(74_222_128)]"
@@ -153,7 +161,9 @@ function ModelVisualization({
   savedScores,
   isPaused,
   simulationSpeed,
-  resetTrigger
+  resetTrigger,
+  onReset,
+  onPauseToggle
 }: {
   savedScores: {
     scoreV: number
@@ -165,6 +175,8 @@ function ModelVisualization({
   isPaused: boolean
   simulationSpeed: number
   resetTrigger: number
+  onReset: () => void
+  onPauseToggle: () => void
 }) {
   const [fillLevel, setFillLevel] = useState(0)
   const [glassWidth, setGlassWidth] = useState(20)
@@ -186,11 +198,26 @@ function ModelVisualization({
 
     const interval = setInterval(() => {
       setFillLevel(prev => {
-        const inflowRate = (savedScores.scoreR / 100) * 2 * (1 + savedScores.scoreO / 200)
-        const outflowRate = (savedScores.scoreP / 100) * 1.5
-        const netChange = (inflowRate - outflowRate) * simulationSpeed * 0.05
-        const newLevel = Math.max(0, Math.min(100, prev + netChange))
-        return newLevel
+        // Entrée d'eau (Robinet)
+        const inflow = (savedScores.scoreR / 100) * 0.5 * simulationSpeed
+        
+        // Sortie d'eau (Paille)
+        const outflow = (savedScores.scoreP / 100) * 0.3 * simulationSpeed
+        
+        // Facteur environnemental (Bulle)
+        const environmentFactor = 1 + (savedScores.scoreB / 200)
+        
+        // Impact des aléas (Orage)
+        const stormImpact = 1 + (savedScores.scoreO / 150)
+        
+        // Facteur capacité (Verre) - un verre plus large se remplit plus lentement
+        const capacityFactor = 1.5 - (savedScores.scoreV / 100)
+        
+        // Calcul net avec impact de la capacité
+        const netChange = ((inflow * environmentFactor * stormImpact) - outflow) * capacityFactor
+        
+        // Nouveau niveau (0-100)
+        return Math.max(0, Math.min(100, prev + netChange))
       })
     }, 50)
 
@@ -198,7 +225,35 @@ function ModelVisualization({
   }, [savedScores, isPaused, simulationSpeed])
 
   return (
-    <div className="relative w-full h-full min-h-0 flex items-start justify-center overflow-hidden">
+    <div className="relative w-full h-full min-h-0 flex items-center justify-center overflow-visible">
+      {/* Boutons Reset et Pause - Au-dessus du modèle */}
+      <div className="absolute left-1/2 transform -translate-x-1/2 z-50 flex items-center gap-2" style={{ top: 'calc(10rem + 1rem)' }}>
+        <button
+          onClick={onReset}
+          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[rgb(255,30,90)] hover:bg-[rgb(255,30,90)]/80 text-white transition-all shadow-lg hover:shadow-xl"
+        >
+          <RotateCcw className="h-5 w-5" />
+          <span className="text-sm font-semibold">Reset</span>
+        </button>
+        
+        <button
+          onClick={onPauseToggle}
+          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[rgb(255,30,90)] hover:bg-[rgb(255,30,90)]/80 text-white transition-all shadow-lg hover:shadow-xl"
+        >
+          {isPaused ? (
+            <>
+              <Play className="h-5 w-5" />
+              <span className="text-sm font-semibold">Play</span>
+            </>
+          ) : (
+            <>
+              <Pause className="h-5 w-5" />
+              <span className="text-sm font-semibold">Pause</span>
+            </>
+          )}
+        </button>
+      </div>
+      
       <div className="sandbox-model-canvas relative">
         <div className="sandbox-model-canvas-inner relative">
           {/* Bulle environnementale */}
@@ -362,10 +417,10 @@ export function SandboxInteractive() {
         /* IMPORTANT: Pas de transform scale sur les conteneurs principaux */
         /* Le zoom natif doit fonctionner normalement */
         
-        /* Layout vertical : sliders > modèle > control panel */
+        /* Layout vertical : sliders > modèle (sans control panel) */
         .sandbox-layout {
           display: grid;
-          grid-template-rows: auto minmax(0, 1fr) auto;
+          grid-template-rows: auto minmax(0, 1fr);
           width: 100%;
           gap: 0;
           height: 100%;
@@ -379,75 +434,43 @@ export function SandboxInteractive() {
           padding: 0.5rem;
           background: transparent;
           flex-shrink: 0;
+          position: relative;
+          z-index: 100;
         }
         
-        /* 2. Modèle au milieu - compact */
+        /* 2. Modèle au milieu - compact, tout visible */
         .sandbox-model {
           order: 2;
           width: 100%;
           padding: 0;
           background: transparent;
           min-height: 0;
+          overflow: visible;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
         
-        /* 3. Control panel en bas - désolidarisé, intégré au contenu */
-        .sandbox-controls {
-          order: 3;
-          flex-shrink: 0;
+        
+        /* Avec viewport forcé à 1280px scale 0.5, on garde une taille fixe optimisée */
+        /* Tous les devices verront la même chose grâce au viewport */
+        .sandbox-sliders {
+          max-width: 100%;
+          padding: 0.5rem;
         }
         
-        /* Adaptations mobile (petits écrans) - TOUT VISIBLE SANS SCROLL */
-        @media (max-width: 640px) {
-          .sandbox-sliders {
-            padding: 0.375rem;
-          }
-
-          .sandbox-model-canvas {
-            --sandbox-model-scale: 0.52;
-          }
-        }
-        
-        /* Tablettes */
-        @media (min-width: 641px) and (max-width: 1024px) {
-          .sandbox-sliders {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 0.75rem;
-          }
-          
-          .sandbox-model {
-            padding: 0.5rem 0;
-            min-height: 280px;
-          }
-
-          .sandbox-model-canvas {
-            --sandbox-model-scale: 0.75;
-          }
-        }
-        
-        /* Desktop */
-        @media (min-width: 1025px) {
-          .sandbox-sliders {
-            max-width: 700px;
-            margin: 0 auto;
-            padding: 1rem;
-          }
-          
-          .sandbox-model {
-            padding: 1rem 0;
-          }
-
-          .sandbox-model-canvas {
-            --sandbox-model-scale: 0.85;
-          }
+        .sandbox-model {
+          padding: 0;
+          margin-top: -10rem;
         }
 
         .sandbox-model-canvas {
-          --sandbox-model-scale: 0.52;
+          --sandbox-model-scale: 0.95;
           width: 700px;
           height: 700px;
           transform-origin: center center;
           transform: scale(var(--sandbox-model-scale));
+          margin: 0 auto;
         }
 
         .sandbox-model-canvas-inner {
@@ -457,7 +480,7 @@ export function SandboxInteractive() {
         }
       `}</style>
       
-      {/* Header avec logo et titre - ultra compact */}
+      {/* Header avec logo et titre uniquement */}
       <div className="bg-gradient-to-r from-slate-950 via-black to-slate-950 border-b border-white/10 py-1 px-3 flex-shrink-0">
         <div className="flex items-center justify-center gap-1.5">
           <img 
@@ -472,7 +495,7 @@ export function SandboxInteractive() {
         </div>
       </div>
 
-      {/* Layout vertical : Sliders > Modèle > Control Panel - Sans scroll */}
+      {/* Layout vertical : Sliders > Modèle - Sans scroll */}
       <div className="flex-1 overflow-hidden">
         <div className="sandbox-layout">
           {/* 1. SLIDERS EN HAUT */}
@@ -490,61 +513,9 @@ export function SandboxInteractive() {
               isPaused={isPaused}
               simulationSpeed={simulationSpeed}
               resetTrigger={resetTrigger}
+              onReset={handleResetSimulation}
+              onPauseToggle={handlePauseToggle}
             />
-          </div>
-          
-          {/* 3. CONTROL PANEL EN BAS - désolidarisé */}
-          <div className="sandbox-controls mx-2 mt-1 mb-1 rounded-lg bg-gradient-to-br from-slate-900/80 to-slate-800/60 border border-white/20 py-1.5 px-2 shadow-lg">
-            <div className="flex items-center justify-between gap-2">
-              {/* Chronomètre */}
-              <div className="flex items-center gap-1.5 px-3 py-2 rounded bg-gray-900/50 border border-gray-400/20">
-                <Clock className="h-4 w-4 text-[rgb(255,30,90)]" />
-                <span className="text-base font-sans font-bold text-white">{formattedWorkTime()}</span>
-              </div>
-              
-              {/* Boutons */}
-              <div className="flex items-center gap-1.5">
-                <button
-                  onClick={handleResetSimulation}
-                  className="flex items-center gap-1.5 px-3 py-2 rounded bg-[rgb(255,30,90)]/20 hover:bg-[rgb(255,30,90)]/30 text-white transition-all border border-[rgb(255,30,90)]/40 min-h-[44px]"
-                >
-                  <RotateCcw className="h-4 w-4" />
-                  <span className="text-sm font-medium">Reset</span>
-                </button>
-                
-                <button
-                  onClick={handlePauseToggle}
-                  className="flex items-center gap-1.5 px-3 py-2 rounded bg-[rgb(255,30,90)]/20 hover:bg-[rgb(255,30,90)]/30 text-white transition-all border border-[rgb(255,30,90)]/40 min-h-[44px]"
-                >
-                  {isPaused ? (
-                    <>
-                      <Play className="h-4 w-4" />
-                      <span className="text-sm font-medium">Play</span>
-                    </>
-                  ) : (
-                    <>
-                      <Pause className="h-4 w-4" />
-                      <span className="text-sm font-medium">Pause</span>
-                    </>
-                  )}
-                </button>
-              </div>
-              
-              {/* Vitesse */}
-              <div className="flex items-center gap-1.5 px-3 py-2 rounded bg-gray-900/50 border border-gray-400/20">
-                <FastForward className="h-4 w-4 text-[rgb(255,30,90)]" />
-                <input
-                  type="range"
-                  min="1"
-                  max="10"
-                  step="1"
-                  value={simulationSpeed}
-                  onChange={(e) => handleSpeedChange(Number(e.target.value))}
-                  className="w-24 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[rgb(255,30,90)]"
-                />
-                <span className="text-sm font-semibold text-[rgb(255,30,90)]">x{simulationSpeed}</span>
-              </div>
-            </div>
           </div>
         </div>
       </div>

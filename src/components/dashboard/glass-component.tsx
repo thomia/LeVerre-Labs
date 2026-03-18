@@ -103,10 +103,11 @@ export default function GlassComponent({
     } as React.CSSProperties}>
       {/* Verre */}
       <motion.div 
-        className="relative mx-auto bg-blue-900/10 rounded-b-xl border-2 border-blue-400/30 overflow-hidden backdrop-blur-sm"
+        className="relative mx-auto bg-black/20 rounded-b-xl border-b-[3px] border-l-[3px] border-r-[3px] border-white overflow-hidden"
         style={{ 
           width: `${glassWidthPx}px`, 
-          height: 'var(--glass-height)'
+          height: 'var(--glass-height)',
+          boxShadow: '0 0 5px rgba(255, 255, 255, 0.2), 0 0 8px rgba(255, 255, 255, 0.1)'
         }}
         initial={{ width: glassWidthPx }}
         animate={{ width: glassWidthPx }}
