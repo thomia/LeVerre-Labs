@@ -8,6 +8,7 @@
 
 import { useState, useEffect } from 'react'
 import { RotateCcw, Play, Pause, Clock, FastForward } from 'lucide-react'
+import NumberFlow from '@number-flow/react'
 import * as RadixSlider from '@radix-ui/react-slider'
 import TapComponent from '@/components/dashboard/tap-component'
 import GlassComponent from '@/components/dashboard/glass-component'
@@ -38,20 +39,20 @@ function CompactSlider({
 }: CompactSliderProps) {
   return (
     <div className="grid grid-cols-1 gap-1">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center justify-center gap-2">
         <span className={"text-[clamp(0.875rem,3vw,1rem)] font-medium " + valueColorClassName}>{labelLeft}</span>
         <span className={"text-[clamp(0.875rem,3vw,1rem)] font-medium " + valueColorClassName}>-</span>
         <span className={"text-[clamp(0.875rem,3vw,1rem)] font-normal " + valueColorClassName}>{description}</span>
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="relative">
         <RadixSlider.Root
           value={[value]}
           min={0}
           max={100}
           step={1}
           onValueChange={(values) => onValueChange(values[0] ?? 0)}
-          className="relative flex h-14 flex-1 touch-none select-none items-center"
+          className="relative flex h-14 w-full touch-none select-none items-center"
         >
           <RadixSlider.Track className="relative h-1.5 grow rounded-full bg-white/10">
             <RadixSlider.Range className={"absolute h-full rounded-full " + rangeClassName} />
@@ -59,9 +60,27 @@ function CompactSlider({
           <RadixSlider.Thumb
             className={"relative block h-11 w-11 rounded-full bg-white shadow-md ring " + thumbClassName}
             aria-label={labelLeft}
-          />
+          >
+            <NumberFlow
+              willChange
+              value={value}
+              isolate
+              opacityTiming={{
+                duration: 250,
+                easing: 'ease-out'
+              }}
+              transformTiming={{
+                easing: `linear(0, 0.0033 0.8%, 0.0263 2.39%, 0.0896 4.77%, 0.4676 15.12%, 0.5688, 0.6553, 0.7274, 0.7862, 0.8336 31.04%, 0.8793, 0.9132 38.99%, 0.9421 43.77%, 0.9642 49.34%, 0.9796 55.71%, 0.9893 62.87%, 0.9952 71.62%, 0.9983 82.76%, 0.9996 99.47%)`,
+                duration: 500
+              }}
+              className={
+                value >= 95
+                  ? `absolute left-1/2 -translate-x-1/2 -top-10 text-xl font-bold tabular-nums whitespace-nowrap ${valueColorClassName}`
+                  : `absolute left-[3.5rem] top-[85%] -translate-y-1/2 text-xl font-bold tabular-nums whitespace-nowrap ${valueColorClassName}`
+              }
+            />
+          </RadixSlider.Thumb>
         </RadixSlider.Root>
-        <span className="text-lg font-semibold text-white tabular-nums min-w-[3rem] text-center">{value}</span>
       </div>
     </div>
   )
@@ -189,7 +208,7 @@ function ModelVisualization({
   }, [resetTrigger])
 
   useEffect(() => {
-    const newWidth = 10 + (savedScores.scoreV / 100) * 30
+    const newWidth = 5 + (savedScores.scoreV / 100) * 55
     setGlassWidth(newWidth)
   }, [savedScores.scoreV])
 
