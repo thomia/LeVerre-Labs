@@ -67,3 +67,79 @@
 .animate-fade-in {
   animation: fadeIn 1s ease-out forwards;
 }
+
+/* Styles pour les curseurs (input type range) NASA-TLX */
+input[type="range"].slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 12px;
+  border-radius: 6px;
+  outline: none;
+}
+
+/* Thumb (curseur) - Chrome/Safari */
+input[type="range"].slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  border: 2px solid #3b82f6;
+  transition: all 0.2s ease;
+}
+
+input[type="range"].slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+input[type="range"].slider::-webkit-slider-thumb:active {
+  transform: scale(1.05);
+}
+
+/* Thumb (curseur) - Firefox */
+input[type="range"].slider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  border: 2px solid #3b82f6;
+  transition: all 0.2s ease;
+}
+
+input[type="range"].slider::-moz-range-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+input[type="range"].slider::-moz-range-thumb:active {
+  transform: scale(1.05);
+}
+
+/* Track - Firefox */
+input[type="range"].slider::-moz-range-track {
+  height: 12px;
+  border-radius: 6px;
+}
+
+/* Track - IE/Edge */
+input[type="range"].slider::-ms-track {
+  height: 12px;
+  border-radius: 6px;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+
+input[type="range"].slider::-ms-fill-lower {
+  border-radius: 6px;
+}
+
+input[type="range"].slider::-ms-fill-upper {
+  border-radius: 6px;
+}

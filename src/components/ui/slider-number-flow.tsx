@@ -15,8 +15,7 @@ export default function Slider({ value, className, valueColor, ...props }: Slide
 		>
 			<RadixSlider.Track className="relative h-[4px] grow rounded-full bg-zinc-100 dark:bg-zinc-800">
 				<RadixSlider.Range 
-					className="absolute h-full rounded-full" 
-					style={{ backgroundColor: 'var(--slider-range-bg, black)' }}
+					className="absolute h-full rounded-full bg-black dark:bg-white"
 				/>
 			</RadixSlider.Track>
 			<RadixSlider.Thumb

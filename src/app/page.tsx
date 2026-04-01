@@ -2,12 +2,12 @@
  * PAGE PRINCIPALE - ACCUEIL
  * Route: /
  * Page d'accueil - Vitrine du projet LeVerre Labs
- * Sur la branche sandbox : redirige vers /sandbox
+ * Redirige vers la page vitrine
  */
 
 import { redirect } from 'next/navigation'
 
 export default function HomePage() {
-  // Rediriger automatiquement vers /sandbox
-  redirect('/sandbox')
+  // Rediriger automatiquement vers la page vitrine
+  redirect('/vitrine')
 }
