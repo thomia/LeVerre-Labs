@@ -4,7 +4,7 @@ import type React from "react"
 
 import { useState, useRef, useEffect } from "react"
 import { Play, Pause, SkipBack, SkipForward, Plus, Trash2, Upload, Volume2, VolumeX, Activity, Settings, X, GripVertical, Wrench } from "lucide-react"
-import AnalysisModal from "@/components/analysis/analysis-modal"
+import AnalysisModal from "./analysis-modal"
 import * as RadixSlider from '@radix-ui/react-slider'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
