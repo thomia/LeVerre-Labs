@@ -9,11 +9,11 @@ import * as RadixSlider from '@radix-ui/react-slider'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Slider } from "@/components/ui/slider"
-import GlassComponent from "@/components/dashboard/glass-component"
-import TapComponent from "@/components/dashboard/tap-component"
-import StrawComponent from "@/components/dashboard/straw-component"
-import StormComponent from "@/components/dashboard/storm-component"
-import { EnvironmentParticles } from "@/components/dashboard/bubble-component"
+import GlassComponent from "@/components/modele/glass-component"
+import TapComponent from "@/components/modele/tap-component"
+import StrawComponent from "@/components/modele/straw-component"
+import StormComponent from "@/components/modele/storm-component"
+import { EnvironmentParticles } from "@/components/modele/bubble-component"
 
 // Types pour les paramètres du modèle du verre
 interface TaskParameters {

@@ -10,11 +10,11 @@ import { useState, useEffect } from 'react'
 import { RotateCcw, Play, Pause, Clock, FastForward } from 'lucide-react'
 import NumberFlow from '@number-flow/react'
 import * as RadixSlider from '@radix-ui/react-slider'
-import TapComponent from '@/components/dashboard/tap-component'
-import GlassComponent from '@/components/dashboard/glass-component'
-import StrawComponent from '@/components/dashboard/straw-component'
-import StormComponent from '@/components/dashboard/storm-component'
-import { EnvironmentParticles } from '@/components/dashboard/bubble-component'
+import TapComponent from '@/components/modele/tap-component'
+import GlassComponent from '@/components/modele/glass-component'
+import StrawComponent from '@/components/modele/straw-component'
+import StormComponent from '@/components/modele/storm-component'
+import { EnvironmentParticles } from '@/components/modele/bubble-component'
 
 interface CompactSliderProps {
   labelLeft: string

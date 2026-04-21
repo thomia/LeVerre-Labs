@@ -7,7 +7,7 @@
 
 'use client'
 
-import VideoTaskEditor from '@/components/espace-personnel/video-task-editor'
+import VideoTaskEditor from '@/components/analyse-video/video-task-editor'
 
 export default function AnalyseVideoPage() {
   return (

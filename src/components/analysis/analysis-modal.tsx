@@ -14,7 +14,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronRight, Info, Check, X, Save } from 'lucide-react'
-import DashboardSimplified from '@/components/dashboard/dashboard-simplified'
+import DashboardSimplified from '@/components/modele/dashboard-simplified'
 
 // ============================================================================
 // TYPES
