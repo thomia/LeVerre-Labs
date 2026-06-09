@@ -35,14 +35,12 @@ export function ConsoleStats({ toutesAnnees }: ConsoleStatsProps) {
   const { vue, ctn, annee } = useFiltresStats()
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen border-t border-white/10 bg-black">
       {/* En-tete contextuel : breadcrumb / titre dynamique.
-          `pt-28` = 80px (hauteur navbar fixe `h-20`) + 32px de respiration. */}
-      <header className="mx-auto max-w-7xl px-4 pt-28 sm:px-6">
-        <p className="text-xs uppercase tracking-[0.3em] text-gray-500">
-          Statistiques AT / MP · Source CNAM
-        </p>
-        <h1 className="mt-2 text-2xl font-bold text-white sm:text-3xl">
+          La navbar est deja degagee par <ConsoleIntro> au-dessus, donc
+          on garde juste une respiration legere ici. */}
+      <header className="mx-auto max-w-7xl px-4 pt-10 sm:px-6">
+        <h1 className="text-2xl font-bold text-white sm:text-3xl">
           {CTN_INFO[ctn].libelle}{' '}
           <span className="text-gray-500">·</span>{' '}
           <span className="text-gray-400">{annee}</span>
