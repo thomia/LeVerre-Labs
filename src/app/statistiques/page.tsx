@@ -17,6 +17,7 @@
  * comme dans une vraie application data.
  */
 
+import { Suspense } from 'react'
 import { chargerToutesAnnees } from '@/lib/stats-am'
 import { ConsoleStats } from '@/components/statistiques/console-stats'
 
@@ -31,9 +32,21 @@ export default async function StatistiquesPage() {
 
   return (
     <>
-      <ConsoleStats toutesAnnees={toutesAnnees} />
+      <Suspense fallback={<ChargementConsole />}>
+        <ConsoleStats toutesAnnees={toutesAnnees} />
+      </Suspense>
       <FooterSource />
     </>
+  )
+}
+
+/* ---------- Fallback de chargement (le temps de lire l'URL) ---------- */
+
+function ChargementConsole() {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-black">
+      <div className="h-10 w-10 animate-spin rounded-full border-2 border-[rgb(255,30,90)] border-t-transparent" />
+    </div>
   )
 }
 
