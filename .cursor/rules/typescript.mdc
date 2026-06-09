@@ -1,0 +1,28 @@
+---
+description: Conventions TypeScript et style de code LeVerre Labs
+globs: **/*.ts,**/*.tsx
+alwaysApply: false
+---
+
+# TypeScript & style de code
+
+- TypeScript **concis et technique**.
+- **Programmation fonctionnelle** uniquement → **pas de classes**.
+- **Itération + modularisation** plutôt que duplication.
+- Variables avec **verbes auxiliaires** : `isLoading`, `hasError`, `shouldRender`, `canSubmit`.
+
+## Types
+- Préférer **`interface`** à `type` pour les objets / props.
+- **Pas d'`enum`** → utiliser des **maps as const** :
+
+```ts
+const STATUS = { idle: 'idle', loading: 'loading', done: 'done' } as const
+type Status = (typeof STATUS)[keyof typeof STATUS]
+```
+
+## Syntaxe
+- Mot-clé **`function`** pour les fonctions pures exportées (pas d'arrow function pour ces fonctions).
+- **Pas d'accolades inutiles** : `if (x) doSomething()`.
+- **Exports nommés** préférés (pas d'`export default`) pour les composants.
+- Le nom de l'export ne suit pas forcément le nom de fichier (ex. `tableau-de-bord.tsx` peut exporter `FormateurDashboard`).
+- Composants en **PascalCase**, typés via `interface`.

@@ -1,0 +1,31 @@
+---
+description: Patterns React / Next.js, UI et performance LeVerre Labs
+globs: **/*.tsx
+alwaysApply: false
+---
+
+# React / Next.js, UI & performance
+
+## Structure d'un fichier composant
+1. Composant exporté (en haut)
+2. Sous-composants
+3. Helpers
+4. Contenu statique
+5. Types
+
+## Server vs Client
+- **Server Components par défaut.** Minimiser `'use client'`, `useEffect`, `useState`.
+- `'use client'` **uniquement** quand on a besoin d'une Web API ou d'un hook React.
+- **Wrapper les composants client dans `<Suspense>`** avec un fallback pédagogique (skeleton, spinner).
+- **Dynamic imports** (`next/dynamic`) pour les composants non critiques au-dessus du fold.
+
+## UI & style
+- **Shadcn UI + Radix + Tailwind** pour tous les composants.
+- **Mobile-first** : styler le mobile d'abord, puis variantes `sm:` / `md:` / `lg:`.
+- **JSX déclaratif** (pas de `React.createElement`).
+- **Pas d'inline styles** sauf cas exceptionnel (variables CSS, valeurs dynamiques calculées).
+
+## Performance
+- **URL state** via **`nuqs`** (filtres, onglets actifs…).
+- **Images** : WebP, `width`/`height` explicites, `loading="lazy"` quand pertinent.
+- **Optimiser les Web Vitals** : LCP, CLS, FID.

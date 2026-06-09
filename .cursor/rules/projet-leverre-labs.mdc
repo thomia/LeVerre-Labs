@@ -1,0 +1,54 @@
+---
+description: Contexte général, communication, stack et structure du projet LeVerre Labs
+alwaysApply: true
+---
+
+# Projet LeVerre Labs
+
+## Communication
+- **Toujours répondre en français.**
+- L'utilisateur **n'est pas développeur pro** → expliquer simplement, sans jargon inutile.
+- **Demander du contexte** quand une info manque, plutôt que d'inventer.
+- Se référer aux **docs officielles** (Next.js, React, Supabase…) pour les questions techniques.
+- **Réponses concises**, pas de paraphrase ni d'acquiescement ("Excellente question !"). Aller droit au but.
+- **Demander confirmation** avant toute action destructive (suppression, gros refactoring, modif irréversible).
+
+## Stack technique (dernières versions stables)
+TypeScript · Node.js · **Next.js (App Router uniquement)** · React (Server Components par défaut) · Tailwind CSS · Shadcn UI + Radix UI · Supabase (DB + temps réel + auth).
+
+## Modèle métier (5 éléments)
+1. 🚰 **Robinet** (bleu) — charge de travail (entrée d'eau)
+2. 🫧 **Bulle** (violet) — environnement (multiplicateur)
+3. ⛈️ **Orage** (doré) — aléas (pics de charge)
+4. 🥤 **Paille** (vert) — récupération (sortie d'eau)
+5. 🥃 **Verre** (transparent) — capacité personnelle (résilience)
+
+Mécanique de simulation : voir `docs/SIMULATION_PRINCIPLES.md`.
+
+## Structure du projet
+```
+src/
+├── app/                  # routes Next.js App Router
+│   ├── formation/[code]/ # côté formateur (mosaïque salle)
+│   ├── session/[code]/   # côté participant (mobile)
+│   └── api/              # routes API
+├── components/
+│   ├── formation/        # sessions live
+│   │   ├── animateur/    # vu par le formateur
+│   │   └── participant/  # vu par l'opérateur
+│   ├── modele/           # visuels verre/robinet/etc.
+│   └── ui/               # génériques (Shadcn + custom)
+├── hooks/                # hooks React partagés
+└── lib/
+    ├── questions/        # questionnaires par élément
+    ├── supabase/         # client + types DB
+    ├── element-theme.ts  # thème couleur des 5 éléments
+    └── simulation.ts     # logique de simulation
+```
+
+## Nommage fichiers et dossiers
+- **kebab-case minuscule** (`mon-composant.tsx`, `auth-wizard/`).
+- **Français > anglais** pour le métier ; anglais seulement pour les conventions du framework (`page.tsx`, `route.ts`, `layout.tsx`, `middleware.ts`).
+- **Descriptif > générique** : `tableau-de-bord.tsx` plutôt que `dashboard.tsx`.
+- **Organisation par "qui voit ça"** plutôt que par type technique (un sous-composant vu par le formateur va dans `animateur/`).
+- Avant de créer/déplacer un fichier : vérifier nom parlant + bon emplacement ; sinon **proposer un meilleur nom avant**. Préserver l'historique avec `git mv` si le fichier est tracké.

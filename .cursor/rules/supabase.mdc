@@ -1,0 +1,15 @@
+---
+description: Conventions Supabase (realtime, migrations, RLS, types) LeVerre Labs
+globs: src/lib/supabase/**,supabase/**,**/*supabase*
+alwaysApply: false
+---
+
+# Supabase
+
+- **Realtime** : channels par session (`session:CODE`) pour synchroniser participants ↔ formateur.
+- **Migrations SQL** : toujours un fichier dans `supabase/migrations/` avec préfixe numéroté (`002_add_simulation.sql`).
+- **RLS** : activée sur **toutes** les tables, jamais de bypass côté client.
+- **Types TS** : régénérer `src/lib/supabase/types.ts` après chaque migration (`supabase gen types`).
+
+## Tailwind config (rappel)
+Le scan Tailwind doit inclure `src/lib` et `src/hooks` (en plus de `src/components` et `src/app`) car certains thèmes y génèrent des classes dynamiquement (cf. `element-theme.ts`).

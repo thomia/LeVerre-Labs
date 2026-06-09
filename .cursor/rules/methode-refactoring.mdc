@@ -1,0 +1,28 @@
+---
+description: Méthode pour refactoring/modularisation de gros fichiers et correction de bugs (lire avant tout gros refactoring)
+alwaysApply: false
+---
+
+# Méthode : refactoring & bugs
+
+> Leçon apprise : un refactoring de gros fichier (~4000 lignes) par petites suppressions itératives a échoué et épuisé le quota. Principe d'or : **CRÉER d'abord, NETTOYER ensuite. Jamais l'inverse.**
+
+## Avant un gros refactoring / modularisation
+1. **Lire le fichier en entier** pour comprendre la structure (imports, types, data, utils, composant).
+2. **Identifier les blocs logiques complets** (pas de découpage à la ligne).
+3. **Plan top-down** : structure cible → étapes → validation. Le partager avant d'exécuter.
+4. **Créer TOUS les nouveaux fichiers d'abord**, vérifier qu'ils compilent, **puis** nettoyer le fichier principal.
+5. Pour vider le fichier principal : **une seule grosse édition** (ou réécriture propre) plutôt que 15 petites suppressions.
+6. **Vérifier TypeScript** après chaque étape importante (`npx tsc --noEmit`).
+
+## Signaux d'alarme → STOP et reconsidérer
+- Plus de 3 tentatives de suppression.
+- Les erreurs augmentent au lieu de diminuer.
+- Le fichier grandit au lieu de rétrécir.
+- Des duplications réapparaissent (= structure mal comprise).
+
+## Pour corriger un bug
+1. Identifier la **cause racine**, pas les symptômes.
+2. **Fix minimal en amont** plutôt qu'un workaround en aval (souvent une seule ligne suffit).
+3. Ajouter des **logs descriptifs** si la cause est floue.
+4. Vérifier que le fix passe **TypeScript** + tester visuellement quand pertinent.
