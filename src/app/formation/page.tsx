@@ -1,15 +1,12 @@
 /**
- * PAGE FORMATION - Accueil formateur
+ * PAGE FORMATION (ancienne route d'accueil formateur)
  * Route : /formation
- * Permet de lancer une session de sensibilisation collective
+ * Le lancement de session vit désormais dans l'espace formateur.
+ * On redirige vers l'onglet sensibilisation.
  */
 
-import { FormateurLogin } from '@/components/formation/animateur/ecran-connexion'
+import { redirect } from 'next/navigation'
 
 export default function FormationPage() {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-black via-slate-950 to-slate-900 p-4 pt-24">
-      <FormateurLogin />
-    </div>
-  )
+  redirect('/espace-formateur?onglet=sensibilisation')
 }

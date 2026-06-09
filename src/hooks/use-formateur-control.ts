@@ -27,7 +27,7 @@ export function clearFormateurPassword() {
   }
 }
 
-function getFormateurPassword(): string | null {
+export function getFormateurPassword(): string | null {
   try {
     return sessionStorage.getItem(STORAGE_KEY)
   } catch {
