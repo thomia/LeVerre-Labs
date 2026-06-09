@@ -1,7 +1,7 @@
 "use client"
 
 /**
- * INTERFACE D'ANALYSE UNIFIÉE - ProtoVerreTMS
+ * INTERFACE D'ANALYSE UNIFIÉE - LeVerre Labs
  * ============================================
  * Une seule page pour analyser tous les éléments du modèle :
  * - 🥃 Verre (Capacité)

@@ -27,7 +27,7 @@ export default function Footer() {
               </h3>
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed">
-              The Powerful Digital Ergonomic Tool. Transformez votre approche de la prévention avec une métaphore visuelle innovante.
+              Une approche visuelle pour rendre la prévention des risques au travail plus accessible et plus parlante.
             </p>
           </div>
 

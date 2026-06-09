@@ -37,6 +37,16 @@ interface DashboardSimplifiedProps {
   externalIsPaused?: boolean
   externalSimulationSpeed?: number
   resetTrigger?: number
+  /**
+   * Flags de visibilité pour construire le modèle progressivement (mode pédagogique).
+   * Par défaut tous les éléments sont visibles (comportement historique).
+   * Utilisé dans la session Sensibilisation : chaque élément apparaît seulement
+   * une fois que le participant a commencé à y répondre.
+   */
+  showTap?: boolean
+  showStraw?: boolean
+  showStorm?: boolean
+  showBubble?: boolean
 }
 
 export default function DashboardSimplified({
@@ -48,7 +58,11 @@ export default function DashboardSimplified({
   onScoresChange,
   externalIsPaused,
   externalSimulationSpeed,
-  resetTrigger
+  resetTrigger,
+  showTap = true,
+  showStraw = true,
+  showStorm = true,
+  showBubble = true
 }: DashboardSimplifiedProps = {}) {
   // États principaux - Nouvelle nomenclature
   const [isMounted, setIsMounted] = useState(false)
@@ -355,12 +369,14 @@ export default function DashboardSimplified({
             <div className="relative w-full h-full min-h-[600px] flex items-center justify-center">
               <div className="relative w-full max-w-[800px] mx-auto">
                 {/* Bulle environnementale */}
-                <div className="bubble-container absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full overflow-hidden border-2 border-purple-400/40 bg-transparent shadow-[0_0_20px_rgba(168,85,247,0.15)] z-0" style={{ top: '70%' }}>
-                  <EnvironmentParticles 
-                    score={scoreB} 
-                    isPaused={isPaused}
-                  />
-                </div>
+                {showBubble && (
+                  <div className="bubble-container absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full overflow-hidden border-2 border-purple-400/40 bg-transparent shadow-[0_0_20px_rgba(168,85,247,0.15)] z-0" style={{ top: '70%' }}>
+                    <EnvironmentParticles 
+                      score={scoreB} 
+                      isPaused={isPaused}
+                    />
+                  </div>
+                )}
                 
                 {/* Structure centrale avec positionnement absolu */}
                 <div className="relative" style={{ height: '700px' }}>
@@ -374,34 +390,40 @@ export default function DashboardSimplified({
                       />
                       
                       {/* Paille */}
-                      <div className="straw-container absolute top-[-230px] right-[-5px] z-20">
-                        <StrawComponent 
-                          absorptionRate={scoreP} 
-                          setAbsorptionRate={setScoreP} 
-                          isInsideGlass={true}
-                          isPaused={isPaused}
-                        />
-                      </div>
+                      {showStraw && (
+                        <div className="straw-container absolute top-[-230px] right-[-5px] z-20">
+                          <StrawComponent 
+                            absorptionRate={scoreP} 
+                            setAbsorptionRate={setScoreP} 
+                            isInsideGlass={true}
+                            isPaused={isPaused}
+                          />
+                        </div>
+                      )}
                     </div>
                   </div>
                   
                   {/* Robinet - Positionné au-dessus du verre */}
-                  <div className="tap-container absolute left-1/2 top-[35%] transform -translate-x-1/2 z-20">
-                    <TapComponent 
-                      flowRate={scoreR} 
-                      onFlowRateChange={setScoreR}
-                      hideDebitLabel={hideIcons}
-                    />
-                  </div>
+                  {showTap && (
+                    <div className="tap-container absolute left-1/2 top-[35%] transform -translate-x-1/2 z-20">
+                      <TapComponent 
+                        flowRate={scoreR} 
+                        onFlowRateChange={setScoreR}
+                        hideDebitLabel={hideIcons}
+                      />
+                    </div>
+                  )}
                   
                   {/* Orage - Positionné entre le robinet et le verre */}
-                  <div className="storm-container absolute left-[45%] top-[53%] transform -translate-x-1/2 scale-110 z-20">
-                    <StormComponent 
-                      intensity={scoreO} 
-                      onIntensityChange={setScoreO}
-                      hideIntensityLabel={hideIcons} 
-                    />
-                  </div>
+                  {showStorm && (
+                    <div className="storm-container absolute left-[45%] top-[53%] transform -translate-x-1/2 scale-110 z-20">
+                      <StormComponent 
+                        intensity={scoreO} 
+                        onIntensityChange={setScoreO}
+                        hideIntensityLabel={hideIcons} 
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

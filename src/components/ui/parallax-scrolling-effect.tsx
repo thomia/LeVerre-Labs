@@ -2,9 +2,10 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowRight } from 'lucide-react'
+import { Award } from 'lucide-react'
 import { WordFadeIn } from '@/components/ui/word-fade-in'
 import AnimatedLogo from '@/components/ui/animated-logo'
+import { MagnetizeFrame } from '@/components/ui/magnetize-frame'
 
 const ParallaxFondementsPage = () => {
   const featureRef = useRef<HTMLDivElement>(null)
@@ -281,32 +282,28 @@ const ParallaxFondementsPage = () => {
           </motion.div>
         </section>
 
-        <motion.div
-          className="mt-16 text-center max-w-3xl mx-auto"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
+        {/* Section Notre Recherche
+            Suit le même pattern que Notre Histoire / Approche / Mission :
+            barre décorative rouge animée + h2 grande taille + paragraphes
+            en gros texte storytelling. Y est intégré le badge prix MODACT
+            et la vignette du poster cliquable. */}
+        <section className="py-20 mb-12">
           <motion.div
-            className="inline-block"
-            whileHover={{ scale: 1.02 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="max-w-3xl mx-auto px-4"
           >
-            <h3 className="text-4xl md:text-5xl lg:text-6xl font-light text-white mb-3 leading-[1.15] tracking-tight">
-              Tu partages cette vision ?
-            </h3>
-            <p className="text-3xl md:text-4xl lg:text-5xl font-semibold text-[rgb(255,30,90)] mb-6 leading-[1.15] tracking-tight">
-              Rejoins le projet !
-            </p>
+            {/* Barre décorative rouge animée (idem Mission) */}
             <motion.div
-              className="relative mx-auto"
+              className="relative mx-auto mb-10"
               initial={{ width: 0, height: 0 }}
-              whileInView={{ width: "32rem", height: "0.2rem" }}
+              whileInView={{ width: "38rem", height: "0.2rem" }}
               viewport={{ once: true }}
               transition={{ duration: 1.2, ease: "easeOut", delay: 0.3 }}
             >
-              <div 
+              <div
                 className="absolute inset-0 rounded-full"
                 style={{
                   background: 'linear-gradient(to right, rgba(0,0,0,0.85) 0%, rgb(255,30,90) 50%, rgba(0,0,0,0.85) 100%)',
@@ -315,20 +312,84 @@ const ParallaxFondementsPage = () => {
                 }}
               />
             </motion.div>
+
+            <h2 className="text-5xl md:text-6xl lg:text-7xl font-light text-white mb-10 text-center tracking-tight">
+              Notre Recherche
+            </h2>
+
+            {/* Bloc texte storytelling (même structure que Mission).
+                Ton humble : on parle de la conférence et de ses enjeux,
+                pas de la distinction. Celle-ci est juste signalée par
+                un petit badge rouge en coin de la vignette du poster. */}
+            <div className="space-y-12 text-xl md:text-2xl text-slate-300 leading-[1.7] font-light text-center">
+              <p className="text-white text-2xl md:text-3xl font-normal leading-[1.5] mb-8">
+                Une démarche pensée pour être partagée.
+              </p>
+              <p>
+                Présenté lors de{' '}
+                <a
+                  href="https://www.modact.net/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white underline decoration-white/30 underline-offset-4 transition-colors hover:decoration-white"
+                >
+                  ModACT 2026
+                </a>
+                , conférence scientifique réunissant des expertises variées autour de la
+                modélisation de l’activité humaine.
+              </p>
+            </div>
+
+            {/* Vignette du poster cliquable, centrée, taille modérée
+                pour ne pas déséquilibrer la composition. Englobée dans
+                un MagnetizeFrame : au survol, des billes rouges en
+                orbite convergent au centre du poster (call-to-action
+                silencieux qui remplace l'ancien bouton). */}
+            <MagnetizeFrame
+              className="mx-auto mt-16 w-full max-w-xs"
+              particleCount={20}
+              spread={220}
+            >
+            <motion.a
+              href="https://popups.uliege.be/3041-4687/index.php?id=626"
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              whileHover={{ scale: 1.03 }}
+              className="group relative block cursor-pointer"
+            >
+              {/* Pastille ronde rouge LeVerre signalant la distinction
+                  sans texte. Au survol : tooltip natif via `title`. */}
+              <div
+                className="absolute -top-3 -right-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-[rgb(255,30,90)] text-white"
+                style={{ boxShadow: '0 4px 14px rgba(255,30,90,0.45)' }}
+                title="Meilleur poster scientifique — ModACT 2026"
+              >
+                <Award className="h-4 w-4" strokeWidth={2.2} />
+              </div>
+
+              <div
+                className="relative overflow-hidden rounded-md border border-white/15 transition-all duration-300 group-hover:border-[rgb(255,30,90)]/50"
+                style={{
+                  boxShadow: '0 12px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04)',
+                }}
+              >
+                <img
+                  src="/photo%20video/poster.JPG"
+                  alt="Poster scientifique LeVerre Labs présenté à MODACT 2026"
+                  className="block h-auto w-full transition-transform duration-500 group-hover:scale-[1.03]"
+                  loading="lazy"
+                />
+                {/* Halo rouge subtil au hover */}
+                <div className="absolute inset-0 bg-[rgb(255,30,90)]/0 transition-colors duration-300 group-hover:bg-[rgb(255,30,90)]/10" />
+              </div>
+            </motion.a>
+            </MagnetizeFrame>
           </motion.div>
-          <motion.a
-            href="mailto:leverrelabs@gmail.com?subject=Rejoindre le projet LeVerre Labs"
-            className="inline-flex items-center gap-2 mt-6 px-8 py-4 rounded-lg border-2 border-[rgb(255,30,90)] text-[rgb(255,30,90)] hover:bg-[rgb(255,30,90)] hover:text-white transition-all duration-300 font-bold text-lg shadow-[0_0_15px_rgba(255,30,90,0.3)] hover:shadow-[0_0_25px_rgba(255,30,90,0.5)]"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.7 }}
-          >
-            Contacte-nous <ArrowRight className="w-4 h-4" />
-          </motion.a>
-        </motion.div>
+        </section>
       </div>
     </div>
   )

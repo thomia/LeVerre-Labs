@@ -1,7 +1,7 @@
 /**
  * PAGE VITRINE - PRÉSENTATION DU MODÈLE
  * Route: /vitrine
- * Présentation complète du modèle ProtoVerreTMS avec explications scientifiques
+ * Présentation complète du modèle LeVerre Labs avec explications scientifiques
  */
 
 "use client"
@@ -65,7 +65,7 @@ export default function VitrinePage() {
         posterSrc="/photo%20video/TMSsht-1-1372841116.jpg"
         bgImageSrc="/photo%20video/TMSsht-1-1372841116.jpg"
         title="LeVerre Labs"
-        date="The Powerful Digital Ergonomic Tool"
+        date="Une approche visuelle des risques au travail"
         scrollToExpand="Faites défiler pour découvrir notre solution"
         textBlend
       >
@@ -91,7 +91,7 @@ export default function VitrinePage() {
               <span className="text-[rgb(255,30,90)] drop-shadow-[0_0_8px_rgba(255,30,90,0.5)]">LeVerre</span> <span className="text-gray-400">Labs</span>
             </h1>
             <p className="text-2xl md:text-3xl text-white mb-4 max-w-4xl mx-auto font-bold leading-relaxed">
-              The Powerful Digital Ergonomic Tool
+              Rendre visibles les facteurs de risque au travail
             </p>
           </motion.div>
 

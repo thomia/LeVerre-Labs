@@ -2,7 +2,7 @@
 
 ## Important Notice
 
-ProtoVerreTMS is a proprietary software project. External contributions are currently **not accepted**
+LeVerre Labs is a proprietary software project. External contributions are currently **not accepted**
 without explicit written permission from the project owner.
 
 ## Intellectual Property

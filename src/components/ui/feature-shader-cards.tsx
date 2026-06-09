@@ -25,12 +25,12 @@ const features: Feature[] = [
     description: "Déterminez les leviers prioritaires et simulez vos solutions. Un outil d'aide à la décision pour guider vos actions de prévention.",
   },
   {
-    title: "Piloter & Suivre",
-    description: "Cartographiez vos postes à risques et suivez vos plans d'action. Une vision globale pour une prévention stratégique.",
+    title: "Visualiser & Comprendre",
+    description: "Rendez visibles les interactions entre les facteurs de risque. Une lecture globale pour mieux comprendre les situations de travail.",
   },
   {
-    title: "Personnaliser",
-    description: "Adaptez l'outil à votre secteur et votre culture d'entreprise. Une solution modulaire évolutive.",
+    title: "Adapter & Enrichir",
+    description: "Un modèle flexible pouvant évoluer selon les besoins de votre organisation et de vos projets.",
   },
 ]
 
@@ -106,7 +106,7 @@ export default function FeaturesCards() {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-light text-white mb-6">
-            Un Outil Complet
+            Une approche complète
           </h2>
         </div>
 

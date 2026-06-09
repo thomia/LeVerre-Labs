@@ -1,4 +1,4 @@
-# ProtoVerre TMS
+# LeVerre Labs
 
 ## Avis de Copyright et Propriété Intellectuelle
 
@@ -8,7 +8,7 @@ Ce projet est protégé par les lois sur la propriété intellectuelle et le dro
 
 ## Description
 
-ProtoVerre TMS est une application SaaS qui présente un tableau de bord interactif avec cinq éléments principaux qui ont un rôle dans la gestion des TMS et Accidents du travail.
+LeVerre Labs est une application SaaS qui présente un tableau de bord interactif avec cinq éléments principaux qui ont un rôle dans la gestion des TMS et Accidents du travail.
 
 1. **Un verre** - Qui peut se remplir ou se vider
 2. **Une paille** - Qui permet d'aspirer l'eau du verre
@@ -120,7 +120,7 @@ Pour toute demande concernant l'utilisation, la licence ou la collaboration :
 
 1. **Propriété Intellectuelle**
    - Logiciel déposé à l'INPI
-   - Marque "ProtoVerreTMS" protégée
+   - Marque "LeVerre Labs" protégée
    - Algorithmes propriétaires
 
 2. **Confidentialité**

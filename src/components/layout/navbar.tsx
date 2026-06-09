@@ -22,7 +22,9 @@ export default function Navbar() {
   const navItems = [
     { name: 'Accueil', href: '/vitrine' },
     { name: 'Fondements', href: '/fondements' },
+    { name: 'Statistiques', href: '/statistiques' },
     { name: 'Analyse Vidéo', href: '/analyse-video' },
+    { name: 'Collaborer', href: '/collaborer' },
     // { name: 'Offres', href: '/offres' }, // Masqué temporairement
   ]
 

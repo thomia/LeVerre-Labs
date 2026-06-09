@@ -322,5 +322,5 @@ calculateScoreRFinal(scoreCharges, scorePostures, scoreMental, scoreRPS)
 
 ---
 
-*Document généré pour ProtoVerreTMS - LeVerre Labs*
+*Document généré pour LeVerre Labs*
 *Toutes les formules sont implémentées dans le code avec documentation inline*

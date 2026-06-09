@@ -4,9 +4,15 @@ import clsx from 'clsx'
 
 interface SliderProps extends RadixSlider.SliderProps {
 	valueColor?: string;
+	/**
+	 * Masque le NumberFlow affiché au-dessus du pouce du slider.
+	 * Utile quand la valeur est déjà affichée à côté (ex. participant-sliders-panel)
+	 * pour éviter le doublon visuel.
+	 */
+	hideThumbValue?: boolean;
 }
 
-export default function Slider({ value, className, valueColor, ...props }: SliderProps) {
+export default function Slider({ value, className, valueColor, hideThumbValue, ...props }: SliderProps) {
 	return (
 		<RadixSlider.Root
 			{...props}
@@ -23,7 +29,7 @@ export default function Slider({ value, className, valueColor, ...props }: Slide
 				style={{ '--tw-ring-color': 'var(--slider-thumb-ring, rgba(0,0,0,0.1))' } as React.CSSProperties}
 				aria-label="Volume"
 			>
-				{value?.[0] != null && (
+				{value?.[0] != null && !hideThumbValue && (
 					<NumberFlow
 						willChange
 						value={value[0]}
