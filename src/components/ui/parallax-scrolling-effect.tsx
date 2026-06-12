@@ -314,7 +314,7 @@ const ParallaxFondementsPage = () => {
             </motion.div>
 
             <h2 className="text-5xl md:text-6xl lg:text-7xl font-light text-white mb-10 text-center tracking-tight">
-              Notre Recherche
+              Nos contributions
             </h2>
 
             {/* Bloc texte storytelling (même structure que Mission).
@@ -328,7 +328,7 @@ const ParallaxFondementsPage = () => {
               <p>
                 Travaux académiques, conférences et confrontation au terrain :
                 nous avançons par la recherche pour garantir la cohérence
-                scientifique du modèle.
+                scientifique de notre approche.
               </p>
             </div>
 
