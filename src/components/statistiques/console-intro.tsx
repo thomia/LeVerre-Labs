@@ -32,24 +32,24 @@ export function ConsoleIntro() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
-          className="max-w-3xl"
+          className="mx-auto max-w-4xl text-center"
         >
           <h1 className="text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl">
             La sinistralité au travail en France
           </h1>
 
           {/* Barre decorative degradee (motif recurrent du site) */}
-          <div className="relative mt-6 h-0.5 w-72 max-w-full">
+          <div className="relative mx-auto mt-6 h-0.5 w-72 max-w-full">
             <div
               className="absolute inset-0 rounded-full"
               style={{
                 background:
-                  'linear-gradient(to right, rgb(255,30,90) 0%, rgba(255,30,90,0.15) 100%)',
+                  'linear-gradient(to right, transparent 0%, rgb(255,30,90) 50%, transparent 100%)',
               }}
             />
           </div>
 
-          <p className="mt-6 text-base leading-relaxed text-gray-400 sm:text-lg">
+          <p className="mx-auto mt-6 max-w-3xl text-base leading-relaxed text-gray-400 sm:text-lg">
             Chaque année, l&apos;Assurance Maladie publie les statistiques sur les accidents et maladies professionnelles. 
             Vous pouvez les consulter sur cette page de manière claire et explorable, pour que chacun puisse étudier les données et les comparer.
           </p>

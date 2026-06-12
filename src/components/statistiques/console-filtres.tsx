@@ -38,12 +38,12 @@ export function ConsoleFiltres() {
     // `top-20` = 80px = hauteur de la navbar globale (h-20) ; la barre
     // de filtres se colle juste en dessous quand on scroll.
     <div className="sticky top-20 z-30 border-b border-white/10 bg-black/85 backdrop-blur-md">
-      <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6">
-        {/* Ligne 1 : onglets de VUE */}
+      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
+        {/* Ligne 1 : onglets de VUE (centres) */}
         <nav
           role="tablist"
           aria-label="Choix de la vue"
-          className="-mx-2 flex gap-1 overflow-x-auto px-2 pb-3"
+          className="flex flex-wrap justify-center gap-2 pb-5"
         >
           {ORDRE_VUES.map((id) => (
             <OngletVue
@@ -55,8 +55,8 @@ export function ConsoleFiltres() {
           ))}
         </nav>
 
-        {/* Ligne 2 : selecteurs annee / secteur / indicateur */}
-        <div className="flex flex-wrap items-center gap-3">
+        {/* Ligne 2 : selecteurs annee / secteur / indicateur (centres) */}
+        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
           <SelectFiltre
             label="Année"
             value={String(annee)}
@@ -72,9 +72,11 @@ export function ConsoleFiltres() {
             onChange={(v) => setCtn(v as CtnCode)}
             options={ORDRE_CTN.map((code) => ({
               value: code,
-              libelle: CTN_INFO[code].libelleCourt,
+              libelle:
+                code === 'tous'
+                  ? 'France entière'
+                  : `${CTN_INFO[code].libelleCourt} (CTN ${code})`,
             }))}
-            largeur="large"
           />
           <SelectFiltre
             label="Indicateur"
@@ -109,11 +111,11 @@ function OngletVue({ id, actif, onClick }: OngletVueProps) {
       title={description}
       onClick={onClick}
       className={`
-        whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium transition
+        whitespace-nowrap rounded-lg px-4 py-2 text-sm font-medium transition
         ${
           actif
-            ? 'bg-white/10 text-white'
-            : 'text-gray-400 hover:bg-white/5 hover:text-gray-200'
+            ? 'bg-[rgb(255,30,90)]/15 text-white ring-1 ring-[rgb(255,30,90)]/50'
+            : 'text-gray-400 hover:bg-white/5 hover:text-white'
         }
       `}
     >
@@ -127,31 +129,23 @@ interface SelectFiltreProps {
   value: string
   onChange: (v: string) => void
   options: { value: string; libelle: string }[]
-  largeur?: 'normal' | 'large'
 }
 
-function SelectFiltre({
-  label,
-  value,
-  onChange,
-  options,
-  largeur = 'normal',
-}: SelectFiltreProps) {
+function SelectFiltre({ label, value, onChange, options }: SelectFiltreProps) {
   return (
     <label
-      className={`
-        flex items-center gap-2 rounded-md border border-white/10 bg-white/5 px-3 py-1.5
-        text-sm transition hover:border-white/20
-        ${largeur === 'large' ? 'min-w-[200px]' : ''}
-      `}
+      className="
+        flex items-center gap-2.5 rounded-xl border border-white/15 bg-white/[0.04] px-4 py-2.5
+        text-sm transition hover:border-[rgb(255,30,90)]/40 focus-within:border-[rgb(255,30,90)]/60
+      "
     >
-      <span className="text-xs uppercase tracking-wider text-gray-500">
+      <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-500">
         {label}
       </span>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="cursor-pointer border-none bg-transparent font-medium text-white outline-none [&>option]:bg-black"
+        className="cursor-pointer border-none bg-transparent text-base font-medium text-white outline-none [&>option]:bg-black"
       >
         {options.map((o) => (
           <option key={o.value} value={o.value}>

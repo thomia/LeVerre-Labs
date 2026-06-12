@@ -34,14 +34,19 @@ interface ConsoleVueTmsProps {
   toutesAnnees: StatsAnnee[]
 }
 
-/** Palette pour les 6 localisations (gradations de rouge). */
+/**
+ * Palette pour les 6 localisations anatomiques.
+ * Couleurs categorielles distinctes (et non des gradations de rouge) pour
+ * que chaque zone se lise clairement, sans se confondre avec le rouge
+ * "risque physique" utilise ailleurs dans la console.
+ */
 const COULEURS_LOCALISATIONS = [
-  'rgb(255, 30, 90)',
-  'rgb(255, 70, 110)',
-  'rgb(230, 30, 90)',
-  'rgb(255, 100, 130)',
-  'rgb(200, 30, 90)',
-  'rgb(255, 130, 150)',
+  'rgb(56, 189, 248)',  // bleu ciel
+  'rgb(45, 212, 191)',  // turquoise
+  'rgb(167, 139, 250)', // violet
+  'rgb(251, 191, 36)',  // ambre
+  'rgb(244, 114, 182)', // rose clair
+  'rgb(148, 163, 184)', // gris ardoise
 ] as const
 
 export function ConsoleVueTms({ toutesAnnees }: ConsoleVueTmsProps) {
@@ -190,7 +195,7 @@ export function ConsoleVueTms({ toutesAnnees }: ConsoleVueTmsProps) {
                             <p className="font-semibold capitalize text-white">
                               {p.name}
                             </p>
-                            <p className="text-[rgb(255,30,90)]">
+                            <p className="text-white">
                               {formaterPourcent(p.value as number)} ·{' '}
                               <span className="text-gray-400">
                                 {formaterNombre(

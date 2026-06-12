@@ -39,9 +39,9 @@ export function ConsoleStats({ toutesAnnees }: ConsoleStatsProps) {
       {/* En-tete contextuel : breadcrumb / titre dynamique.
           La navbar est deja degagee par <ConsoleIntro> au-dessus, donc
           on garde juste une respiration legere ici. */}
-      <header className="mx-auto max-w-7xl px-4 pt-10 sm:px-6">
+      <header className="mx-auto max-w-7xl px-4 pt-10 text-center sm:px-6">
         <h1 className="text-2xl font-bold text-white sm:text-3xl">
-          {CTN_INFO[ctn].libelle}{' '}
+          {ctn === 'tous' ? 'France entière' : `CTN ${ctn} · ${CTN_INFO[ctn].libelle}`}{' '}
           <span className="text-gray-500">·</span>{' '}
           <span className="text-gray-400">{annee}</span>
         </h1>

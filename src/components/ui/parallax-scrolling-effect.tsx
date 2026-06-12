@@ -1,11 +1,11 @@
 "use client"
 
 import React, { useEffect, useRef, useState } from 'react'
+import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { Award } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { WordFadeIn } from '@/components/ui/word-fade-in'
 import AnimatedLogo from '@/components/ui/animated-logo'
-import { MagnetizeFrame } from '@/components/ui/magnetize-frame'
 
 const ParallaxFondementsPage = () => {
   const featureRef = useRef<HTMLDivElement>(null)
@@ -283,10 +283,10 @@ const ParallaxFondementsPage = () => {
         </section>
 
         {/* Section Notre Recherche
-            Suit le même pattern que Notre Histoire / Approche / Mission :
-            barre décorative rouge animée + h2 grande taille + paragraphes
-            en gros texte storytelling. Y est intégré le badge prix MODACT
-            et la vignette du poster cliquable. */}
+            Chapitre narratif (après Histoire / Approche / Mission). Sert de
+            teaser : le détail (poster ModACT, distinction, travaux) vit sur
+            la page dédiée /recherche-scientifique pour éviter le doublon.
+            On renvoie donc ici par un call-to-action. */}
         <section className="py-20 mb-12">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -326,68 +326,29 @@ const ParallaxFondementsPage = () => {
                 Une démarche pensée pour être partagée.
               </p>
               <p>
-                Présenté lors de{' '}
-                <a
-                  href="https://www.modact.net/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-white underline decoration-white/30 underline-offset-4 transition-colors hover:decoration-white"
-                >
-                  ModACT 2026
-                </a>
-                , conférence scientifique réunissant des expertises variées autour de la
-                modélisation de l’activité humaine.
+                Travaux académiques, conférences et confrontation au terrain :
+                nous avançons par la recherche pour garantir la cohérence
+                scientifique du modèle.
               </p>
             </div>
 
-            {/* Vignette du poster cliquable, centrée, taille modérée
-                pour ne pas déséquilibrer la composition. Englobée dans
-                un MagnetizeFrame : au survol, des billes rouges en
-                orbite convergent au centre du poster (call-to-action
-                silencieux qui remplace l'ancien bouton). */}
-            <MagnetizeFrame
-              className="mx-auto mt-16 w-full max-w-xs"
-              particleCount={20}
-              spread={220}
-            >
-            <motion.a
-              href="https://popups.uliege.be/3041-4687/index.php?id=626"
-              target="_blank"
-              rel="noopener noreferrer"
+            {/* Call-to-action vers la page dédiée Recherche scientifique
+                (le poster ModACT et le détail y sont présentés). */}
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              whileHover={{ scale: 1.03 }}
-              className="group relative block cursor-pointer"
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="mt-14 flex justify-center"
             >
-              {/* Pastille ronde rouge LeVerre signalant la distinction
-                  sans texte. Au survol : tooltip natif via `title`. */}
-              <div
-                className="absolute -top-3 -right-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-[rgb(255,30,90)] text-white"
-                style={{ boxShadow: '0 4px 14px rgba(255,30,90,0.45)' }}
-                title="Meilleur poster scientifique — ModACT 2026"
+              <Link
+                href="/recherche-scientifique"
+                className="group inline-flex items-center gap-2 rounded-full border border-[rgb(255,30,90)]/40 bg-[rgb(255,30,90)]/10 px-7 py-3 text-base font-medium text-white transition-all duration-300 hover:border-[rgb(255,30,90)]/70 hover:bg-[rgb(255,30,90)]/20"
               >
-                <Award className="h-4 w-4" strokeWidth={2.2} />
-              </div>
-
-              <div
-                className="relative overflow-hidden rounded-md border border-white/15 transition-all duration-300 group-hover:border-[rgb(255,30,90)]/50"
-                style={{
-                  boxShadow: '0 12px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04)',
-                }}
-              >
-                <img
-                  src="/photo%20video/poster.JPG"
-                  alt="Poster scientifique LeVerre Labs présenté à MODACT 2026"
-                  className="block h-auto w-full transition-transform duration-500 group-hover:scale-[1.03]"
-                  loading="lazy"
-                />
-                {/* Halo rouge subtil au hover */}
-                <div className="absolute inset-0 bg-[rgb(255,30,90)]/0 transition-colors duration-300 group-hover:bg-[rgb(255,30,90)]/10" />
-              </div>
-            </motion.a>
-            </MagnetizeFrame>
+                Découvrir notre recherche
+                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
+            </motion.div>
           </motion.div>
         </section>
       </div>

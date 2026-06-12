@@ -45,26 +45,26 @@ export default function Footer() {
                   Fondements
                 </Link>
               </li>
+              <li>
+                <Link href="/collaborer" className="text-gray-400 hover:text-white transition-colors text-sm">
+                  Collaborer
+                </Link>
+              </li>
             </ul>
           </div>
 
-          {/* À propos */}
+          {/* Ressources */}
           <div>
-            <h4 className="text-white font-semibold mb-4">À propos</h4>
+            <h4 className="text-white font-semibold mb-4">Ressources</h4>
             <ul className="space-y-3">
               <li>
-                <Link href="/fondements#histoire" className="text-gray-400 hover:text-white transition-colors text-sm">
-                  Histoire
+                <Link href="/statistiques" className="text-gray-400 hover:text-white transition-colors text-sm">
+                  Statistiques nationales AT/MP
                 </Link>
               </li>
               <li>
-                <Link href="/fondements#approche" className="text-gray-400 hover:text-white transition-colors text-sm">
-                  Approche
-                </Link>
-              </li>
-              <li>
-                <Link href="/fondements#references" className="text-gray-400 hover:text-white transition-colors text-sm">
-                  Mission
+                <Link href="/recherche-scientifique" className="text-gray-400 hover:text-white transition-colors text-sm">
+                  Recherche scientifique
                 </Link>
               </li>
             </ul>

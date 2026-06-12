@@ -9,11 +9,11 @@ interface Feature {
 
 const features: Feature[] = [
   {
-    title: "Former / Sensibiliser",
+    title: "Sensibiliser",
     description: "Une expérience visuelle simple. Chacun transpose le modèle à son quotidien et devient acteur de sa propre prévention.",
   },
   {
-    title: "Évaluer & Centraliser",
+    title: "Évaluer",
     description: "Tous les facteurs réunis en un seul endroit. Évaluez rapidement la situation globale de vos postes de travail.",
   },
   {
@@ -21,15 +21,15 @@ const features: Feature[] = [
     description: "Un langage commun pour tous les collaborateurs. La clé pour transformer votre culture sécurité.",
   },
   {
-    title: "Décider & Prioriser",
-    description: "Déterminez les leviers prioritaires et simulez vos solutions. Un outil d'aide à la décision pour guider vos actions de prévention.",
+    title: "Prioriser",
+    description: "Identifiez les leviers les plus efficaces et construisez votre plan d'action. Simulez vos solutions avant de les déployer.",
   },
   {
-    title: "Visualiser & Comprendre",
-    description: "Rendez visibles les interactions entre les facteurs de risque. Une lecture globale pour mieux comprendre les situations de travail.",
+    title: "Anticiper",
+    description: "Repérez l'accumulation des contraintes avant qu'elle ne fasse déborder le verre, pour agir en prévention plutôt qu'en réaction.",
   },
   {
-    title: "Adapter & Enrichir",
+    title: "Adapter",
     description: "Un modèle flexible pouvant évoluer selon les besoins de votre organisation et de vos projets.",
   },
 ]
