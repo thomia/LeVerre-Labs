@@ -42,7 +42,7 @@ const ParallaxFondementsPage = () => {
       "2x plus d'absences pour les travailleurs exposés à des contraintes physiques",
       "a d'abord existé sous sa forme la plus simple :",
       "un FEUTRE, un TABLEAU BLANC et un MESSAGE à faire passer.",
-      "Après plusieurs phases de recherche et validation, il a évolué vers une version numérique interactive pour guider n'importe quel utilisateur qui souhaiterais améliorer les conditions de travail."
+      "Après plusieurs phases de recherche et validation, il a évolué vers une version numérique interactive, utilisée par nos consultants pour guider les entreprises qui souhaitent améliorer leurs conditions de travail."
     ]
   }
 
