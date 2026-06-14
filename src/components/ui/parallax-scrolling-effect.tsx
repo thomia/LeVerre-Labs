@@ -55,10 +55,13 @@ const ParallaxFondementsPage = () => {
 
   const missionSection = {
     title: "Notre Mission",
-    description: [
-      "Jour après jour, nous travaillons pour vous proposer un logiciel qui simplifie l'analyse et l'optimisation des conditions de travail.",
-      " Garantissant une cohérence scientifique et respectant la règlementation."
-    ]
+    paragraphes: [
+      "Jour après jour, nous travaillons pour éveiller la conscience du risque lié à l'activité physique.",
+      "Pour tous les niveaux hiérarchiques de l'entreprise.",
+      "À travers des interventions soutenues par un outil numérique unique.",
+    ],
+    complement:
+      "Garantissant une cohérence scientifique et respectant la règlementation.",
   }
 
   return (
@@ -272,12 +275,28 @@ const ParallaxFondementsPage = () => {
             <h2 className="text-5xl md:text-6xl lg:text-7xl font-light text-white mb-16 text-center tracking-tight">
               {missionSection.title}
             </h2>
-            <div className="space-y-12 text-xl md:text-2xl text-slate-300 leading-[1.7] font-light text-center">
-              {missionSection.description.map((paragraph, index) => (
-                <p key={index} className={index === 0 ? "text-white text-2xl md:text-3xl font-normal leading-[1.5] mb-8" : ""}>
-                  {paragraph}
-                </p>
-              ))}
+            <div className="mx-auto max-w-3xl text-center">
+              <div className="space-y-1 text-xl font-light leading-[1.65] text-white md:text-2xl">
+                {missionSection.paragraphes.map((paragraphe, index) => (
+                  <p key={paragraphe}>
+                    {index === 2 ? (
+                      <>
+                        À travers des interventions soutenues par un{' '}
+                        <span className="font-normal text-[rgb(255,30,90)]">
+                          outil numérique unique
+                        </span>
+                        .
+                      </>
+                    ) : (
+                      paragraphe
+                    )}
+                  </p>
+                ))}
+              </div>
+
+              <p className="mt-8 text-xl font-light leading-[1.65] text-slate-300 md:text-2xl">
+                {missionSection.complement}
+              </p>
             </div>
           </motion.div>
         </section>
@@ -314,7 +333,7 @@ const ParallaxFondementsPage = () => {
             </motion.div>
 
             <h2 className="text-5xl md:text-6xl lg:text-7xl font-light text-white mb-10 text-center tracking-tight">
-              Nos contributions
+              Nos contributions scientifiques
             </h2>
 
             {/* Bloc texte storytelling (même structure que Mission).
@@ -345,7 +364,7 @@ const ParallaxFondementsPage = () => {
                 href="/recherche-scientifique"
                 className="group inline-flex items-center gap-2 rounded-full border border-[rgb(255,30,90)]/40 bg-[rgb(255,30,90)]/10 px-7 py-3 text-base font-medium text-white transition-all duration-300 hover:border-[rgb(255,30,90)]/70 hover:bg-[rgb(255,30,90)]/20"
               >
-                Découvrir notre recherche
+                Découvrir nos travaux
                 <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </motion.div>
