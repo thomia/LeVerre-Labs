@@ -78,6 +78,7 @@ const ParallaxFondementsPage = () => {
         <section className="mb-20">
           <div className="text-2xl md:text-3xl lg:text-4xl font-light text-slate-300 mb-6 leading-[1.3] text-center max-w-4xl mx-auto tracking-tight space-y-2">
             <WordFadeIn
+              as="h1"
               words="L'ergonomie ne devrait pas être réservée aux ergonomes."
               className="text-2xl md:text-3xl lg:text-4xl font-light text-slate-300 leading-[1.3] tracking-tight"
               delay={0.08}

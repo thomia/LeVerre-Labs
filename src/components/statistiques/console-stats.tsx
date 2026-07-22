@@ -40,11 +40,12 @@ export function ConsoleStats({ toutesAnnees }: ConsoleStatsProps) {
           La navbar est deja degagee par <ConsoleIntro> au-dessus, donc
           on garde juste une respiration legere ici. */}
       <header className="mx-auto max-w-7xl px-4 pt-10 text-center sm:px-6">
-        <h1 className="text-2xl font-bold text-white sm:text-3xl">
+        {/* h2 : le h1 de la page /statistiques est déjà porté par <ConsoleIntro>. */}
+        <h2 className="text-2xl font-bold text-white sm:text-3xl">
           {ctn === 'tous' ? 'France entière' : `CTN ${ctn} · ${CTN_INFO[ctn].libelle}`}{' '}
           <span className="text-gray-500">·</span>{' '}
           <span className="text-gray-400">{annee}</span>
-        </h1>
+        </h2>
       </header>
 
       <ConsoleFiltres />

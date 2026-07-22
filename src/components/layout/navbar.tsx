@@ -37,12 +37,15 @@ export default function Navbar() {
               alt="LeVerre Labs Logo"
               className="h-10 w-10 object-contain brightness-0 invert group-hover:scale-110 transition-transform duration-200"
             />
-            <h1 className="text-2xl font-bold">
+            {/* Nom de marque : volontairement pas un <h1> (la navbar est
+                globale à toutes les pages, chaque page définit son propre
+                titre principal unique). */}
+            <span className="text-2xl font-bold">
               <span className="text-[rgb(255,30,90)] group-hover:text-[rgb(255,60,120)] transition-colors">
                 LeVerre
               </span>{' '}
               <span className="text-white group-hover:text-gray-300 transition-colors">Labs</span>
-            </h1>
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
