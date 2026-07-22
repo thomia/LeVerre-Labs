@@ -4,12 +4,10 @@
  * Requiert le mot de passe formateur à chaque appel.
  *
  * Actions supportées :
- *   - "start_element"    : lancer le questionnaire d'un élément
- *   - "stop_element"     : arrêter le questionnaire en cours
- *   - "start_simulation" : lancer la phase d'animation (simulation_started_at = now())
- *   - "stop_simulation"  : remettre à zéro la simulation (simulation_started_at = null)
- *   - "end_session"      : terminer la session (passage à l'écran récap)
- *   - "reset"            : remettre à zéro (retour à l'état "waiting")
+ *   - "start_element"  : lancer le questionnaire d'un élément
+ *   - "stop_element"   : arrêter le questionnaire en cours
+ *   - "end_session"    : terminer la session (passage à l'écran récap)
+ *   - "reset"          : remettre à zéro (retour à l'état "waiting")
  */
 
 import { NextResponse } from 'next/server'
@@ -20,13 +18,7 @@ type ElementId = 'verre' | 'robinet' | 'bulle' | 'orage' | 'paille'
 
 interface ControlBody {
   password: string
-  action:
-    | 'start_element'
-    | 'stop_element'
-    | 'start_simulation'
-    | 'stop_simulation'
-    | 'end_session'
-    | 'reset'
+  action: 'start_element' | 'stop_element' | 'end_session' | 'reset'
   element?: ElementId
   timerDurationSeconds?: number
 }
@@ -79,25 +71,6 @@ export async function POST(
           status: 'active',
           current_element: null,
           timer_end_at: null,
-        }
-        break
-      }
-      case 'start_simulation': {
-        // On lance la simulation : tous les clients vont synchroniser leur
-        // animation locale sur ce timestamp. On stoppe également le
-        // questionnaire éventuellement en cours.
-        update = {
-          status: 'active',
-          current_element: null,
-          timer_end_at: null,
-          simulation_started_at: new Date().toISOString(),
-        }
-        break
-      }
-      case 'stop_simulation': {
-        // Reset de la simulation (permet d'en relancer une autre).
-        update = {
-          simulation_started_at: null,
         }
         break
       }

@@ -17,6 +17,7 @@ import type { ElementId, SimulationScenario } from '@/lib/supabase/types'
 export interface LiveParticipant {
   id: string
   pseudo: string
+  tache_reference: string | null
   scores: Partial<Record<ElementId, number>>
   answers: Record<string, unknown>
   simulation_scenario: SimulationScenario | null
@@ -35,7 +36,7 @@ export function useParticipants(sessionCode: string) {
     async function loadInitial() {
       const { data, error } = await supabase
         .from('participants')
-        .select('id, pseudo, scores, answers, simulation_scenario, joined_at')
+        .select('id, pseudo, tache_reference, scores, answers, simulation_scenario, joined_at')
         .eq('session_code', sessionCode)
         .order('joined_at', { ascending: true })
 

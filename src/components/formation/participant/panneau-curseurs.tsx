@@ -73,9 +73,6 @@ export function ParticipantSlidersPanel({
       setIsSaving(true)
       setError(null)
 
-      const nextAnswers: AnswersMap = { ...initialAnswers, ...nextValues }
-      const nextScore = definition.computeScore(nextAnswers)
-
       const supabase = createClient()
 
       const { data: current } = await supabase
@@ -87,7 +84,11 @@ export function ParticipantSlidersPanel({
       const currentScores = (current?.scores ?? {}) as Record<string, number>
       const currentAnswers = (current?.answers ?? {}) as AnswersMap
 
-      const mergedAnswers = { ...currentAnswers, ...nextValues }
+      // On calcule le score à partir des réponses fraîches de la BDD (qui
+      // contiennent notamment les poids de pondération du Robinet), fusionnées
+      // avec les valeurs des curseurs. Sinon la pondération serait ignorée.
+      const mergedAnswers = { ...currentAnswers, ...initialAnswers, ...nextValues }
+      const nextScore = definition.computeScore(mergedAnswers)
       const mergedScores = { ...currentScores, [definition.id]: nextScore }
 
       const { error: updateError } = await supabase

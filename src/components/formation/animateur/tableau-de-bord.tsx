@@ -16,8 +16,11 @@ import { QRCodeDisplay } from './affichage-qr-code'
 import { ParticipantCard } from './carte-participant'
 import { ParticipantFocusModal } from './modale-focus-participant'
 import { FormateurControls } from './panneau-de-controle'
+import { GraphiqueFilRouge } from './graphique-fil-rouge'
+import { PopupActions } from './popup-actions'
 import { useParticipants, type LiveParticipant } from '@/hooks/use-participants'
 import { useSession } from '@/hooks/use-session'
+import { LineChart, ClipboardList } from 'lucide-react'
 
 interface FormateurDashboardProps {
   code: string
@@ -27,13 +30,13 @@ export function FormateurDashboard({ code }: FormateurDashboardProps) {
   const { participants, isLoading } = useParticipants(code)
   const { session } = useSession(code)
   const [focusedId, setFocusedId] = useState<string | null>(null)
+  const [isGraphOpen, setIsGraphOpen] = useState(false)
+  const [isActionsOpen, setIsActionsOpen] = useState(false)
 
   // On retrouve toujours le participant à jour dans la liste live (et pas une
-  // copie figée) → comme ça pendant la simulation le modal voit l'animation.
+  // copie figée) → le modal reflète les scores temps réel.
   const focusedParticipant: LiveParticipant | null =
     participants.find((p) => p.id === focusedId) ?? null
-
-  const simulationStartedAt = session?.simulation_started_at ?? null
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-slate-950 to-slate-900 p-6 pb-32 pt-24 text-white">
@@ -62,6 +65,24 @@ export function FormateurDashboard({ code }: FormateurDashboardProps) {
               <Clock className="h-4 w-4 text-amber-400" />
               <span>En attente</span>
             </div>
+          </div>
+
+          <div className="mt-4 flex flex-wrap items-center gap-2">
+            <button
+              onClick={() => setIsGraphOpen(true)}
+              disabled={participants.length === 0}
+              className="flex items-center gap-2 rounded-lg bg-blue-600/80 px-3 py-2 text-sm font-semibold text-white transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              <LineChart className="h-4 w-4" />
+              Récap graphique
+            </button>
+            <button
+              onClick={() => setIsActionsOpen(true)}
+              className="flex items-center gap-2 rounded-lg bg-emerald-600/80 px-3 py-2 text-sm font-semibold text-white transition hover:bg-emerald-500"
+            >
+              <ClipboardList className="h-4 w-4" />
+              Actions et recommandations
+            </button>
           </div>
         </div>
 
@@ -93,7 +114,6 @@ export function FormateurDashboard({ code }: FormateurDashboardProps) {
                 <ParticipantCard
                   key={p.id}
                   participant={p}
-                  simulationStartedAt={simulationStartedAt}
                   onSelect={(participant) => setFocusedId(participant.id)}
                 />
               ))}
@@ -105,8 +125,21 @@ export function FormateurDashboard({ code }: FormateurDashboardProps) {
       {/* Modal "focus" : clic sur une carte → modèle en grand */}
       <ParticipantFocusModal
         participant={focusedParticipant}
-        simulationStartedAt={simulationStartedAt}
         onClose={() => setFocusedId(null)}
+      />
+
+      {/* Récap graphique de l'indicateur (fil rouge) */}
+      <GraphiqueFilRouge
+        participants={participants}
+        isOpen={isGraphOpen}
+        onClose={() => setIsGraphOpen(false)}
+      />
+
+      {/* Pop-up actions et recommandations, remplie en commun avec le groupe */}
+      <PopupActions
+        sessionCode={code}
+        isOpen={isActionsOpen}
+        onClose={() => setIsActionsOpen(false)}
       />
 
       {/* Contrôles formateur (barre fixe en bas) */}

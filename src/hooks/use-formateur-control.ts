@@ -41,13 +41,7 @@ export function useFormateurControl(sessionCode: string) {
 
   const call = useCallback(
     async (
-      action:
-        | 'start_element'
-        | 'stop_element'
-        | 'start_simulation'
-        | 'stop_simulation'
-        | 'end_session'
-        | 'reset',
+      action: 'start_element' | 'stop_element' | 'end_session' | 'reset',
       extras: { element?: ElementId; timerDurationSeconds?: number } = {}
     ) => {
       const password = getFormateurPassword()
@@ -89,8 +83,6 @@ export function useFormateurControl(sessionCode: string) {
     startElement: (element: ElementId, timerDurationSeconds?: number) =>
       call('start_element', { element, timerDurationSeconds }),
     stopElement: () => call('stop_element'),
-    startSimulation: () => call('start_simulation'),
-    stopSimulation: () => call('stop_simulation'),
     endSession: () => call('end_session'),
     resetSession: () => call('reset'),
   }

@@ -17,6 +17,7 @@ interface ParticipantJoinProps {
 
 export function ParticipantJoin({ sessionCode, onJoined }: ParticipantJoinProps) {
   const [pseudo, setPseudo] = useState('')
+  const [tacheReference, setTacheReference] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -30,6 +31,12 @@ export function ParticipantJoin({ sessionCode, onJoined }: ParticipantJoinProps)
       return
     }
 
+    const cleanTache = tacheReference.trim()
+    if (cleanTache.length < 2 || cleanTache.length > 60) {
+      setError('Le nom de la tâche doit contenir entre 2 et 60 caractères')
+      return
+    }
+
     setIsLoading(true)
 
     const supabase = createClient()
@@ -38,6 +45,7 @@ export function ParticipantJoin({ sessionCode, onJoined }: ParticipantJoinProps)
       .insert({
         session_code: sessionCode,
         pseudo: cleanPseudo,
+        tache_reference: cleanTache,
         scores: {},
         answers: {},
       })
@@ -102,6 +110,25 @@ export function ParticipantJoin({ sessionCode, onJoined }: ParticipantJoinProps)
           />
         </div>
 
+        <div>
+          <label className="mb-1 block text-sm font-medium text-slate-300">
+            Nom de ta tâche de référence
+          </label>
+          <input
+            type="text"
+            value={tacheReference}
+            onChange={(e) => setTacheReference(e.target.value)}
+            required
+            minLength={2}
+            maxLength={60}
+            className="w-full rounded-lg border border-white/10 bg-slate-950 px-3 py-3 text-white placeholder:text-slate-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            placeholder="ex: Changer un siège conducteur"
+          />
+          <p className="mt-1 text-xs text-slate-500">
+            La tâche concrète que tu vas analyser pendant toute la session.
+          </p>
+        </div>
+
         {error && (
           <div className="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-300">
             {error}
@@ -110,7 +137,7 @@ export function ParticipantJoin({ sessionCode, onJoined }: ParticipantJoinProps)
 
         <button
           type="submit"
-          disabled={isLoading || !pseudo.trim()}
+          disabled={isLoading || !pseudo.trim() || !tacheReference.trim()}
           className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-3 font-semibold text-white transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {isLoading ? (

@@ -36,7 +36,7 @@ export interface Session {
   current_element: ElementId | null
   timer_end_at: string | null
   timer_duration: number
-  /** ISO timestamp ou null. Non-null = simulation lancée par le formateur. */
+  /** @deprecated Ancien système de simulation, conservé pour compat BDD. */
   simulation_started_at: string | null
   created_at: string
 }
@@ -45,11 +45,37 @@ export interface Participant {
   id: string
   session_code: string
   pseudo: string
+  /** Nom libre de la tâche de référence choisie par le participant. */
+  tache_reference: string | null
   scores: ParticipantScores
   answers: ParticipantAnswers
-  /** Scénario choisi pour la simulation, null tant que pas choisi. */
+  /** @deprecated Ancien système de simulation, conservé pour compat BDD. */
   simulation_scenario: SimulationScenario | null
   joined_at: string
+}
+
+/**
+ * Colonne du tableau d'actions.
+ *   - 'a_classer'  : zone de dépôt par défaut, avant tri par le formateur.
+ *   - 'moi'        : action sur mon poste, par moi.
+ *   - 'entreprise'  : action sur le poste, par l'entreprise.
+ */
+export type ActionColonne = 'a_classer' | 'moi' | 'entreprise'
+
+/**
+ * Action / recommandation posée dans le tableau collaboratif de fin de
+ * session (pop-up formateur, rempli et trié en commun avec le groupe).
+ * `element` (optionnel) rattache l'action à l'un des 5 éléments du modèle.
+ */
+export interface Action {
+  id: string
+  session_code: string
+  participant_id: string | null
+  pseudo: string
+  colonne: ActionColonne
+  element: ElementId | null
+  texte: string
+  created_at: string
 }
 
 /**
@@ -64,13 +90,19 @@ export type Database = {
     Tables: {
       sessions: {
         Row: Session
-        Insert: Omit<Session, 'created_at'> & { created_at?: string }
+        Insert: Omit<Session, 'created_at'> & {
+          created_at?: string
+        }
         Update: Partial<Session>
         Relationships: []
       }
       participants: {
         Row: Participant
-        Insert: Omit<Participant, 'id' | 'joined_at'> & { id?: string; joined_at?: string }
+        Insert: Omit<Participant, 'id' | 'joined_at' | 'tache_reference'> & {
+          id?: string
+          joined_at?: string
+          tache_reference?: string | null
+        }
         Update: Partial<Participant>
         Relationships: [
           {
@@ -78,6 +110,29 @@ export type Database = {
             columns: ['session_code']
             referencedRelation: 'sessions'
             referencedColumns: ['code']
+          }
+        ]
+      }
+      actions: {
+        Row: Action
+        Insert: Omit<Action, 'id' | 'created_at' | 'colonne'> & {
+          id?: string
+          created_at?: string
+          colonne?: ActionColonne
+        }
+        Update: Partial<Action>
+        Relationships: [
+          {
+            foreignKeyName: 'actions_session_code_fkey'
+            columns: ['session_code']
+            referencedRelation: 'sessions'
+            referencedColumns: ['code']
+          },
+          {
+            foreignKeyName: 'actions_participant_id_fkey'
+            columns: ['participant_id']
+            referencedRelation: 'participants'
+            referencedColumns: ['id']
           }
         ]
       }

@@ -22,7 +22,9 @@ import type {
 } from '@/lib/questions'
 import type { ElementId } from '@/lib/supabase/types'
 import { ELEMENT_THEME } from '@/lib/element-theme'
+import { ROBINET_WEIGHT_KEYS } from '@/lib/questions/robinet'
 import { ParticipantSlidersPanel } from './panneau-curseurs'
+import { PonderationPanel } from './panneau-ponderation'
 
 interface ParticipantQuestionnaireProps {
   participantId: string
@@ -48,6 +50,9 @@ export function ParticipantQuestionnaire({
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  // Robinet : la pondération (100 points) précède les curseurs. On la
+  // considère validée si les poids existent déjà en BDD, ou après validation.
+  const [ponderationOverride, setPonderationOverride] = useState(false)
 
   // Charge les réponses existantes au mount et à chaque changement d'élément
   useEffect(() => {
@@ -135,6 +140,8 @@ export function ParticipantQuestionnaire({
   const total = definition.questions.length
   const isFinished = currentIndex >= total
   const allScale = definition.questions.every((q) => q.type === 'scale')
+  const ponderationValidated =
+    ponderationOverride || ROBINET_WEIGHT_KEYS.every((k) => answers[k] !== undefined)
 
   // Remonte au parent dès que l'utilisateur arrive sur l'écran "Terminé"
   // (mode question-par-question). Le parent peut alors révéler le chip du
@@ -145,6 +152,11 @@ export function ParticipantQuestionnaire({
   useEffect(() => {
     if (isFinished && !allScale) onFinished?.()
   }, [isFinished, allScale, onFinished])
+
+  // Reset de l'étape pondération à chaque changement d'élément.
+  useEffect(() => {
+    setPonderationOverride(false)
+  }, [element])
 
   if (isLoading) {
     return (
@@ -157,6 +169,19 @@ export function ParticipantQuestionnaire({
   // Si TOUTES les questions de l'élément sont des sliders (type 'scale'),
   // on bascule sur le panneau multi-sliders (cas Robinet - version Sensibilisation).
   if (allScale) {
+    // Robinet : on répartit d'abord 100 points (pondération) avant les curseurs.
+    if (element === 'robinet' && !ponderationValidated) {
+      return (
+        <PonderationPanel
+          participantId={participantId}
+          initialAnswers={answers}
+          onValidated={(weights) => {
+            setAnswers((prev) => ({ ...prev, ...weights }))
+            setPonderationOverride(true)
+          }}
+        />
+      )
+    }
     return (
       <ParticipantSlidersPanel
         participantId={participantId}

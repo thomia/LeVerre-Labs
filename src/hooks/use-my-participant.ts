@@ -16,6 +16,7 @@ import type { ElementId, SimulationScenario } from '@/lib/supabase/types'
 export interface MyParticipantState {
   id: string
   pseudo: string
+  tache_reference: string | null
   scores: Partial<Record<ElementId, number>>
   answers: Record<string, unknown>
   simulation_scenario: SimulationScenario | null
@@ -38,7 +39,7 @@ export function useMyParticipant(participantId: string | null) {
     async function loadInitial() {
       const { data: row, error } = await supabase
         .from('participants')
-        .select('id, pseudo, scores, answers, simulation_scenario')
+        .select('id, pseudo, tache_reference, scores, answers, simulation_scenario')
         .eq('id', participantId)
         .maybeSingle()
 
