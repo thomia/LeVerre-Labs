@@ -6,8 +6,18 @@
  */
 
 import { Suspense } from 'react'
+import type { Metadata } from 'next'
 import { VerrouAccesFormateur } from '@/components/formation/animateur/verrou-acces-formateur'
 import { EspaceFormateur } from '@/components/formation/animateur/espace-formateur'
+
+// Zone privée (mot de passe) : jamais indexée par les moteurs de recherche.
+export const metadata: Metadata = {
+  title: 'Espace formateur',
+  robots: {
+    index: false,
+    follow: false,
+  },
+}
 
 export default function EspaceFormateurPage() {
   return (

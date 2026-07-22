@@ -4,6 +4,7 @@
  * Écran central projeté en salle
  */
 
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { createAdminClient } from '@/lib/supabase/server'
 import { isValidSessionCode, normalizeSessionCode } from '@/lib/session/generate-code'
@@ -12,6 +13,15 @@ import { FormateurAuthGate } from '@/components/formation/animateur/verrou-mot-d
 
 interface PageProps {
   params: Promise<{ code: string }>
+}
+
+// Session privée liée à un code unique : jamais indexée.
+export const metadata: Metadata = {
+  title: 'Session de formation',
+  robots: {
+    index: false,
+    follow: false,
+  },
 }
 
 export default async function FormationSessionPage({ params }: PageProps) {

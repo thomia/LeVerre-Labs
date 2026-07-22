@@ -15,14 +15,25 @@
  */
 
 import { Suspense } from 'react'
+import type { Metadata } from 'next'
+import { buildOpenGraph } from '@/lib/seo/site'
 import { chargerToutesAnnees } from '@/lib/stats-am'
 import { ConsoleIntro } from '@/components/statistiques/console-intro'
 import { ConsoleStats } from '@/components/statistiques/console-stats'
 
-export const metadata = {
-  title: 'Statistiques AT/MP | LeVerre Labs',
+export const metadata: Metadata = {
+  title: 'Statistiques AT/MP et TMS en France',
   description:
-    "Console d'exploration des donnees publiques de sinistralite au travail en France (Accidents du Travail, Maladies Professionnelles, TMS). Source : Assurance Maladie - Risques professionnels.",
+    "Console d'exploration des données publiques de sinistralité et de prévention des risques physiques au travail en France (AT, MP, TMS). Source : Assurance Maladie.",
+  alternates: {
+    canonical: '/statistiques',
+  },
+  openGraph: buildOpenGraph({
+    title: 'Statistiques AT/MP et TMS en France | LeVerre Labs',
+    description:
+      "Explorez les données publiques de sinistralité au travail en France pour mieux cibler vos actions de prévention.",
+    url: '/statistiques',
+  }),
 }
 
 export default async function StatistiquesPage() {
