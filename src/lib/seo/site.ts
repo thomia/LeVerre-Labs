@@ -6,8 +6,24 @@ import type { Metadata } from 'next'
  * balises canonical/Open Graph de chaque page restent synchronisés.
  */
 
-export const SITE_URL = 'https://leverre-labs.vercel.app'
+/**
+ * URL canonique du site. Configurable via `NEXT_PUBLIC_SITE_URL` pour
+ * pouvoir basculer facilement sur un domaine personnalisé sans toucher
+ * au code. Valeur par défaut : le domaine Vercel actuel.
+ */
+export const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') ??
+  'https://leverre-labs.vercel.app'
+
 export const SITE_NAME = 'LeVerre Labs'
+
+/**
+ * Code de vérification Google Search Console (méthode « balise HTML »).
+ * À renseigner via `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`. Génère la
+ * balise <meta name="google-site-verification" ...> attendue par Google.
+ */
+export const GOOGLE_SITE_VERIFICATION =
+  process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
 
 /** Construit une URL absolue à partir d'un chemin (ex: "/vitrine"). */
 export function absoluteUrl(path: string): string {

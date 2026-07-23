@@ -4,7 +4,13 @@ import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import '@/styles/globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
 import { ConditionalLayout } from '@/components/layout/conditional-layout'
-import { SITE_NAME, SITE_URL, buildOpenGraph } from '@/lib/seo/site'
+import { JsonLd } from '@/components/seo/json-ld'
+import {
+  SITE_NAME,
+  SITE_URL,
+  GOOGLE_SITE_VERIFICATION,
+  buildOpenGraph,
+} from '@/lib/seo/site'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -35,6 +41,9 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  ...(GOOGLE_SITE_VERIFICATION && {
+    verification: { google: GOOGLE_SITE_VERIFICATION },
+  }),
 }
 
 export default function RootLayout({
@@ -44,6 +53,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr" suppressHydrationWarning>
+      <head>
+        <JsonLd />
+      </head>
       <body className={inter.className}>
         <ThemeProvider
           attribute="class"
