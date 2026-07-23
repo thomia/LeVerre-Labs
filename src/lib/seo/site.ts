@@ -8,12 +8,13 @@ import type { Metadata } from 'next'
 
 /**
  * URL canonique du site. Configurable via `NEXT_PUBLIC_SITE_URL` pour
- * pouvoir basculer facilement sur un domaine personnalisé sans toucher
- * au code. Valeur par défaut : le domaine Vercel actuel.
+ * pouvoir basculer facilement d'environnement sans toucher au code
+ * (ex : URL de preview Vercel). Valeur par défaut : le domaine de
+ * production `leverre-labs.com`.
  */
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') ??
-  'https://leverre-labs.vercel.app'
+  'https://leverre-labs.com'
 
 export const SITE_NAME = 'LeVerre Labs'
 

@@ -31,25 +31,26 @@ apparaît dans les recherches. Adresse : <https://search.google.com/search-conso
 
 ### Étape 2.1 — Ajouter ta propriété (= déclarer ton site)
 
-Deux méthodes possibles. **La plus simple pour toi dépend de ton adresse de site :**
+Le site officiel est **`https://leverre-labs.com`** (domaine acheté et géré via Vercel).
+Deux méthodes de déclaration possibles :
 
-#### Cas A — Tu utilises l'adresse Vercel par défaut (`leverre-labs.vercel.app`)
+#### Méthode recommandée — Propriété « Domaine » (vérification DNS)
 
-Choisis le type de propriété **« Préfixe de l'URL »** et entre l'adresse complète
-(`https://leverre-labs.vercel.app`). Puis utilise la méthode de vérification **« Balise HTML »**
-(voir étape 2.2). C'est le cas le plus simple ici, car tu ne peux pas modifier le DNS d'un
-sous-domaine `.vercel.app`.
+C'est la plus robuste : elle couvre `http`, `https`, `www` et tous les sous-domaines d'un coup.
 
-#### Cas B — Tu as (ou tu veux) un nom de domaine à toi (ex : `leverre-labs.fr`)
+1. Dans GSC, choisis le type de propriété **« Domaine »** et entre `leverre-labs.com`.
+2. Google te donne un enregistrement **TXT** à ajouter dans le DNS.
+3. Comme le domaine est géré par Vercel : va dans **Vercel → ton projet → Settings → Domains →
+   `leverre-labs.com`** (ou l'onglet DNS Records du domaine) et ajoute l'enregistrement **TXT**
+   fourni par Google.
+4. Reviens dans GSC et clique sur **« Vérifier »** (la propagation DNS peut prendre un moment).
 
-C'est **fortement recommandé** pour la crédibilité et le référencement. Dans ce cas :
+#### Méthode alternative — Propriété « Préfixe de l'URL » (balise HTML)
 
-1. Achète le domaine (OVH, Gandi, etc.) et branche-le sur Vercel (Project → Settings → Domains).
-2. Dans GSC, choisis le type de propriété **« Domaine »** (vérification par DNS) : c'est la
-   méthode la plus robuste, elle couvre `http`, `https`, `www` et tous les sous-domaines.
-3. Google te donnera un enregistrement **TXT** à ajouter chez ton hébergeur de domaine.
-4. **Préviens-moi du nouveau domaine** : je mettrai à jour `NEXT_PUBLIC_SITE_URL` (voir §3) pour
-   que le sitemap, les liens canoniques et les cartes de partage pointent vers la bonne adresse.
+Plus simple si le DNS te rebute :
+
+1. Dans GSC, choisis **« Préfixe de l'URL »** et entre `https://leverre-labs.com`.
+2. Utilise la vérification **« Balise HTML »** décrite à l'étape 2.2.
 
 ### Étape 2.2 — Vérifier que le site t'appartient (méthode « Balise HTML »)
 
@@ -99,7 +100,7 @@ Pour ne pas attendre, tu peux pousser Google manuellement :
 
 | Variable | À quoi ça sert | Obligatoire ? |
 | --- | --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | Adresse canonique du site (sans `/` final). Utilisée par le sitemap, les liens canoniques et les cartes de partage. | Non tant que tu restes sur `leverre-labs.vercel.app` ; **oui** dès que tu as un domaine à toi. |
+| `NEXT_PUBLIC_SITE_URL` | Adresse canonique du site (sans `/` final). Utilisée par le sitemap, les liens canoniques et les cartes de partage. | Non : le code utilise déjà `https://leverre-labs.com` par défaut. À définir seulement pour forcer une autre adresse (ex : environnement de preview). |
 | `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | Code de vérification GSC (méthode balise HTML). | Uniquement si tu utilises la méthode « Balise HTML ». |
 
 Après toute modification de ces variables, **redéploie** le site.
@@ -112,7 +113,8 @@ Le référencement se gagne surtout par le **contenu** et la **notoriété**, pa
 
 - **Écris pour tes lecteurs** : des pages claires qui répondent à de vraies questions
   (« qu'est-ce qu'un TMS ? », « comment prévenir les TMS en entreprise ? »).
-- **Un nom de domaine à toi** inspire plus confiance qu'une adresse `.vercel.app`.
+- **Ton nom de domaine `leverre-labs.com`** inspire plus confiance qu'une adresse `.vercel.app` :
+  pense à l'utiliser partout (signature mail, réseaux, supports de formation).
 - **Des liens entrants** : fais parler de LeVerre Labs (articles, réseaux, partenaires,
   publications scientifiques) — chaque lien vers ton site est un vote de confiance pour Google.
 - **Google My Business** si tu proposes du conseil/formation localement (Rhône-Alpes).
@@ -123,9 +125,10 @@ Le référencement se gagne surtout par le **contenu** et la **notoriété**, pa
 
 ## 5. Récapitulatif — ta to-do
 
+- [x] Acheter le nom de domaine (`leverre-labs.com`, via Vercel).
+- [ ] Vérifier que `https://leverre-labs.com` s'affiche bien (HTTPS actif) et redéployer le site.
 - [ ] Créer un compte Google Search Console.
-- [ ] Ajouter la propriété du site (Domaine si domaine perso, sinon Préfixe de l'URL).
-- [ ] Vérifier la propriété (DNS ou balise HTML via `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`).
+- [ ] Ajouter la propriété `leverre-labs.com` (idéalement type « Domaine » / vérification DNS).
+- [ ] Vérifier la propriété (TXT dans le DNS Vercel, ou balise HTML via `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`).
 - [ ] Envoyer le sitemap (`sitemap.xml`).
 - [ ] Demander l'indexation des pages clés.
-- [ ] (Recommandé) Acheter un nom de domaine et me le communiquer pour mettre à jour `NEXT_PUBLIC_SITE_URL`.
