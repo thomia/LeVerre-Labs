@@ -32,6 +32,11 @@ const FAQ: QuestionReponse[] = [
       'Les TMS regroupent les douleurs et lésions des muscles, tendons, nerfs et articulations, favorisées au travail par les gestes répétitifs, le port de charges, les postures contraignantes et le stress. Ils représentent près de 90 % des maladies professionnelles reconnues en France.',
   },
   {
+    question: 'Qu’est-ce qu’un accident du travail (AT) lié à l’activité physique ?',
+    intro:
+      'C’est un accident du travail, avec ou sans arrêt, dont le travail ou l’activité est à l’origine. Il se traduit par des douleurs ou une incapacité temporaire d’origine musculaire, tendineuse ou ligamentaire (par exemple un lumbago ou une entorse survenus lors d’un effort ou d’un geste).',
+  },
+  {
     question: 'Comment sensibiliser ses équipes aux TMS en entreprise ?',
     intro:
       'La sensibilisation fonctionne mieux quand elle est visuelle et concrète que théorique. LeVerre Labs utilise la métaphore du verre qui se remplit pour rendre les facteurs de risque compréhensibles par tous et ancrer durablement les bons réflexes de prévention.',
@@ -41,31 +46,11 @@ const FAQ: QuestionReponse[] = [
     intro:
       'Le modèle du verre illustre, par une métaphore visuelle, l’accumulation des contraintes physiques et mentales au fil de l’activité, symbolisée par un verre qui se remplit.',
     points: [
-      {
-        label: 'Le verre',
-        texte:
-          'les facteurs individuels (âge, antécédents, condition physique, hygiène de vie) qui définissent la résistance de chacun.',
-      },
-      {
-        label: 'Le robinet',
-        texte:
-          'les contraintes du travail (charges, postures, fréquence, charge mentale et risques psychosociaux) qui remplissent le verre.',
-      },
-      {
-        label: 'La bulle',
-        texte:
-          'l’environnement (température, bruit, vibrations, éclairage, espace) qui amplifie les contraintes subies.',
-      },
-      {
-        label: 'L’orage',
-        texte:
-          'les imprévus et aléas du terrain, une source de remplissage supplémentaire qui vient s’ajouter au travail prévu.',
-      },
-      {
-        label: 'La paille',
-        texte:
-          'la récupération (repos, pauses actives, étirements, entraide) qui vide en partie le verre.',
-      },
+      { label: 'Le verre', texte: 'définit la capacité à encaisser les contraintes.' },
+      { label: 'Le robinet', texte: 'remplit le verre.' },
+      { label: 'La bulle', texte: 'influence le débit de remplissage.' },
+      { label: 'L’orage', texte: 'ajoute une source de remplissage supplémentaire.' },
+      { label: 'La paille', texte: 'vide le verre.' },
     ],
     conclusion:
       'Le niveau de remplissage, en pourcentage, se découpe en quatre zones de risque (favorable, vigilance, critique, rupture) qui guident la prise de conscience et les actions de prévention.',
@@ -77,14 +62,14 @@ const FAQ: QuestionReponse[] = [
       'Plus le verre se remplit, plus le risque de blessure augmente. Il prend deux formes :',
     points: [
       {
-        label: 'Conséquence aiguë — l’accident du travail (AT)',
+        label: 'Conséquence aiguë, l’accident du travail (AT)',
         texte:
-          'survient d’un coup (lombalgie aiguë, tendinite de l’épaule…) et entraîne souvent un arrêt.',
+          'il survient d’un coup (lombalgie aiguë, tendinite de l’épaule…) et entraîne souvent un arrêt.',
       },
       {
-        label: 'Conséquence chronique — le TMS',
+        label: 'Conséquence chronique, le TMS',
         texte:
-          's’installe progressivement et relève de la maladie professionnelle.',
+          'il s’installe progressivement et relève de la maladie professionnelle.',
       },
     ],
     conclusion:
@@ -93,7 +78,7 @@ const FAQ: QuestionReponse[] = [
   {
     question: 'À qui s’adresse LeVerre Labs ?',
     intro:
-      'Aux entreprises et services RH/HSE qui veulent sensibiliser leurs équipes, ainsi qu’aux préventeurs et ergonomes qui analysent une situation de travail pour la transformer. L’outil sert aussi en formation initiale (écoles, universités).',
+      'Aux organisations publiques ou privées et aux industries qui souhaitent sensibiliser leurs équipes à ce risque avec une approche différente, interactive et qui fait sens, loin des formations en salle classiques.',
   },
   {
     question: 'La prévention des TMS est-elle une obligation pour l’employeur ?',
