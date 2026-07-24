@@ -56,8 +56,7 @@ const FAQ: QuestionReponse[] = [
       'Le niveau de remplissage, en pourcentage, se découpe en quatre zones de risque (favorable, vigilance, critique, rupture) qui guident la prise de conscience et les actions de prévention.',
   },
   {
-    question:
-      'Que risque-t-on quand le verre déborde : accident du travail (AT) ou TMS ?',
+    question: 'Que risque-t-on quand le verre déborde : AT ou TMS ?',
     intro:
       'Plus le verre se remplit, plus le risque de blessure augmente. Il prend deux formes :',
     points: [
@@ -78,7 +77,7 @@ const FAQ: QuestionReponse[] = [
   {
     question: 'À qui s’adresse LeVerre Labs ?',
     intro:
-      'Aux organisations publiques ou privées et aux industries qui souhaitent sensibiliser leurs équipes à ce risque avec une approche différente, interactive et qui fait sens, loin des formations en salle classiques.',
+      'Aux organisations publiques ou privées et aux industries qui souhaitent sensibiliser leurs équipes à ce risque avec une approche différente, interactive et qui fait sens. Il s’adresse aussi aux services RH/HSE, aux préventeurs et aux ergonomes qui analysent une situation de travail pour la transformer, et sert également en formation initiale (écoles, universités).',
   },
   {
     question: 'La prévention des TMS est-elle une obligation pour l’employeur ?',
