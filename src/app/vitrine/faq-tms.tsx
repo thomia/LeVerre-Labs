@@ -13,53 +13,113 @@
  *   pour permettre l'affichage en accordéon directement dans Google.
  */
 
+interface PointReponse {
+  label?: string
+  texte: string
+}
+
 interface QuestionReponse {
   question: string
-  reponse: string
+  intro: string
+  points?: PointReponse[]
+  conclusion?: string
 }
 
 const FAQ: QuestionReponse[] = [
   {
     question: 'Qu’est-ce qu’un trouble musculosquelettique (TMS) ?',
-    reponse:
-      'Les troubles musculosquelettiques (TMS) regroupent les douleurs et lésions touchant les muscles, tendons, nerfs et articulations. Au travail, ils sont favorisés par les gestes répétitifs, le port de charges, les postures contraignantes et le stress. Ils représentent près de 90 % des maladies professionnelles reconnues en France.',
+    intro:
+      'Les TMS regroupent les douleurs et lésions des muscles, tendons, nerfs et articulations, favorisées au travail par les gestes répétitifs, le port de charges, les postures contraignantes et le stress. Ils représentent près de 90 % des maladies professionnelles reconnues en France.',
   },
   {
     question: 'Comment sensibiliser ses équipes aux TMS en entreprise ?',
-    reponse:
-      'La sensibilisation aux TMS est bien plus efficace quand elle est visuelle et concrète plutôt que théorique. LeVerre Labs utilise la métaphore d’un verre qui se remplit pour rendre les facteurs de risque compréhensibles par tous, faciliter les échanges pendant la formation et ancrer durablement les bons réflexes de prévention.',
+    intro:
+      'La sensibilisation fonctionne mieux quand elle est visuelle et concrète que théorique. LeVerre Labs utilise la métaphore du verre qui se remplit pour rendre les facteurs de risque compréhensibles par tous et ancrer durablement les bons réflexes de prévention.',
   },
   {
     question: 'Qu’est-ce que le modèle du verre de LeVerre Labs ?',
-    reponse:
-      'Le verre représente le corps du travailleur, dans lequel s’accumulent les contraintes de la journée. Le robinet (la charge de travail : efforts, postures, charge mentale) le remplit, la bulle (l’environnement : bruit, température, éclairage…) influe sur le débit, l’orage (les imprévus) provoque des à-coups, et la paille (la récupération : pauses, étirements, repos) le vide. Le verre lui-même correspond aux facteurs individuels (âge, antécédents, condition physique) qui déterminent la capacité de chacun à encaisser. Chaque paramètre est ajustable pour refléter une vraie situation de travail.',
+    intro:
+      'Le modèle du verre illustre, par une métaphore visuelle, l’accumulation des contraintes physiques et mentales au fil de l’activité, symbolisée par un verre qui se remplit.',
+    points: [
+      {
+        label: 'Le verre',
+        texte:
+          'les facteurs individuels (âge, antécédents, condition physique, hygiène de vie) qui définissent la résistance de chacun.',
+      },
+      {
+        label: 'Le robinet',
+        texte:
+          'les contraintes du travail (charges, postures, fréquence, charge mentale et risques psychosociaux) qui remplissent le verre.',
+      },
+      {
+        label: 'La bulle',
+        texte:
+          'l’environnement (température, bruit, vibrations, éclairage, espace) qui amplifie les contraintes subies.',
+      },
+      {
+        label: 'L’orage',
+        texte:
+          'les imprévus et aléas du terrain, une source de remplissage supplémentaire qui vient s’ajouter au travail prévu.',
+      },
+      {
+        label: 'La paille',
+        texte:
+          'la récupération (repos, pauses actives, étirements, entraide) qui vide en partie le verre.',
+      },
+    ],
+    conclusion:
+      'Le niveau de remplissage, en pourcentage, se découpe en quatre zones de risque (favorable, vigilance, critique, rupture) qui guident la prise de conscience et les actions de prévention.',
   },
   {
     question:
       'Que risque-t-on quand le verre déborde : accident du travail (AT) ou TMS ?',
-    reponse:
-      'Plus le verre se remplit, plus le risque de subir l’une des deux grandes conséquences augmente. La conséquence aiguë, c’est l’accident du travail (AT) : il survient d’un coup, comme une lombalgie aiguë (lumbago) ou une tendinite de l’épaule déclenchée par un geste, et provoque souvent un arrêt. La conséquence chronique, c’est le trouble musculosquelettique (TMS), qui s’installe progressivement et relève de la maladie professionnelle. Un accident aigu est souvent le signal d’une fragilité déjà présente et peut, avec le temps, évoluer vers un TMS durable. Tout l’enjeu de la prévention est donc d’agir avant que le verre ne déborde.',
+    intro:
+      'Plus le verre se remplit, plus le risque de blessure augmente. Il prend deux formes :',
+    points: [
+      {
+        label: 'Conséquence aiguë — l’accident du travail (AT)',
+        texte:
+          'survient d’un coup (lombalgie aiguë, tendinite de l’épaule…) et entraîne souvent un arrêt.',
+      },
+      {
+        label: 'Conséquence chronique — le TMS',
+        texte:
+          's’installe progressivement et relève de la maladie professionnelle.',
+      },
+    ],
+    conclusion:
+      'Un accident aigu signale souvent une fragilité déjà installée, qui peut évoluer en TMS sur la durée. D’où l’intérêt d’agir avant que le verre ne déborde.',
   },
   {
     question: 'À qui s’adresse LeVerre Labs ?',
-    reponse:
-      'L’outil s’adresse aux entreprises et aux services RH/HSE qui veulent sensibiliser leurs équipes, ainsi qu’aux ergonomes et préventeurs qui cherchent à analyser une situation de travail pour la transformer. Il combine un volet pédagogique grand public et un volet d’analyse approfondie.',
+    intro:
+      'Aux entreprises et services RH/HSE qui veulent sensibiliser leurs équipes, ainsi qu’aux préventeurs et ergonomes qui analysent une situation de travail pour la transformer. L’outil sert aussi en formation initiale (écoles, universités).',
   },
   {
     question: 'La prévention des TMS est-elle une obligation pour l’employeur ?',
-    reponse:
-      'Oui. L’employeur a l’obligation légale de préserver la santé physique de ses salariés, ce qui inclut l’évaluation et la prévention des risques de TMS (document unique, aménagement des postes). Agir en amont réduit l’absentéisme et améliore la performance de l’entreprise.',
+    intro:
+      'Oui. L’employeur a l’obligation légale de préserver la santé de ses salariés, ce qui inclut l’évaluation et la prévention des risques de TMS (document unique, aménagement des postes). Agir en amont réduit aussi l’absentéisme.',
   },
 ]
+
+function texteComplet({ intro, points, conclusion }: QuestionReponse): string {
+  const morceaux = [
+    intro,
+    ...(points?.map((p) => (p.label ? `${p.label} : ${p.texte}` : p.texte)) ??
+      []),
+    conclusion,
+  ]
+  return morceaux.filter(Boolean).join(' ')
+}
 
 export function FaqTms() {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: FAQ.map(({ question, reponse }) => ({
+    mainEntity: FAQ.map((item) => ({
       '@type': 'Question',
-      name: question,
-      acceptedAnswer: { '@type': 'Answer', text: reponse },
+      name: item.question,
+      acceptedAnswer: { '@type': 'Answer', text: texteComplet(item) },
     })),
   }
 
@@ -86,13 +146,13 @@ export function FaqTms() {
       </p>
 
       <div className="space-y-4">
-        {FAQ.map(({ question, reponse }) => (
+        {FAQ.map((item) => (
           <details
-            key={question}
+            key={item.question}
             className="group rounded-2xl border border-white/10 bg-gray-900/30 p-6 transition-colors open:border-[rgb(255,30,90)]/30 open:bg-gray-900/50"
           >
             <summary className="flex cursor-pointer items-center justify-between gap-4 text-lg font-semibold text-white marker:content-none [&::-webkit-details-marker]:hidden">
-              <span>{question}</span>
+              <span>{item.question}</span>
               <span
                 aria-hidden
                 className="shrink-0 text-2xl leading-none text-[rgb(255,30,90)] transition-transform duration-200 group-open:rotate-45"
@@ -100,7 +160,27 @@ export function FaqTms() {
                 +
               </span>
             </summary>
-            <p className="mt-4 leading-relaxed text-gray-300">{reponse}</p>
+
+            <div className="mt-4 leading-relaxed text-gray-300">
+              <p>{item.intro}</p>
+
+              {item.points && (
+                <ul className="mt-3 list-disc space-y-2 pl-5 marker:text-[rgb(255,30,90)]">
+                  {item.points.map((point) => (
+                    <li key={point.label ?? point.texte}>
+                      {point.label && (
+                        <span className="font-semibold text-white">
+                          {point.label} :{' '}
+                        </span>
+                      )}
+                      {point.texte}
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              {item.conclusion && <p className="mt-3">{item.conclusion}</p>}
+            </div>
           </details>
         ))}
       </div>
