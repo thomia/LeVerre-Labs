@@ -22,7 +22,7 @@ const FAQ: QuestionReponse[] = [
   {
     question: 'Qu’est-ce qu’un trouble musculosquelettique (TMS) ?',
     reponse:
-      'Les troubles musculosquelettiques (TMS) regroupent les douleurs et lésions touchant les muscles, tendons, nerfs et articulations. Au travail, ils sont favorisés par les gestes répétitifs, le port de charges, les postures contraignantes et le stress. Ils constituent la première cause de maladies professionnelles reconnues en France.',
+      'Les troubles musculosquelettiques (TMS) regroupent les douleurs et lésions touchant les muscles, tendons, nerfs et articulations. Au travail, ils sont favorisés par les gestes répétitifs, le port de charges, les postures contraignantes et le stress. Ils représentent près de 90 % des maladies professionnelles reconnues en France.',
   },
   {
     question: 'Comment sensibiliser ses équipes aux TMS en entreprise ?',
@@ -32,7 +32,13 @@ const FAQ: QuestionReponse[] = [
   {
     question: 'Qu’est-ce que le modèle du verre de LeVerre Labs ?',
     reponse:
-      'Le verre représente le corps du travailleur : le robinet (la charge de travail) le remplit, la bulle (l’environnement) influe sur le débit, l’orage (les aléas) ajoute des pics et la paille (la récupération) le vide. Quand le verre déborde, le risque de TMS augmente. Chaque paramètre est ajustable pour refléter une vraie situation de travail.',
+      'Le verre représente le corps du travailleur, dans lequel s’accumulent les contraintes de la journée. Le robinet (la charge de travail : efforts, postures, charge mentale) le remplit, la bulle (l’environnement : bruit, température, éclairage…) influe sur le débit, l’orage (les imprévus) provoque des à-coups, et la paille (la récupération : pauses, étirements, repos) le vide. Le verre lui-même correspond aux facteurs individuels (âge, antécédents, condition physique) qui déterminent la capacité de chacun à encaisser. Chaque paramètre est ajustable pour refléter une vraie situation de travail.',
+  },
+  {
+    question:
+      'Que risque-t-on quand le verre déborde : accident du travail (AT) ou TMS ?',
+    reponse:
+      'Plus le verre se remplit, plus le risque de subir l’une des deux grandes conséquences augmente. La conséquence aiguë, c’est l’accident du travail (AT) : il survient d’un coup, comme une lombalgie aiguë (lumbago) ou une tendinite de l’épaule déclenchée par un geste, et provoque souvent un arrêt. La conséquence chronique, c’est le trouble musculosquelettique (TMS), qui s’installe progressivement et relève de la maladie professionnelle. Un accident aigu est souvent le signal d’une fragilité déjà présente et peut, avec le temps, évoluer vers un TMS durable. Tout l’enjeu de la prévention est donc d’agir avant que le verre ne déborde.',
   },
   {
     question: 'À qui s’adresse LeVerre Labs ?',
@@ -60,7 +66,7 @@ export function FaqTms() {
   return (
     <section
       id="faq"
-      className="mx-auto max-w-3xl px-6 py-24 scroll-mt-20"
+      className="mx-auto max-w-7xl px-6 py-24 scroll-mt-20"
       aria-labelledby="faq-titre"
     >
       <script
