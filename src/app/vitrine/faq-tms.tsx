@@ -34,7 +34,7 @@ const FAQ: QuestionReponse[] = [
   {
     question: 'Qu’est-ce qu’un accident du travail (AT) lié à l’activité physique ?',
     intro:
-      'C’est un accident du travail, avec ou sans arrêt, dont le travail ou l’activité est à l’origine. Il se traduit par des douleurs ou une incapacité temporaire d’origine musculaire, tendineuse ou ligamentaire (par exemple un lumbago ou une entorse survenus lors d’un effort ou d’un geste).',
+      'C’est un événement soudain, survenu par le fait ou à l’occasion du travail, avec ou sans arrêt, qui provoque une lésion. Lié à l’activité physique, il se traduit par une douleur ou une incapacité temporaire d’origine musculaire, tendineuse ou ligamentaire. Son caractère soudain et daté le distingue du TMS, qui s’installe progressivement.',
   },
   {
     question: 'Comment sensibiliser ses équipes aux TMS en entreprise ?',
@@ -62,7 +62,7 @@ const FAQ: QuestionReponse[] = [
       'Plus le verre se remplit, plus le risque de blessure augmente. Il prend deux formes :',
     points: [
       {
-        label: 'Conséquence aiguë, l’accident du travail (AT)',
+        label: 'Conséquence aiguë, l’AT',
         texte:
           'il survient d’un coup (lombalgie aiguë, tendinite de l’épaule…) et entraîne souvent un arrêt.',
       },
