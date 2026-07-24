@@ -18,6 +18,7 @@ import StrawComponent from '@/components/modele/straw-component'
 import StormComponent from '@/components/modele/storm-component'
 import BubbleComponent from '@/components/modele/bubble-component'
 import { SectionsExplicatives } from './sections-explicatives'
+import { FaqTms } from './faq-tms'
 import ScrollExpandMedia from '@/components/ui/scroll-expansion-hero'
 import FeaturesCards from '@/components/ui/feature-shader-cards'
 import HeroSection from '@/components/ui/hero-section'
@@ -79,12 +80,12 @@ export default function VitrineClient() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h1 className="text-6xl md:text-7xl lg:text-8xl font-extrabold mb-8 tracking-tight">
+            <p className="text-6xl md:text-7xl lg:text-8xl font-extrabold mb-8 tracking-tight">
               <span className="text-[rgb(255,30,90)] drop-shadow-[0_0_8px_rgba(255,30,90,0.5)]">LeVerre</span> <span className="text-gray-400">Labs</span>
-            </h1>
-            <p className="text-2xl md:text-3xl text-white mb-4 max-w-4xl mx-auto font-bold leading-relaxed">
-              Rendre visibles les facteurs de risque au travail
             </p>
+            <h1 className="text-2xl md:text-3xl text-white mb-4 max-w-4xl mx-auto font-bold leading-relaxed">
+              Prévention des TMS : rendre visibles les facteurs de risque au travail
+            </h1>
           </motion.div>
 
           {/* Modèle visuel complet */}
@@ -187,6 +188,9 @@ export default function VitrineClient() {
 
       {/* Sections explicatives détaillées */}
       <SectionsExplicatives expandedSections={expandedSections} toggleSection={toggleSection} />
+
+      {/* FAQ : capte la longue traîne + réponses enrichies Google */}
+      <FaqTms />
       </div>
     </>
   )
