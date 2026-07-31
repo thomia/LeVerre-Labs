@@ -33,10 +33,12 @@ interface GraphiqueFilRougeProps {
   onClose: () => void
 }
 
-// Palette cyclique pour distinguer les participants.
+// Palette cyclique pour distinguer les participants. On évite volontairement
+// les teintes des lignes verticales d'éléments (bleu robinet, violet bulle,
+// ambre orage, vert paille) : le 1er tracé est le rouge LeVerre, le 2e blanc.
 const PALETTE = [
-  '#60a5fa', '#c084fc', '#fbbf24', '#4ade80', '#f87171',
-  '#22d3ee', '#f472b6', '#a3e635', '#fb923c', '#818cf8',
+  '#ff1e5a', '#f8fafc', '#f472b6', '#fb923c', '#2dd4bf',
+  '#e879f9', '#fca5a5', '#fdba74', '#5eead4', '#f9a8d4',
 ]
 
 // Étapes de l'axe X : chaque colonne correspond à un élément du modèle
