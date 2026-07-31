@@ -20,10 +20,12 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
+  ReferenceLine,
 } from 'recharts'
 import type { LiveParticipant } from '@/hooks/use-participants'
-import type { ParticipantScores } from '@/lib/supabase/types'
+import type { ElementId, ParticipantScores } from '@/lib/supabase/types'
 import { computeFilRougeSeries } from '@/lib/indicateur'
+import { ELEMENT_THEME } from '@/lib/element-theme'
 
 interface GraphiqueFilRougeProps {
   participants: LiveParticipant[]
@@ -37,6 +39,37 @@ const PALETTE = [
   '#22d3ee', '#f472b6', '#a3e635', '#fb923c', '#818cf8',
 ]
 
+// Étapes de l'axe X : chaque colonne correspond à un élément du modèle
+// (dans l'ordre où ils s'empilent sur l'indicateur).
+const STAGES: ElementId[] = ['robinet', 'bulle', 'orage', 'paille']
+
+// Tick de l'axe X coloré au code couleur de l'élément.
+function ColoredAxisTick({
+  x,
+  y,
+  payload,
+}: {
+  x?: number
+  y?: number
+  payload?: { value?: string }
+}) {
+  const label = payload?.value ?? ''
+  const stage = STAGES.find((el) => ELEMENT_THEME[el].name === label)
+  const color = stage ? ELEMENT_THEME[stage].color : '#94a3b8'
+  return (
+    <text
+      x={x}
+      y={(y ?? 0) + 16}
+      textAnchor="middle"
+      fill={color}
+      fontSize={12}
+      fontWeight={600}
+    >
+      {label}
+    </text>
+  )
+}
+
 export function GraphiqueFilRouge({ participants, isOpen, onClose }: GraphiqueFilRougeProps) {
   // Ne garder que les participants ayant au moins renseigné le Robinet.
   const active = useMemo(
@@ -48,8 +81,9 @@ export function GraphiqueFilRouge({ participants, isOpen, onClose }: GraphiqueFi
   )
 
   const data = useMemo(() => {
-    const stages = ['Robinet', 'Bulle', 'Orage', 'Paille']
-    const rows = stages.map((label) => ({ label }) as Record<string, string | number | null>)
+    const rows = STAGES.map(
+      (el) => ({ label: ELEMENT_THEME[el].name }) as Record<string, string | number | null>
+    )
 
     for (const p of active) {
       const series = computeFilRougeSeries(p.scores as ParticipantScores)
@@ -108,8 +142,23 @@ export function GraphiqueFilRouge({ participants, isOpen, onClose }: GraphiqueFi
               <div className="h-[420px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={data} margin={{ top: 10, right: 20, bottom: 10, left: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.08)" />
-                    <XAxis dataKey="label" stroke="#94a3b8" tick={{ fontSize: 12 }} />
+                    <CartesianGrid
+                      strokeDasharray="3 3"
+                      stroke="rgba(255,255,255,0.08)"
+                      horizontal
+                      vertical={false}
+                    />
+                    {/* Une ligne verticale par élément, au code couleur de l'élément. */}
+                    {STAGES.map((el) => (
+                      <ReferenceLine
+                        key={el}
+                        x={ELEMENT_THEME[el].name}
+                        stroke={ELEMENT_THEME[el].color}
+                        strokeOpacity={0.5}
+                        strokeWidth={2}
+                      />
+                    ))}
+                    <XAxis dataKey="label" stroke="#94a3b8" tick={<ColoredAxisTick />} />
                     <YAxis
                       stroke="#94a3b8"
                       tick={{ fontSize: 12 }}
