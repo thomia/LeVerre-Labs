@@ -12,11 +12,12 @@
 
 import { useEffect, useMemo, useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronLeft, CheckCircle2, Loader2 } from 'lucide-react'
+import { ChevronLeft, ChevronRight, CheckCircle2, Loader2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { getElementDefinition } from '@/lib/questions'
 import type {
   AnswersMap,
+  AnswerValue,
   Question,
   QuestionOption,
 } from '@/lib/questions'
@@ -93,7 +94,7 @@ export function ParticipantQuestionnaire({
 
   // Sauvegarde une réponse en BDD + recalcule le score
   const saveAnswer = useCallback(
-    async (question: Question, value: number) => {
+    async (question: Question, value: AnswerValue) => {
       setIsSaving(true)
       setError(null)
 
@@ -252,6 +253,7 @@ export function ParticipantQuestionnaire({
             currentValue={answers[currentQuestion.id]}
             isSaving={isSaving}
             onAnswer={(option) => saveAnswer(currentQuestion, option.points)}
+            onAnswerText={(text) => saveAnswer(currentQuestion, text)}
             onPrevious={currentIndex > 0 ? () => setCurrentIndex(currentIndex - 1) : null}
           />
         ) : null}
@@ -266,9 +268,10 @@ export function ParticipantQuestionnaire({
 
 interface QuestionCardProps {
   question: Question
-  currentValue: number | number[] | undefined
+  currentValue: number | number[] | string | undefined
   isSaving: boolean
   onAnswer: (option: QuestionOption) => void
+  onAnswerText: (text: string) => void
   onPrevious: (() => void) | null
 }
 
@@ -277,8 +280,14 @@ function QuestionCard({
   currentValue,
   isSaving,
   onAnswer,
+  onAnswerText,
   onPrevious,
 }: QuestionCardProps) {
+  const isText = question.type === 'text'
+  const [text, setText] = useState(
+    typeof currentValue === 'string' ? currentValue : ''
+  )
+
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}
@@ -299,30 +308,62 @@ function QuestionCard({
         <p className="-mt-2 text-xs text-slate-400">{question.subtitle}</p>
       )}
 
-      <div className="flex flex-col gap-2">
-        {question.options?.map((option, idx) => {
-          const isSelected = currentValue === option.points
-          return (
-            <button
-              key={`${question.id}-${idx}`}
-              onClick={() => !isSaving && onAnswer(option)}
-              disabled={isSaving}
-              className={`flex items-center justify-between gap-3 rounded-xl border px-4 py-3 text-left text-sm transition ${
-                isSelected
-                  ? 'border-blue-500 bg-blue-500/20 text-white shadow-lg shadow-blue-500/20'
-                  : 'border-white/10 bg-slate-900/60 text-slate-200 hover:border-white/30 hover:bg-slate-800/80'
-              } disabled:cursor-wait disabled:opacity-60`}
-            >
-              <span className="flex-1">{option.label}</span>
-              {isSelected && isSaving ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : isSelected ? (
-                <CheckCircle2 className="h-4 w-4 text-blue-300" />
-              ) : null}
-            </button>
-          )
-        })}
-      </div>
+      {isText ? (
+        <form
+          onSubmit={(event) => {
+            event.preventDefault()
+            if (!isSaving) onAnswerText(text.trim())
+          }}
+          className="flex flex-col gap-3"
+        >
+          <input
+            type="text"
+            value={text}
+            onChange={(event) => setText(event.target.value)}
+            maxLength={60}
+            autoFocus
+            placeholder="Ton titre en quelques mots…"
+            className="w-full rounded-xl border border-white/10 bg-slate-900/60 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:border-amber-400/60 focus:outline-none focus:ring-1 focus:ring-amber-400/40"
+          />
+          <button
+            type="submit"
+            disabled={isSaving || text.trim().length === 0}
+            className="flex items-center justify-center gap-2 rounded-xl bg-amber-500 px-4 py-3 text-sm font-semibold uppercase tracking-wide text-black shadow-lg shadow-amber-500/30 transition hover:bg-amber-400 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {isSaving ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <ChevronRight className="h-4 w-4" />
+            )}
+            Continuer
+          </button>
+        </form>
+      ) : (
+        <div className="flex flex-col gap-2">
+          {question.options?.map((option, idx) => {
+            const isSelected = currentValue === option.points
+            return (
+              <button
+                key={`${question.id}-${idx}`}
+                onClick={() => !isSaving && onAnswer(option)}
+                disabled={isSaving}
+                className={`flex items-center justify-between gap-3 rounded-xl border px-4 py-3 text-left text-sm transition ${
+                  isSelected
+                    ? 'border-blue-500 bg-blue-500/20 text-white shadow-lg shadow-blue-500/20'
+                    : 'border-white/10 bg-slate-900/60 text-slate-200 hover:border-white/30 hover:bg-slate-800/80'
+                } disabled:cursor-wait disabled:opacity-60`}
+              >
+                <span className="flex-1">{option.label}</span>
+                {isSelected && isSaving ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : isSelected ? (
+                  <CheckCircle2 className="h-4 w-4 text-blue-300" />
+                ) : null}
+              </button>
+            )
+          })}
+        </div>
+      )}
 
       {onPrevious && (
         <button

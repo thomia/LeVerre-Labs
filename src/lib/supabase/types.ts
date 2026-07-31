@@ -26,8 +26,9 @@ export interface ParticipantScores {
 
 export interface ParticipantAnswers {
   // { "verre_age": 8, "robinet_poids": 20, "paille_multi": [30, 60], ... }
-  // On stocke des points numériques (ou tableau pour les questions multiples)
-  [questionId: string]: number | number[]
+  // On stocke des points numériques (ou tableau pour les questions multiples,
+  // ou du texte libre pour les questions ouvertes comme le titre d'un imprévu).
+  [questionId: string]: number | number[] | string
 }
 
 export interface Session {

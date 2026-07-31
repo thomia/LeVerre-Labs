@@ -24,4 +24,4 @@ export function getElementDefinition(id: ElementId): ElementDefinition {
   return ELEMENT_DEFINITIONS[id]
 }
 
-export type { Question, QuestionOption, AnswersMap, ElementDefinition } from './types'
+export type { Question, QuestionOption, AnswersMap, AnswerValue, ElementDefinition } from './types'
