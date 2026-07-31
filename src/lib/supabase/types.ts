@@ -50,6 +50,11 @@ export interface Participant {
   tache_reference: string | null
   scores: ParticipantScores
   answers: ParticipantAnswers
+  /**
+   * Score final "temps avant débordement" (secondes-modèle) figé en fin de
+   * session pour les statistiques. `null` = le verre ne déborde pas.
+   */
+  overflow_seconds: number | null
   /** @deprecated Ancien système de simulation, conservé pour compat BDD. */
   simulation_scenario: SimulationScenario | null
   joined_at: string
