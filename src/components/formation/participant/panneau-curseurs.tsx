@@ -206,11 +206,16 @@ export function ParticipantSlidersPanel({
             >
               <div className="mb-2 flex items-baseline justify-between gap-3">
                 <div>
+                  {q.section && (
+                    <span className={`text-[10px] font-bold uppercase tracking-wider ${theme.accentClass}`}>
+                      {q.section}
+                    </span>
+                  )}
                   <h4 className="text-sm font-semibold text-white">
                     {q.question}
                   </h4>
                   {q.subtitle && (
-                    <p className="text-[11px] text-slate-400">{q.subtitle}</p>
+                    <p className="mt-0.5 text-[11px] leading-snug text-slate-400">{q.subtitle}</p>
                   )}
                 </div>
                 <span className={`text-2xl font-bold tabular-nums ${theme.accentClass}`}>

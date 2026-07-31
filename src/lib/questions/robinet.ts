@@ -25,84 +25,106 @@ export const ROBINET_ASPECTS = [
 
 export const ROBINET_WEIGHT_KEYS = ROBINET_ASPECTS.map((a) => a.weightKey)
 
-/** Poids total à répartir lors de la pondération. */
+/** Poids total réparti par la pondération (somme des poids par rang). */
 export const ROBINET_PONDERATION_TOTAL = 100
 
+/**
+ * Pondération prédéfinie NON-LINÉAIRE par rang (du plus au moins important).
+ * Le participant classe simplement les 5 aspects par glisser-déposer ; on
+ * applique ensuite ces poids selon le rang — il n'a jamais à penser en
+ * pourcentages. Somme = 100.
+ */
+export const ROBINET_RANK_WEIGHTS = [35, 25, 20, 12, 8] as const
+
+/**
+ * Curseurs reformulés « aperçu terrain » : le titre parle à la première
+ * personne (ce que je vis dans la tâche) et le sous-titre rappelle le repère
+ * ergonomique correspondant. `section` conserve le nom technique de l'aspect
+ * (repris tel quel dans l'exercice de pondération).
+ */
 const questions: Question[] = [
   {
     id: 'robinet_charge',
     element: 'robinet',
     type: 'scale',
-    question: 'Charge physique',
-    subtitle: 'Poids manipulés, efforts, port de charges',
+    section: 'Charge physique',
+    question: 'Ce que je porte, pousse ou tire',
+    subtitle:
+      'Comme le ferait un ergonome en visite : poids réel, prise en main, nombre de fois dans la tâche.',
     description:
-      '0 = aucune charge / 100 = charges très lourdes et fréquentes',
+      '0 = rien à manipuler / 100 = charges lourdes, prise difficile, répétées',
     weight: 1,
     maxPoints: 100,
     minValue: 0,
     maxValue: 100,
-    minLabel: 'Aucune',
-    maxLabel: 'Très lourde',
+    minLabel: 'Rien à manipuler',
+    maxLabel: 'Lourd et répété',
   },
   {
     id: 'robinet_posture',
     element: 'robinet',
     type: 'scale',
-    question: 'Posture',
-    subtitle: 'Contraintes articulaires (dos, épaules, poignets…)',
+    section: 'Posture',
+    question: 'Ce que mon corps doit tenir comme position',
+    subtitle:
+      'Dos penché, bras levés, position accroupie… les 3 points qu\u2019un ergonome regarde en premier sur le terrain.',
     description:
-      '0 = posture neutre et confortable / 100 = postures extrêmes maintenues',
+      '0 = position neutre / 100 = position extrême maintenue longtemps',
     weight: 1,
     maxPoints: 100,
     minValue: 0,
     maxValue: 100,
-    minLabel: 'Confortable',
-    maxLabel: 'Très contraignante',
+    minLabel: 'Position neutre',
+    maxLabel: 'Position extrême',
   },
   {
     id: 'robinet_frequence',
     element: 'robinet',
     type: 'scale',
-    question: 'Fréquence et durée',
-    subtitle: 'Répétition des gestes, temps passé en contrainte',
-    description:
-      '0 = geste ponctuel / 100 = répété en continu une grande partie du temps',
+    section: 'Fréquence et durée',
+    question: 'Le temps réel passé dans l\u2019effort',
+    subtitle:
+      'Pas le temps total de la tâche, mais le temps où le corps est vraiment sollicité — ce qu\u2019on chronomètre sur le terrain.',
+    description: '0 = ponctuel / 100 = quasi continu',
     weight: 1,
     maxPoints: 100,
     minValue: 0,
     maxValue: 100,
     minLabel: 'Ponctuel',
-    maxLabel: 'Permanent',
+    maxLabel: 'Quasi continu',
   },
   {
     id: 'robinet_charge_mentale',
     element: 'robinet',
     type: 'scale',
-    question: 'Charge mentale',
-    subtitle: 'Concentration, attention, prise de décisions',
+    section: 'Charge mentale',
+    question: 'Ce que ma tête doit gérer en même temps',
+    subtitle:
+      'Attention, décisions à prendre, risque d\u2019erreur — le type de charge que mesure le NASA-TLX utilisé en ergonomie.',
     description:
-      '0 = tâche simple et routinière / 100 = très forte sollicitation cognitive',
+      '0 = automatique / 100 = jongler avec plusieurs choses en même temps',
     weight: 1,
     maxPoints: 100,
     minValue: 0,
     maxValue: 100,
-    minLabel: 'Faible',
-    maxLabel: 'Très forte',
+    minLabel: 'Automatique',
+    maxLabel: 'Jongler en permanence',
   },
   {
     id: 'robinet_rps',
     element: 'robinet',
     type: 'scale',
-    question: 'Risques psychosociaux',
-    subtitle: 'Pression, relations, reconnaissance, autonomie',
-    description:
-      '0 = environnement sain / 100 = tensions fortes, mal-être ressenti',
+    section: 'Risques psychosociaux',
+    question: 'L\u2019ambiance dans laquelle je fais cette tâche',
+    subtitle:
+      'Pression du temps, soutien de l\u2019équipe, marge de manœuvre — les facteurs psychosociaux qu\u2019identifie l\u2019INRS.',
+    description: '0 = climat serein / 100 = tensions fortes, isolement',
     weight: 1,
     maxPoints: 100,
     minValue: 0,
     maxValue: 100,
-    minLabel: 'Sain',
-    maxLabel: 'Très dégradé',
+    minLabel: 'Climat serein',
+    maxLabel: 'Tensions, isolement',
   },
 ]
 
