@@ -140,7 +140,7 @@ export function FormateurControls({
             className="flex items-center gap-2 rounded-lg bg-slate-800 px-5 py-3 text-base text-slate-200 transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
           >
             <Square className="h-5 w-5" />
-            <span className="hidden sm:inline">Arrêter</span>
+            <span className="hidden sm:inline">Arrêter l&apos;élément</span>
           </button>
 
           <div className="mx-2 h-8 w-px bg-white/10" />
@@ -154,9 +154,7 @@ export function FormateurControls({
             className="flex items-center gap-2 rounded-lg bg-cyan-600/80 px-5 py-3 text-base font-semibold text-white transition hover:bg-cyan-500 disabled:cursor-not-allowed disabled:opacity-40"
           >
             {isSimulating ? <RotateCcw className="h-5 w-5" /> : <Play className="h-5 w-5" />}
-            <span className="hidden sm:inline">
-              {isSimulating ? 'Relancer tous les verres' : 'Lancer tous les verres'}
-            </span>
+            <span className="hidden sm:inline">Simulation</span>
           </button>
 
           {isSimulating && (
@@ -167,7 +165,7 @@ export function FormateurControls({
               className="flex items-center gap-2 rounded-lg bg-slate-800 px-5 py-3 text-base text-slate-200 transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
             >
               <Square className="h-5 w-5" />
-              <span className="hidden sm:inline">Stop simu</span>
+              <span className="hidden sm:inline">Stopper la simulation</span>
             </button>
           )}
 
@@ -180,7 +178,7 @@ export function FormateurControls({
             className="flex items-center gap-2 rounded-lg bg-red-600/80 px-5 py-3 text-base font-semibold text-white transition hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-40"
           >
             <Flag className="h-5 w-5" />
-            <span className="hidden sm:inline">Terminer</span>
+            <span className="hidden sm:inline">Terminer la session</span>
           </button>
 
           {isEnded && (

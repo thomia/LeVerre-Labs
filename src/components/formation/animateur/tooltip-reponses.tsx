@@ -45,7 +45,7 @@ export function ReponsesTooltip({ element, answers, children }: ReponsesTooltipP
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 6, scale: 0.96 }}
             transition={{ duration: 0.15 }}
-            className="pointer-events-none absolute bottom-full left-1/2 z-50 mb-2 w-64 max-w-[70vw] -translate-x-1/2 rounded-xl border border-white/15 bg-slate-950/95 p-3 text-left shadow-2xl backdrop-blur"
+            className="pointer-events-none absolute bottom-full left-1/2 z-50 mb-2 w-80 max-w-[85vw] -translate-x-1/2 rounded-xl border border-white/15 bg-slate-950/95 p-3 text-left shadow-2xl backdrop-blur"
           >
             <p className={`mb-2 text-[10px] font-bold uppercase tracking-wider ${theme.titleClass}`}>
               {theme.name} — réponses
@@ -59,13 +59,14 @@ export function ReponsesTooltip({ element, answers, children }: ReponsesTooltipP
                     </p>
                   )}
                   {groupe.items.map((item, iIdx) => (
-                    <div key={iIdx} className="flex items-baseline justify-between gap-2 py-0.5">
-                      <span className="min-w-0 flex-1 truncate text-[11px] text-slate-400">
+                    <div key={iIdx} className="py-0.5">
+                      {/* Question en entier (pas de troncature) puis réponse en gras. */}
+                      <p className="text-[11px] font-semibold leading-snug text-slate-200">
                         {item.label}
-                      </span>
-                      <span className="shrink-0 text-[11px] font-semibold text-white">
+                      </p>
+                      <p className="text-xs font-bold leading-snug text-white">
                         {item.valeur}
-                      </span>
+                      </p>
                     </div>
                   ))}
                 </div>
