@@ -39,6 +39,16 @@ export async function POST(
 
     const body = (await request.json()) as ControlBody
 
+    if (!process.env.FORMATEUR_PASSWORD) {
+      return NextResponse.json(
+        {
+          error:
+            "Accès formateur non configuré sur cet environnement (variable FORMATEUR_PASSWORD manquante).",
+        },
+        { status: 500 }
+      )
+    }
+
     if (body.password !== process.env.FORMATEUR_PASSWORD) {
       return NextResponse.json({ error: 'Mot de passe incorrect' }, { status: 401 })
     }
