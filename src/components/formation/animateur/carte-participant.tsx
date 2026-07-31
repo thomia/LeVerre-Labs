@@ -18,14 +18,24 @@ import type { ElementId } from '@/lib/supabase/types'
 import { ELEMENT_THEME, ELEMENTS_ORDER } from '@/lib/element-theme'
 import { computeOverflowSeconds, formatOverflowSeconds } from '@/lib/indicateur'
 import { ParticipantMiniModel } from '../participant/mon-mini-modele'
+import { OrageScoreTooltip } from './tooltip-orage'
 
 interface ParticipantCardProps {
   participant: LiveParticipant
   /** Handler appelé au clic sur la carte → ouvre le mode focus côté parent */
   onSelect?: (participant: LiveParticipant) => void
+  /**
+   * Timestamp de lancement de la simulation formateur. Quand non-null, le verre
+   * s'anime (lecture) ; sinon il reste figé (mode construction).
+   */
+  simulationStartedAt?: string | null
 }
 
-export function ParticipantCard({ participant, onSelect }: ParticipantCardProps) {
+export function ParticipantCard({
+  participant,
+  onSelect,
+  simulationStartedAt = null,
+}: ParticipantCardProps) {
   const scores = participant.scores as Partial<Record<ElementId, number>>
   const completedElements = Object.keys(scores) as ElementId[]
   const progressPercent = (completedElements.length / 5) * 100
@@ -43,9 +53,15 @@ export function ParticipantCard({ participant, onSelect }: ParticipantCardProps)
       transition={{ duration: 0.25 }}
       className="flex flex-col items-center rounded-2xl border border-white/10 bg-slate-900/60 p-4 text-left shadow-lg backdrop-blur transition hover:border-white/30 hover:bg-slate-900/80 focus:outline-none focus:ring-2 focus:ring-blue-400/60"
     >
-      {/* Modèle complet live (figé, construit au fil des réponses) */}
+      {/* Modèle complet live : figé (construction) ou animé quand le formateur
+          lance la simulation sur toute la mosaïque. */}
       <div className="mb-3 w-full">
-        <ParticipantMiniModel scores={scores} height={150} />
+        <ParticipantMiniModel
+          scores={scores}
+          height={150}
+          simulationSpeed={simulationStartedAt ? 1 : null}
+          simulationStartedAt={simulationStartedAt}
+        />
       </div>
 
       <h3 className="mb-0.5 max-w-full truncate text-sm font-semibold text-white">
@@ -77,11 +93,10 @@ export function ParticipantCard({ participant, onSelect }: ParticipantCardProps)
           const score = scores[el]
           const isDone = score !== undefined
           const theme = ELEMENT_THEME[el]
-          return (
+          const cell = (
             <div
-              key={el}
               title={`${theme.name}${isDone ? ` : ${score}` : ''}`}
-              className={`flex flex-col items-center justify-center gap-0.5 rounded-md border px-1 py-1 transition ${
+              className={`flex w-full flex-col items-center justify-center gap-0.5 rounded-md border px-1 py-1 transition ${
                 isDone
                   ? theme.chipClass
                   : 'border-white/5 bg-slate-800/60 text-slate-600'
@@ -95,6 +110,14 @@ export function ParticipantCard({ participant, onSelect }: ParticipantCardProps)
               </span>
             </div>
           )
+          if (el === 'orage' && isDone) {
+            return (
+              <OrageScoreTooltip key={el} answers={participant.answers}>
+                {cell}
+              </OrageScoreTooltip>
+            )
+          }
+          return <div key={el} className="flex">{cell}</div>
         })}
       </div>
 

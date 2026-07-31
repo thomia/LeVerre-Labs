@@ -14,15 +14,19 @@ import type { ElementId } from '@/lib/supabase/types'
 import { ELEMENT_THEME, ELEMENTS_ORDER } from '@/lib/element-theme'
 import { computeOverflowSeconds, formatOverflowSeconds } from '@/lib/indicateur'
 import { ParticipantMiniModel } from '../participant/mon-mini-modele'
+import { OrageScoreTooltip } from './tooltip-orage'
 
 interface ParticipantFocusModalProps {
   participant: LiveParticipant | null
   onClose: () => void
+  /** Timestamp de lancement de la simulation formateur (null = verre figé). */
+  simulationStartedAt?: string | null
 }
 
 export function ParticipantFocusModal({
   participant,
   onClose,
+  simulationStartedAt = null,
 }: ParticipantFocusModalProps) {
   const scores = (participant?.scores ?? {}) as Partial<Record<ElementId, number>>
   const overflowSeconds = computeOverflowSeconds(scores)
@@ -71,7 +75,12 @@ export function ParticipantFocusModal({
 
             {/* Mini modèle en grand */}
             <div className="flex justify-center">
-              <ParticipantMiniModel scores={scores} height={400} />
+              <ParticipantMiniModel
+                scores={scores}
+                height={400}
+                simulationSpeed={simulationStartedAt ? 1 : null}
+                simulationStartedAt={simulationStartedAt}
+              />
             </div>
 
             {/* Indicateur temps avant débordement */}
@@ -91,10 +100,9 @@ export function ParticipantFocusModal({
                 const score = scores[el]
                 const isDone = score !== undefined
                 const theme = ELEMENT_THEME[el]
-                return (
+                const cell = (
                   <div
-                    key={el}
-                    className={`flex flex-col items-center justify-center gap-1 rounded-xl border px-2 py-3 ${
+                    className={`flex w-full flex-col items-center justify-center gap-1 rounded-xl border px-2 py-3 ${
                       isDone
                         ? theme.chipClass
                         : 'border-white/5 bg-slate-800/60 text-slate-600'
@@ -108,6 +116,17 @@ export function ParticipantFocusModal({
                     </span>
                   </div>
                 )
+                if (el === 'orage' && isDone && participant.answers) {
+                  return (
+                    <OrageScoreTooltip
+                      key={el}
+                      answers={participant.answers as Record<string, unknown>}
+                    >
+                      {cell}
+                    </OrageScoreTooltip>
+                  )
+                }
+                return <div key={el} className="flex">{cell}</div>
               })}
             </div>
           </motion.div>

@@ -32,6 +32,10 @@ export function FormateurDashboard({ code }: FormateurDashboardProps) {
   const [focusedId, setFocusedId] = useState<string | null>(null)
   const [isGraphOpen, setIsGraphOpen] = useState(false)
   const [isActionsOpen, setIsActionsOpen] = useState(false)
+  // Simulation formateur : lecture animée locale de toute la mosaïque. On stocke
+  // le timestamp de lancement pour synchroniser (et relancer) tous les verres.
+  const [simulationStartedAt, setSimulationStartedAt] = useState<string | null>(null)
+  const isSimulating = simulationStartedAt !== null
 
   // On retrouve toujours le participant à jour dans la liste live (et pas une
   // copie figée) → le modal reflète les scores temps réel.
@@ -115,6 +119,7 @@ export function FormateurDashboard({ code }: FormateurDashboardProps) {
                   key={p.id}
                   participant={p}
                   onSelect={(participant) => setFocusedId(participant.id)}
+                  simulationStartedAt={simulationStartedAt}
                 />
               ))}
             </AnimatePresence>
@@ -126,6 +131,7 @@ export function FormateurDashboard({ code }: FormateurDashboardProps) {
       <ParticipantFocusModal
         participant={focusedParticipant}
         onClose={() => setFocusedId(null)}
+        simulationStartedAt={simulationStartedAt}
       />
 
       {/* Récap graphique de l'indicateur (fil rouge) */}
@@ -147,6 +153,9 @@ export function FormateurDashboard({ code }: FormateurDashboardProps) {
         code={code}
         session={session}
         timerDurationSeconds={session?.timer_duration ?? 120}
+        isSimulating={isSimulating}
+        onPlaySimulation={() => setSimulationStartedAt(new Date().toISOString())}
+        onStopSimulation={() => setSimulationStartedAt(null)}
       />
     </div>
   )

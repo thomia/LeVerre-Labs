@@ -8,7 +8,7 @@
 
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Square, Flag, RotateCcw } from 'lucide-react'
+import { Square, Flag, RotateCcw, Play } from 'lucide-react'
 import { useFormateurControl } from '@/hooks/use-formateur-control'
 import type { LiveSession } from '@/hooks/use-session'
 import type { ElementId } from '@/lib/supabase/types'
@@ -18,6 +18,12 @@ interface FormateurControlsProps {
   code: string
   session: LiveSession | null
   timerDurationSeconds: number
+  /** True quand la simulation formateur (mosaïque) est en cours de lecture. */
+  isSimulating: boolean
+  /** Lance (ou relance) la simulation animée sur toute la mosaïque. */
+  onPlaySimulation: () => void
+  /** Arrête la simulation animée de la mosaïque. */
+  onStopSimulation: () => void
 }
 
 // Classes spécifiques à la barre de contrôle formateur (état "en cours")
@@ -51,7 +57,14 @@ function useCountdown(timerEndAt: string | null) {
   return remaining
 }
 
-export function FormateurControls({ code, session, timerDurationSeconds }: FormateurControlsProps) {
+export function FormateurControls({
+  code,
+  session,
+  timerDurationSeconds,
+  isSimulating,
+  onPlaySimulation,
+  onStopSimulation,
+}: FormateurControlsProps) {
   const {
     startElement,
     stopElement,
@@ -134,6 +147,33 @@ export function FormateurControls({ code, session, timerDurationSeconds }: Forma
             <Square className="h-5 w-5" />
             <span className="hidden sm:inline">Arrêter</span>
           </button>
+
+          <div className="mx-2 h-8 w-px bg-white/10" />
+
+          {/* Simulation formateur : anime tous les verres de la mosaïque (local,
+              n'affecte pas les participants). À lancer à la fin d'un élément. */}
+          <button
+            onClick={onPlaySimulation}
+            disabled={isEnded}
+            title="Lancer la simulation sur la mosaïque"
+            className="flex items-center gap-2 rounded-lg bg-cyan-600/80 px-5 py-3 text-base font-semibold text-white transition hover:bg-cyan-500 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            {isSimulating ? <RotateCcw className="h-5 w-5" /> : <Play className="h-5 w-5" />}
+            <span className="hidden sm:inline">
+              {isSimulating ? 'Relancer' : 'Simulation'}
+            </span>
+          </button>
+
+          {isSimulating && (
+            <button
+              onClick={onStopSimulation}
+              title="Arrêter la simulation de la mosaïque"
+              className="flex items-center gap-2 rounded-lg bg-slate-800 px-5 py-3 text-base text-slate-200 transition hover:bg-slate-700"
+            >
+              <Square className="h-5 w-5" />
+              <span className="hidden sm:inline">Stop simu</span>
+            </button>
+          )}
 
           <div className="mx-2 h-8 w-px bg-white/10" />
 
