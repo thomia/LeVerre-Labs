@@ -18,7 +18,7 @@ import type { ElementId } from '@/lib/supabase/types'
 import { ELEMENT_THEME, ELEMENTS_ORDER } from '@/lib/element-theme'
 import { computeOverflowSeconds, formatOverflowSeconds } from '@/lib/indicateur'
 import { ParticipantMiniModel } from '../participant/mon-mini-modele'
-import { OrageScoreTooltip } from './tooltip-orage'
+import { ReponsesTooltip } from './tooltip-reponses'
 
 interface ParticipantCardProps {
   participant: LiveParticipant
@@ -110,11 +110,11 @@ export function ParticipantCard({
               </span>
             </div>
           )
-          if (el === 'orage' && isDone) {
+          if (isDone) {
             return (
-              <OrageScoreTooltip key={el} answers={participant.answers}>
+              <ReponsesTooltip key={el} element={el} answers={participant.answers}>
                 {cell}
-              </OrageScoreTooltip>
+              </ReponsesTooltip>
             )
           }
           return <div key={el} className="flex">{cell}</div>

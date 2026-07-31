@@ -25,3 +25,4 @@ export function getElementDefinition(id: ElementId): ElementDefinition {
 }
 
 export type { Question, QuestionOption, AnswersMap, AnswerValue, ElementDefinition } from './types'
+export { resumeReponses, type ResumeReponse } from './resume-reponses'

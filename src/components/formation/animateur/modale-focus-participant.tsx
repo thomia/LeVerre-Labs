@@ -14,7 +14,7 @@ import type { ElementId } from '@/lib/supabase/types'
 import { ELEMENT_THEME, ELEMENTS_ORDER } from '@/lib/element-theme'
 import { computeOverflowSeconds, formatOverflowSeconds } from '@/lib/indicateur'
 import { ParticipantMiniModel } from '../participant/mon-mini-modele'
-import { OrageScoreTooltip } from './tooltip-orage'
+import { ReponsesTooltip } from './tooltip-reponses'
 
 interface ParticipantFocusModalProps {
   participant: LiveParticipant | null
@@ -116,14 +116,15 @@ export function ParticipantFocusModal({
                     </span>
                   </div>
                 )
-                if (el === 'orage' && isDone && participant.answers) {
+                if (isDone && participant.answers) {
                   return (
-                    <OrageScoreTooltip
+                    <ReponsesTooltip
                       key={el}
+                      element={el}
                       answers={participant.answers as Record<string, unknown>}
                     >
                       {cell}
-                    </OrageScoreTooltip>
+                    </ReponsesTooltip>
                   )
                 }
                 return <div key={el} className="flex">{cell}</div>
