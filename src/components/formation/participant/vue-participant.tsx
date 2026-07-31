@@ -91,6 +91,26 @@ export function ParticipantView({
     }
   }, [overflowSeconds, isPlaying])
 
+  // Simulation diffusée par le formateur : quand `simulation_started_at` change,
+  // on lance (ou arrête) l'animation en synchronisant sur ce timestamp partagé,
+  // pour que tous les verres de la session partent ensemble.
+  const sessionSimStartedAt = session?.simulation_started_at ?? null
+  useEffect(() => {
+    if (sessionSimStartedAt) {
+      // Rien à animer si le verre ne déborde pas (ou Robinet pas renseigné).
+      if (overflowSeconds === null) return
+      playBaselineRef.current = overflowSeconds
+      setPlayStartedAt(sessionSimStartedAt)
+      setIsPlaying(true)
+    } else {
+      setIsPlaying(false)
+      setPlayStartedAt(null)
+      playBaselineRef.current = null
+    }
+    // On ne réagit qu'au signal formateur (pas aux recalculs d'overflow).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sessionSimStartedAt])
+
   if (isSessionLoading) {
     return (
       <div className="h-10 w-10 animate-spin rounded-full border-2 border-blue-500 border-t-transparent" />

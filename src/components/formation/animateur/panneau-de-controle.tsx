@@ -18,12 +18,6 @@ interface FormateurControlsProps {
   code: string
   session: LiveSession | null
   timerDurationSeconds: number
-  /** True quand la simulation formateur (mosaïque) est en cours de lecture. */
-  isSimulating: boolean
-  /** Lance (ou relance) la simulation animée sur toute la mosaïque. */
-  onPlaySimulation: () => void
-  /** Arrête la simulation animée de la mosaïque. */
-  onStopSimulation: () => void
 }
 
 // Classes spécifiques à la barre de contrôle formateur (état "en cours")
@@ -61,15 +55,14 @@ export function FormateurControls({
   code,
   session,
   timerDurationSeconds,
-  isSimulating,
-  onPlaySimulation,
-  onStopSimulation,
 }: FormateurControlsProps) {
   const {
     startElement,
     stopElement,
     endSession,
     resetSession,
+    startSimulation,
+    stopSimulation,
     isSending,
     error,
   } = useFormateurControl(code)
@@ -77,6 +70,8 @@ export function FormateurControls({
   const countdown = useCountdown(session?.timer_end_at ?? null)
   const currentElement = session?.current_element ?? null
   const isEnded = session?.status === 'ended'
+  // La simulation est diffusée à toute la session via `simulation_started_at`.
+  const isSimulating = session?.simulation_started_at != null
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-white/10 bg-slate-950/95 px-6 py-4 backdrop-blur">
@@ -150,25 +145,26 @@ export function FormateurControls({
 
           <div className="mx-2 h-8 w-px bg-white/10" />
 
-          {/* Simulation formateur : anime tous les verres de la mosaïque (local,
-              n'affecte pas les participants). À lancer à la fin d'un élément. */}
+          {/* Simulation diffusée : anime TOUS les verres de la session (écrans
+              participants + mosaïque formateur) d'un seul bouton. */}
           <button
-            onClick={onPlaySimulation}
-            disabled={isEnded}
-            title="Lancer la simulation sur la mosaïque"
+            onClick={startSimulation}
+            disabled={isSending || isEnded}
+            title="Lancer la simulation sur tous les verres de la session"
             className="flex items-center gap-2 rounded-lg bg-cyan-600/80 px-5 py-3 text-base font-semibold text-white transition hover:bg-cyan-500 disabled:cursor-not-allowed disabled:opacity-40"
           >
             {isSimulating ? <RotateCcw className="h-5 w-5" /> : <Play className="h-5 w-5" />}
             <span className="hidden sm:inline">
-              {isSimulating ? 'Relancer' : 'Simulation'}
+              {isSimulating ? 'Relancer tous les verres' : 'Lancer tous les verres'}
             </span>
           </button>
 
           {isSimulating && (
             <button
-              onClick={onStopSimulation}
-              title="Arrêter la simulation de la mosaïque"
-              className="flex items-center gap-2 rounded-lg bg-slate-800 px-5 py-3 text-base text-slate-200 transition hover:bg-slate-700"
+              onClick={stopSimulation}
+              disabled={isSending}
+              title="Arrêter la simulation de la session"
+              className="flex items-center gap-2 rounded-lg bg-slate-800 px-5 py-3 text-base text-slate-200 transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
             >
               <Square className="h-5 w-5" />
               <span className="hidden sm:inline">Stop simu</span>
