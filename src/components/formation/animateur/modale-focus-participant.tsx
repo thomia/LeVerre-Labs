@@ -32,6 +32,14 @@ export function ParticipantFocusModal({
   const overflowSeconds = computeOverflowSeconds(scores)
   const hasRobinet = scores.robinet !== undefined
 
+  // Décompte pendant la simulation diffusée : temps restant avant débordement.
+  const elapsedSec = simulationElapsedMs !== null ? simulationElapsedMs / 1000 : null
+  const isSimActive = elapsedSec !== null
+  const remainingSeconds =
+    overflowSeconds !== null && elapsedSec !== null
+      ? Math.max(0, overflowSeconds - elapsedSec)
+      : null
+
   return (
     <AnimatePresence>
       {participant && (
@@ -82,14 +90,36 @@ export function ParticipantFocusModal({
               />
             </div>
 
-            {/* Indicateur temps avant débordement */}
+            {/* Indicateurs LeVerre Labs (noir / rouge) : temps avant débordement
+                FIXE + décompte du temps restant pendant la simulation. */}
             {hasRobinet && (
-              <div className="flex items-center justify-center gap-2 rounded-xl border border-blue-400/30 bg-blue-500/10 px-4 py-3 text-blue-100">
-                <Timer className="h-5 w-5 text-blue-300" />
-                <span className="text-sm">Temps avant débordement :</span>
-                <span className="text-xl font-bold tabular-nums text-blue-300">
-                  {formatOverflowSeconds(overflowSeconds)}
-                </span>
+              <div className="flex flex-wrap items-stretch justify-center gap-3">
+                <div className="flex items-center gap-3 rounded-xl border border-[rgb(255,30,90)]/40 bg-black/60 px-4 py-3">
+                  <Timer className="h-5 w-5 text-[rgb(255,30,90)]" />
+                  <div className="flex flex-col">
+                    <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">
+                      Temps avant débordement
+                    </span>
+                    <span className="text-xl font-bold tabular-nums text-[rgb(255,30,90)]">
+                      {formatOverflowSeconds(overflowSeconds)}
+                    </span>
+                  </div>
+                </div>
+
+                {isSimActive && (
+                  <div className="flex items-center gap-3 rounded-xl border border-[rgb(255,30,90)]/60 bg-[rgb(255,30,90)]/10 px-4 py-3">
+                    <div className="flex flex-col">
+                      <span className="text-[10px] font-semibold uppercase tracking-wide text-[rgb(255,30,90)]/80">
+                        Simulation — temps restant
+                      </span>
+                      <span className="text-xl font-bold tabular-nums text-[rgb(255,30,90)]">
+                        {remainingSeconds !== null
+                          ? formatOverflowSeconds(remainingSeconds)
+                          : '—'}
+                      </span>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 

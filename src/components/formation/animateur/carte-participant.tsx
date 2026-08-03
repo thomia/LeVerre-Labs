@@ -43,6 +43,14 @@ export function ParticipantCard({
   const hasRobinet = scores.robinet !== undefined
   const overflowSeconds = computeOverflowSeconds(scores)
 
+  // Décompte pendant la simulation diffusée : temps restant avant débordement.
+  const elapsedSec = simulationElapsedMs !== null ? simulationElapsedMs / 1000 : null
+  const isSimActive = elapsedSec !== null
+  const remainingSeconds =
+    overflowSeconds !== null && elapsedSec !== null
+      ? Math.max(0, overflowSeconds - elapsedSec)
+      : null
+
   return (
     <motion.button
       layout
@@ -121,14 +129,30 @@ export function ParticipantCard({
         })}
       </div>
 
-      {/* Indicateur temps avant débordement (dès que le Robinet est renseigné) */}
+      {/* Indicateur LeVerre Labs (noir / rouge) : temps avant débordement FIXE,
+          + décompte du temps restant pendant la simulation diffusée. */}
       {hasRobinet && (
-        <p className="mt-2 text-[11px] text-slate-400">
-          Débordement :{' '}
-          <span className="font-bold tabular-nums text-blue-300">
-            {formatOverflowSeconds(overflowSeconds)}
-          </span>
-        </p>
+        <div className="mt-2 flex w-full items-center justify-center gap-2">
+          <div className="flex items-center gap-1.5 rounded-lg border border-[rgb(255,30,90)]/40 bg-black/60 px-2.5 py-1">
+            <span className="text-[9px] font-semibold uppercase tracking-wide text-slate-400">
+              Débordement
+            </span>
+            <span className="text-sm font-bold tabular-nums text-[rgb(255,30,90)]">
+              {formatOverflowSeconds(overflowSeconds)}
+            </span>
+          </div>
+
+          {isSimActive && (
+            <div className="flex items-center gap-1.5 rounded-lg border border-[rgb(255,30,90)]/60 bg-[rgb(255,30,90)]/10 px-2.5 py-1">
+              <span className="text-[9px] font-semibold uppercase tracking-wide text-[rgb(255,30,90)]/80">
+                Reste
+              </span>
+              <span className="text-sm font-bold tabular-nums text-[rgb(255,30,90)]">
+                {remainingSeconds !== null ? formatOverflowSeconds(remainingSeconds) : '—'}
+              </span>
+            </div>
+          )}
+        </div>
       )}
     </motion.button>
   )
