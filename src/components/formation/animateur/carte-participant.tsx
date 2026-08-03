@@ -25,16 +25,17 @@ interface ParticipantCardProps {
   /** Handler appelé au clic sur la carte → ouvre le mode focus côté parent */
   onSelect?: (participant: LiveParticipant) => void
   /**
-   * Timestamp de lancement de la simulation formateur. Quand non-null, le verre
-   * s'anime (lecture) ; sinon il reste figé (mode construction).
+   * Temps de simulation écoulé (ms) diffusé par le formateur. Non-null → le
+   * verre affiche son remplissage à cet instant (animé si le temps avance, figé
+   * s'il est en pause) ; null → verre en construction.
    */
-  simulationStartedAt?: string | null
+  simulationElapsedMs?: number | null
 }
 
 export function ParticipantCard({
   participant,
   onSelect,
-  simulationStartedAt = null,
+  simulationElapsedMs = null,
 }: ParticipantCardProps) {
   const scores = participant.scores as Partial<Record<ElementId, number>>
   const completedElements = Object.keys(scores) as ElementId[]
@@ -53,14 +54,13 @@ export function ParticipantCard({
       transition={{ duration: 0.25 }}
       className="flex flex-col items-center rounded-2xl border border-white/10 bg-slate-900/60 p-4 text-left shadow-lg backdrop-blur transition hover:border-white/30 hover:bg-slate-900/80 focus:outline-none focus:ring-2 focus:ring-blue-400/60"
     >
-      {/* Modèle complet live : figé (construction) ou animé quand le formateur
-          lance la simulation sur toute la mosaïque. */}
+      {/* Modèle complet live : figé (construction) ou remplissage déterministe
+          quand le formateur lance la simulation sur toute la mosaïque. */}
       <div className="mb-3 w-full">
         <ParticipantMiniModel
           scores={scores}
           height={150}
-          simulationSpeed={simulationStartedAt ? 1 : null}
-          simulationStartedAt={simulationStartedAt}
+          simulationElapsedMs={simulationElapsedMs}
         />
       </div>
 

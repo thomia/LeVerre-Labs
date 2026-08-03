@@ -19,14 +19,14 @@ import { ReponsesTooltip } from './tooltip-reponses'
 interface ParticipantFocusModalProps {
   participant: LiveParticipant | null
   onClose: () => void
-  /** Timestamp de lancement de la simulation formateur (null = verre figé). */
-  simulationStartedAt?: string | null
+  /** Temps de simulation écoulé (ms) diffusé par le formateur (null = construction). */
+  simulationElapsedMs?: number | null
 }
 
 export function ParticipantFocusModal({
   participant,
   onClose,
-  simulationStartedAt = null,
+  simulationElapsedMs = null,
 }: ParticipantFocusModalProps) {
   const scores = (participant?.scores ?? {}) as Partial<Record<ElementId, number>>
   const overflowSeconds = computeOverflowSeconds(scores)
@@ -78,8 +78,7 @@ export function ParticipantFocusModal({
               <ParticipantMiniModel
                 scores={scores}
                 height={400}
-                simulationSpeed={simulationStartedAt ? 1 : null}
-                simulationStartedAt={simulationStartedAt}
+                simulationElapsedMs={simulationElapsedMs}
               />
             </div>
 

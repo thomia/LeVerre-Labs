@@ -9,7 +9,7 @@
  *   - Modal "focus" au clic sur une carte (modèle en grand)
  */
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence } from 'framer-motion'
 import { Users, Clock } from 'lucide-react'
 import { QRCodeDisplay } from './affichage-qr-code'
@@ -32,9 +32,52 @@ export function FormateurDashboard({ code }: FormateurDashboardProps) {
   const [focusedId, setFocusedId] = useState<string | null>(null)
   const [isGraphOpen, setIsGraphOpen] = useState(false)
   const [isActionsOpen, setIsActionsOpen] = useState(false)
-  // Simulation diffusée à toute la session (participants + mosaïque). Piloté par
-  // le formateur via `simulation_started_at`, lu ici en temps réel.
-  const simulationStartedAt = session?.simulation_started_at ?? null
+
+  // ---- Horloge de simulation (mosaïque + modale focus) --------------------
+  // Le remplissage des verres est déterministe : fonction du temps écoulé. On
+  // dérive ce temps de `simulation_started_at` (diffusé à toute la session).
+  //   - lecture  : le temps avance (tick).
+  //   - pause    : « Stopper la simulation » remet ce champ à null MAIS la
+  //                session reste `active` → on FIGE le temps écoulé (pour pouvoir
+  //                l'expliquer, y compris dans la modale focus).
+  //   - fin/reset: session `ended`/`waiting` → retour construction (verre vide).
+  const sessionSimStart = session?.simulation_started_at ?? null
+  const sessionStatus = session?.status ?? null
+  const [startedAtMs, setStartedAtMs] = useState<number | null>(null)
+  const [frozenElapsedMs, setFrozenElapsedMs] = useState<number | null>(null)
+  const [nowMs, setNowMs] = useState(() => Date.now())
+  const startedAtRef = useRef<number | null>(null)
+
+  useEffect(() => {
+    if (sessionSimStart) {
+      const started = Date.parse(sessionSimStart)
+      startedAtRef.current = started
+      setStartedAtMs(started)
+      setFrozenElapsedMs(null)
+    } else if (sessionStatus === 'active' && startedAtRef.current !== null) {
+      // Pause : la simulation a été stoppée sans terminer la session → on fige.
+      setFrozenElapsedMs(Date.now() - startedAtRef.current)
+    } else {
+      // Fin / reset / pas encore lancée → construction.
+      setStartedAtMs(null)
+      setFrozenElapsedMs(null)
+      startedAtRef.current = null
+    }
+  }, [sessionSimStart, sessionStatus])
+
+  const isPlaying = sessionSimStart !== null && frozenElapsedMs === null
+  useEffect(() => {
+    if (!isPlaying) return
+    const id = setInterval(() => setNowMs(Date.now()), 100)
+    return () => clearInterval(id)
+  }, [isPlaying])
+
+  const simulationElapsedMs =
+    frozenElapsedMs !== null
+      ? frozenElapsedMs
+      : isPlaying && startedAtMs !== null
+        ? nowMs - startedAtMs
+        : null
 
   // On retrouve toujours le participant à jour dans la liste live (et pas une
   // copie figée) → le modal reflète les scores temps réel.
@@ -118,7 +161,7 @@ export function FormateurDashboard({ code }: FormateurDashboardProps) {
                   key={p.id}
                   participant={p}
                   onSelect={(participant) => setFocusedId(participant.id)}
-                  simulationStartedAt={simulationStartedAt}
+                  simulationElapsedMs={simulationElapsedMs}
                 />
               ))}
             </AnimatePresence>
@@ -130,7 +173,7 @@ export function FormateurDashboard({ code }: FormateurDashboardProps) {
       <ParticipantFocusModal
         participant={focusedParticipant}
         onClose={() => setFocusedId(null)}
-        simulationStartedAt={simulationStartedAt}
+        simulationElapsedMs={simulationElapsedMs}
       />
 
       {/* Récap graphique de l'indicateur (fil rouge) */}

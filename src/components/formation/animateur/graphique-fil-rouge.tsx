@@ -203,7 +203,15 @@ export function GraphiqueFilRouge({ participants, isOpen, onClose }: GraphiqueFi
                           strokeWidth={2}
                         />
                       ))}
-                      <XAxis dataKey="label" stroke="#94a3b8" tick={<ColoredAxisTick />} />
+                      {/* padding : on décale la 1re colonne (Robinet) de l'axe Y
+                          pour que sa ligne verticale bleue ne se superpose plus à
+                          l'axe blanc (sinon le bleu vire au gris). */}
+                      <XAxis
+                        dataKey="label"
+                        stroke="#94a3b8"
+                        tick={<ColoredAxisTick />}
+                        padding={{ left: 32, right: 24 }}
+                      />
                       <YAxis
                         stroke="#94a3b8"
                         tick={{ fontSize: 12 }}

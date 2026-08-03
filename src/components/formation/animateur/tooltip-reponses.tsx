@@ -59,12 +59,13 @@ export function ReponsesTooltip({ element, answers, children }: ReponsesTooltipP
                     </p>
                   )}
                   {groupe.items.map((item, iIdx) => (
-                    <div key={iIdx} className="py-0.5">
-                      {/* Question en entier (pas de troncature) puis réponse en gras. */}
-                      <p className="text-[11px] font-semibold leading-snug text-slate-200">
+                    <div key={iIdx} className="py-1">
+                      {/* Question en entier (pas de troncature), en gris discret… */}
+                      <p className="text-[11px] font-normal leading-snug text-slate-500">
                         {item.label}
                       </p>
-                      <p className="text-xs font-bold leading-snug text-white">
+                      {/* …puis la réponse, bien plus contrastée (blanc, gras, plus grande). */}
+                      <p className="text-sm font-bold leading-snug text-white">
                         {item.valeur}
                       </p>
                     </div>
