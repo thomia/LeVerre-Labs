@@ -122,15 +122,16 @@ export function ParticipantCard({
       </div>
 
       {/* Indicateur discret : temps avant débordement (fixe) + décompte du
-          temps restant en rouge pendant la simulation. */}
+          temps restant en rouge pendant la simulation. Texte uniforme et léger
+          pour se fondre dans la carte. */}
       {hasRobinet && (
-        <p className="mt-2 flex items-center justify-center gap-1.5 text-[11px] text-slate-500">
+        <p className="mt-2 flex flex-wrap items-center justify-center gap-x-1.5 text-[10px] font-normal leading-tight text-slate-500">
           <span>Débordement</span>
-          <span className="font-semibold tabular-nums text-slate-300">
+          <span className="tabular-nums text-slate-400">
             {formatOverflowSeconds(overflowSeconds)}
           </span>
           {isSimActive && (
-            <span className="font-semibold tabular-nums text-[rgb(255,30,90)]">
+            <span className="tabular-nums text-[rgb(255,30,90)]/80">
               · reste {remainingSeconds !== null ? formatOverflowSeconds(remainingSeconds) : '—'}
             </span>
           )}
