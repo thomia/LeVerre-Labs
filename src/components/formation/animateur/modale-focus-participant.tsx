@@ -90,35 +90,27 @@ export function ParticipantFocusModal({
               />
             </div>
 
-            {/* Indicateurs LeVerre Labs (noir / rouge) : temps avant débordement
-                FIXE + décompte du temps restant pendant la simulation. */}
+            {/* Indicateur discret : temps avant débordement (fixe) + décompte
+                du temps restant en rouge pendant la simulation. */}
             {hasRobinet && (
-              <div className="flex flex-wrap items-stretch justify-center gap-3">
-                <div className="flex items-center gap-3 rounded-xl border border-[rgb(255,30,90)]/40 bg-black/60 px-4 py-3">
-                  <Timer className="h-5 w-5 text-[rgb(255,30,90)]" />
-                  <div className="flex flex-col">
-                    <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">
-                      Temps avant débordement
-                    </span>
-                    <span className="text-xl font-bold tabular-nums text-[rgb(255,30,90)]">
-                      {formatOverflowSeconds(overflowSeconds)}
-                    </span>
-                  </div>
-                </div>
+              <div className="flex items-center justify-center gap-4 text-sm">
+                <span className="flex items-center gap-2 text-slate-400">
+                  <Timer className="h-4 w-4 text-slate-500" />
+                  Temps avant débordement
+                  <span className="font-bold tabular-nums text-white">
+                    {formatOverflowSeconds(overflowSeconds)}
+                  </span>
+                </span>
 
                 {isSimActive && (
-                  <div className="flex items-center gap-3 rounded-xl border border-[rgb(255,30,90)]/60 bg-[rgb(255,30,90)]/10 px-4 py-3">
-                    <div className="flex flex-col">
-                      <span className="text-[10px] font-semibold uppercase tracking-wide text-[rgb(255,30,90)]/80">
-                        Simulation — temps restant
-                      </span>
-                      <span className="text-xl font-bold tabular-nums text-[rgb(255,30,90)]">
-                        {remainingSeconds !== null
-                          ? formatOverflowSeconds(remainingSeconds)
-                          : '—'}
-                      </span>
-                    </div>
-                  </div>
+                  <span className="text-[rgb(255,30,90)]">
+                    Reste{' '}
+                    <span className="font-bold tabular-nums">
+                      {remainingSeconds !== null
+                        ? formatOverflowSeconds(remainingSeconds)
+                        : '—'}
+                    </span>
+                  </span>
                 )}
               </div>
             )}

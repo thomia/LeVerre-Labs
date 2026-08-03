@@ -18,7 +18,6 @@ import type { ElementId } from '@/lib/supabase/types'
 import { ELEMENT_THEME, ELEMENTS_ORDER } from '@/lib/element-theme'
 import { computeOverflowSeconds, formatOverflowSeconds } from '@/lib/indicateur'
 import { ParticipantMiniModel } from '../participant/mon-mini-modele'
-import { ReponsesTooltip } from './tooltip-reponses'
 
 interface ParticipantCardProps {
   participant: LiveParticipant
@@ -118,41 +117,24 @@ export function ParticipantCard({
               </span>
             </div>
           )
-          if (isDone) {
-            return (
-              <ReponsesTooltip key={el} element={el} answers={participant.answers}>
-                {cell}
-              </ReponsesTooltip>
-            )
-          }
           return <div key={el} className="flex">{cell}</div>
         })}
       </div>
 
-      {/* Indicateur LeVerre Labs (noir / rouge) : temps avant débordement FIXE,
-          + décompte du temps restant pendant la simulation diffusée. */}
+      {/* Indicateur discret : temps avant débordement (fixe) + décompte du
+          temps restant en rouge pendant la simulation. */}
       {hasRobinet && (
-        <div className="mt-2 flex w-full items-center justify-center gap-2">
-          <div className="flex items-center gap-1.5 rounded-lg border border-[rgb(255,30,90)]/40 bg-black/60 px-2.5 py-1">
-            <span className="text-[9px] font-semibold uppercase tracking-wide text-slate-400">
-              Débordement
-            </span>
-            <span className="text-sm font-bold tabular-nums text-[rgb(255,30,90)]">
-              {formatOverflowSeconds(overflowSeconds)}
-            </span>
-          </div>
-
+        <p className="mt-2 flex items-center justify-center gap-1.5 text-[11px] text-slate-500">
+          <span>Débordement</span>
+          <span className="font-semibold tabular-nums text-slate-300">
+            {formatOverflowSeconds(overflowSeconds)}
+          </span>
           {isSimActive && (
-            <div className="flex items-center gap-1.5 rounded-lg border border-[rgb(255,30,90)]/60 bg-[rgb(255,30,90)]/10 px-2.5 py-1">
-              <span className="text-[9px] font-semibold uppercase tracking-wide text-[rgb(255,30,90)]/80">
-                Reste
-              </span>
-              <span className="text-sm font-bold tabular-nums text-[rgb(255,30,90)]">
-                {remainingSeconds !== null ? formatOverflowSeconds(remainingSeconds) : '—'}
-              </span>
-            </div>
+            <span className="font-semibold tabular-nums text-[rgb(255,30,90)]">
+              · reste {remainingSeconds !== null ? formatOverflowSeconds(remainingSeconds) : '—'}
+            </span>
           )}
-        </div>
+        </p>
       )}
     </motion.button>
   )
