@@ -20,7 +20,7 @@
 
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Hourglass, Flag, Timer, CheckCircle2 } from 'lucide-react'
+import { Hourglass, Flag, Timer, CheckCircle2, Play, RotateCcw } from 'lucide-react'
 import { useSession } from '@/hooks/use-session'
 import { useMyParticipant } from '@/hooks/use-my-participant'
 import { useSimulationClock } from '@/hooks/use-simulation-clock'
@@ -65,8 +65,54 @@ export function ParticipantView({
   // Simulation diffusée par le formateur (état partagé, déterministe) : lecture,
   // pause (figée) et reprise sont pilotées depuis la barre formateur. Le verre
   // se remplit en fonction du temps écoulé, synchronisé pour toute la session.
-  const { elapsedMs: simulationElapsedMs, state: simulationState } =
+  const { elapsedMs: formateurElapsedMs, state: simulationState } =
     useSimulationClock(session)
+  const formateurActive = simulationState !== 'idle'
+
+  // Simulation PERSO du participant : il peut « jouer » avec son propre modèle
+  // en autonomie (local, invisible sur le dashboard formateur). Prioritaire :
+  // dès que le formateur lance une simulation, c'est la sienne qui s'affiche.
+  const [localStart, setLocalStart] = useState<number | null>(null)
+  const [localFrozen, setLocalFrozen] = useState<number | null>(null)
+  const [localNow, setLocalNow] = useState(() => Date.now())
+  const localPlaying = localStart !== null && localFrozen === null
+
+  useEffect(() => {
+    if (!localPlaying) return
+    const id = setInterval(() => {
+      setLocalNow(Date.now())
+      if (localStart !== null && overflowSeconds !== null) {
+        const elapsed = (Date.now() - localStart) / 1000
+        // Arrivé au débordement : on fige le verre plein.
+        if (elapsed >= overflowSeconds) setLocalFrozen(overflowSeconds * 1000)
+      }
+    }, 100)
+    return () => clearInterval(id)
+  }, [localPlaying, localStart, overflowSeconds])
+
+  // La simulation du formateur prend le dessus sur la simulation perso.
+  useEffect(() => {
+    if (formateurActive) {
+      setLocalStart(null)
+      setLocalFrozen(null)
+    }
+  }, [formateurActive])
+
+  const localElapsedMs =
+    localFrozen !== null
+      ? localFrozen
+      : localPlaying && localStart !== null
+        ? localNow - localStart
+        : null
+
+  // Temps effectivement affiché : simulation formateur si active, sinon perso.
+  const simulationElapsedMs = formateurActive ? formateurElapsedMs : localElapsedMs
+
+  function handleLocalPlay() {
+    if (overflowSeconds === null) return
+    setLocalFrozen(null)
+    setLocalStart(Date.now())
+  }
 
   if (isSessionLoading) {
     return (
@@ -151,18 +197,33 @@ export function ParticipantView({
               <p className="text-center text-[11px] italic text-slate-400">
                 Avec cette récupération, le verre ne déborde pas.
               </p>
-            ) : simulationState === 'playing' ? (
+            ) : formateurActive ? (
+              // Simulation diffusée par le formateur : pas de contrôle local.
+              <p className="text-center text-[11px] text-slate-300">
+                {simulationState === 'paused'
+                  ? 'Simulation en pause (formateur).'
+                  : 'Simulation lancée par le formateur…'}
+              </p>
+            ) : localPlaying ? (
               <p className="text-center text-[11px] text-slate-300">
                 Simulation en cours…
               </p>
-            ) : simulationState === 'paused' ? (
-              <p className="text-center text-[11px] text-slate-300">
-                Simulation en pause.
-              </p>
+            ) : localElapsedMs !== null ? (
+              <button
+                onClick={handleLocalPlay}
+                className="flex items-center justify-center gap-2 rounded-lg bg-blue-500/80 px-3 py-2 text-sm font-semibold text-white transition hover:bg-blue-400"
+              >
+                <RotateCcw className="h-4 w-4" />
+                Rejouer ma simulation
+              </button>
             ) : (
-              <p className="text-center text-[11px] italic text-slate-400">
-                Le formateur lancera la simulation.
-              </p>
+              <button
+                onClick={handleLocalPlay}
+                className="flex items-center justify-center gap-2 rounded-lg bg-blue-500/80 px-3 py-2 text-sm font-semibold text-white transition hover:bg-blue-400"
+              >
+                <Play className="h-4 w-4" />
+                Lancer ma simulation
+              </button>
             )}
           </div>
         )}
