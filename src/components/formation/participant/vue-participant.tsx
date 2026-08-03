@@ -18,11 +18,12 @@
  * donc le modèle et l'indicateur se mettent à jour dès que le participant répond.
  */
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Hourglass, Flag, Timer, CheckCircle2, Play, RotateCcw } from 'lucide-react'
+import { Hourglass, Flag, Timer, CheckCircle2 } from 'lucide-react'
 import { useSession } from '@/hooks/use-session'
 import { useMyParticipant } from '@/hooks/use-my-participant'
+import { useSimulationClock } from '@/hooks/use-simulation-clock'
 import { useIsDesktop } from '@/hooks/use-is-desktop'
 import { ParticipantQuestionnaire } from './questionnaire'
 import { ParticipantMiniModel } from './mon-mini-modele'
@@ -61,55 +62,11 @@ export function ParticipantView({
     setCurrentElementFinished(false)
   }, [currentElementSession])
 
-  // Lecture animée de la simulation : le verre se remplit en temps réel et
-  // arrive plein pile au terme du compteur (= temps avant débordement).
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [playStartedAt, setPlayStartedAt] = useState<string | null>(null)
-  const [, setNowTick] = useState(0)
-  // Référence de l'indicateur au moment du lancement : si le participant
-  // modifie un élément pendant la simulation (le temps avant débordement change),
-  // on l'arrête pour éviter une incohérence entre l'animation et le chiffre.
-  const playBaselineRef = useRef<number | null>(null)
-
-  useEffect(() => {
-    if (!isPlaying) return
-    const id = setInterval(() => {
-      setNowTick((t) => t + 1)
-      if (playStartedAt && overflowSeconds !== null) {
-        const elapsed = (Date.now() - new Date(playStartedAt).getTime()) / 1000
-        if (elapsed >= overflowSeconds) setIsPlaying(false)
-      }
-    }, 100)
-    return () => clearInterval(id)
-  }, [isPlaying, playStartedAt, overflowSeconds])
-
-  useEffect(() => {
-    if (isPlaying && playBaselineRef.current !== null && overflowSeconds !== playBaselineRef.current) {
-      setIsPlaying(false)
-      setPlayStartedAt(null)
-      playBaselineRef.current = null
-    }
-  }, [overflowSeconds, isPlaying])
-
-  // Simulation diffusée par le formateur : quand `simulation_started_at` change,
-  // on lance (ou arrête) l'animation en synchronisant sur ce timestamp partagé,
-  // pour que tous les verres de la session partent ensemble.
-  const sessionSimStartedAt = session?.simulation_started_at ?? null
-  useEffect(() => {
-    if (sessionSimStartedAt) {
-      // Rien à animer si le verre ne déborde pas (ou Robinet pas renseigné).
-      if (overflowSeconds === null) return
-      playBaselineRef.current = overflowSeconds
-      setPlayStartedAt(sessionSimStartedAt)
-      setIsPlaying(true)
-    } else {
-      setIsPlaying(false)
-      setPlayStartedAt(null)
-      playBaselineRef.current = null
-    }
-    // On ne réagit qu'au signal formateur (pas aux recalculs d'overflow).
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sessionSimStartedAt])
+  // Simulation diffusée par le formateur (état partagé, déterministe) : lecture,
+  // pause (figée) et reprise sont pilotées depuis la barre formateur. Le verre
+  // se remplit en fonction du temps écoulé, synchronisé pour toute la session.
+  const { elapsedMs: simulationElapsedMs, state: simulationState } =
+    useSimulationClock(session)
 
   if (isSessionLoading) {
     return (
@@ -122,21 +79,12 @@ export function ParticipantView({
   const hasAnyScore = Object.keys(scores).length > 0
   const allElementsDone = Object.keys(scores).length === 5
 
-  // Temps écoulé / restant pour la lecture animée.
-  const elapsedPlay =
-    isPlaying && playStartedAt
-      ? (Date.now() - new Date(playStartedAt).getTime()) / 1000
-      : 0
+  // Temps écoulé / restant pour la lecture animée (depuis l'horloge partagée).
+  const isSimActive = simulationElapsedMs !== null
+  const elapsedPlay = isSimActive ? simulationElapsedMs / 1000 : 0
   const remainingPlay =
     overflowSeconds !== null ? Math.max(0, overflowSeconds - elapsedPlay) : null
-  const hasFinishedPlay = !isPlaying && playStartedAt !== null
-
-  function handlePlay() {
-    if (overflowSeconds === null) return
-    playBaselineRef.current = overflowSeconds
-    setPlayStartedAt(new Date().toISOString())
-    setIsPlaying(true)
-  }
+  const showCountdown = isSimActive && remainingPlay !== null
 
   return (
     <motion.div
@@ -175,8 +123,7 @@ export function ParticipantView({
           <ParticipantMiniModel
             scores={scores}
             height={modelHeight}
-            simulationSpeed={isPlaying ? 1 : null}
-            simulationStartedAt={playStartedAt}
+            simulationElapsedMs={simulationElapsedMs}
           />
           {!hasAnyScore && (
             <p className="mt-2 text-center text-xs italic text-slate-500">
@@ -191,10 +138,10 @@ export function ParticipantView({
             <div className="flex items-center justify-center gap-2">
               <Timer className="h-4 w-4 shrink-0 text-blue-300" />
               <span className="text-xs text-blue-100">
-                {isPlaying ? 'Débordement dans' : 'Temps avant débordement'}
+                {showCountdown ? 'Débordement dans' : 'Temps avant débordement'}
               </span>
               <span className="text-lg font-bold tabular-nums text-blue-300">
-                {isPlaying
+                {showCountdown
                   ? formatOverflowSeconds(remainingPlay)
                   : formatOverflowSeconds(overflowSeconds)}
               </span>
@@ -204,26 +151,18 @@ export function ParticipantView({
               <p className="text-center text-[11px] italic text-slate-400">
                 Avec cette récupération, le verre ne déborde pas.
               </p>
-            ) : isPlaying ? (
+            ) : simulationState === 'playing' ? (
               <p className="text-center text-[11px] text-slate-300">
                 Simulation en cours…
               </p>
-            ) : hasFinishedPlay ? (
-              <button
-                onClick={handlePlay}
-                className="flex items-center justify-center gap-2 rounded-lg bg-blue-500/80 px-3 py-2 text-sm font-semibold text-white transition hover:bg-blue-400"
-              >
-                <RotateCcw className="h-4 w-4" />
-                Rejouer la simulation
-              </button>
+            ) : simulationState === 'paused' ? (
+              <p className="text-center text-[11px] text-slate-300">
+                Simulation en pause.
+              </p>
             ) : (
-              <button
-                onClick={handlePlay}
-                className="flex items-center justify-center gap-2 rounded-lg bg-blue-500/80 px-3 py-2 text-sm font-semibold text-white transition hover:bg-blue-400"
-              >
-                <Play className="h-4 w-4" />
-                Lancer la simulation
-              </button>
+              <p className="text-center text-[11px] italic text-slate-400">
+                Le formateur lancera la simulation.
+              </p>
             )}
           </div>
         )}

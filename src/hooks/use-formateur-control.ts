@@ -48,7 +48,11 @@ export function useFormateurControl(sessionCode: string) {
         | 'reset'
         | 'start_simulation'
         | 'stop_simulation',
-      extras: { element?: ElementId; timerDurationSeconds?: number } = {}
+      extras: {
+        element?: ElementId
+        timerDurationSeconds?: number
+        simulationStartedAt?: string
+      } = {}
     ) => {
       const password = getFormateurPassword()
       if (!password) {
@@ -93,5 +97,10 @@ export function useFormateurControl(sessionCode: string) {
     resetSession: () => call('reset'),
     startSimulation: () => call('start_simulation'),
     stopSimulation: () => call('stop_simulation'),
+    /** Reprend la simulation là où elle a été mise en pause (temps antidaté). */
+    resumeSimulation: (elapsedMs: number) =>
+      call('start_simulation', {
+        simulationStartedAt: new Date(Date.now() - Math.max(0, elapsedMs)).toISOString(),
+      }),
   }
 }

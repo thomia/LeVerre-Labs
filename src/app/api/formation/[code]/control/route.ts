@@ -30,6 +30,8 @@ interface ControlBody {
     | 'stop_simulation'
   element?: ElementId
   timerDurationSeconds?: number
+  /** Instant de lancement forcé (ISO) — utilisé pour reprendre une simulation. */
+  simulationStartedAt?: string
 }
 
 const VALID_ELEMENTS: ElementId[] = ['verre', 'robinet', 'bulle', 'orage', 'paille']
@@ -108,7 +110,12 @@ export async function POST(
       // Lecture animée synchronisée : on diffuse l'instant de lancement à tous
       // les participants (et à la mosaïque formateur) via `simulation_started_at`.
       case 'start_simulation': {
-        update = { simulation_started_at: new Date().toISOString() }
+        // Timestamp fourni = reprise (antidaté) ; sinon = lancement depuis 0.
+        const startedAt =
+          typeof body.simulationStartedAt === 'string'
+            ? body.simulationStartedAt
+            : new Date().toISOString()
+        update = { simulation_started_at: startedAt }
         break
       }
       case 'stop_simulation': {
