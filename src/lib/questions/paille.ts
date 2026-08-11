@@ -1,118 +1,90 @@
 /**
- * Questions de l'élément PAILLE - Récupération.
+ * Questions de l'élément PAILLE - Stratégies de récupération.
  *
- * Formule : Score_P = MOYENNE(6 questions)
- * Score élevé = bonne récupération (la paille évacue bien le contenu du verre).
- *
- * Questions extraites de `src/components/analyse-video/analysis-modal.tsx`.
+ * Élément POSITIF : score élevé = bonne récupération (le verre se vide vite).
+ * Chaque option porte une défaveur (0 = idéal, 100 = pire). Le score est la
+ * moyenne quadratique pondérée des défaveurs, puis `100 - A` (voir scoring.ts).
  */
 
 import type { ElementDefinition, Question, AnswersMap } from './types'
+import { scoreFromAnsweredQuestions } from './scoring'
 
 const questions: Question[] = [
   {
     id: 'paille_pauses',
     element: 'paille',
     type: 'single',
-    question: 'Peux-tu faire des pauses quand tu en as besoin ?',
-    weight: 1,
-    maxPoints: 100,
+    question: "L'opérateur peut-il faire des pauses quand il en a besoin ?",
+    weight: 2,
     options: [
-      { label: 'Pauses libres + pauses officielles', points: 100 },
-      { label: 'Pauses officielles uniquement (fixes)', points: 70 },
-      { label: 'Pauses rares ou difficiles à prendre', points: 40 },
-      { label: 'Aucune pause — travail continu', points: 0 },
+      { label: 'Peut interrompre l\u2019activité, micro-pauses régulières (jusqu\u2019à 1 min/10 min)', points: 0 },
+      { label: 'Pauses prévues généralement respectées', points: 10 },
+      { label: 'Uniquement pauses réglementaires (20 min après 6h)', points: 80 },
+      { label: 'Pauses régulièrement retardées ou écourtées', points: 100 },
     ],
   },
   {
     id: 'paille_mobilite',
     element: 'paille',
     type: 'single',
-    question: 'Peux-tu bouger et changer de position pendant le travail ?',
-    weight: 1,
-    maxPoints: 100,
+    question: "L'opérateur peut-il bouger et changer de position ?",
+    weight: 2,
     options: [
-      { label: 'Alterne assis/debout/marche librement', points: 100 },
-      { label: 'Peut bouger un peu sur place', points: 60 },
-      { label: 'Position statique quasi-permanente', points: 30 },
+      { label: 'Variation réelle de posture/groupe musculaire dans la tâche', points: 0 },
+      { label: 'Quelques possibilités limitées', points: 50 },
+      { label: 'Aucune variation, geste unique répété', points: 100 },
     ],
   },
   {
-    id: 'paille_etirements',
+    id: 'paille_renforcement',
     element: 'paille',
     type: 'single',
-    question: "Peux-tu t'étirer pendant le travail ?",
-    weight: 1,
-    maxPoints: 100,
+    question: "Réalise-t-il des exercices de renforcement/mobilisation entre les périodes d'activité ?",
+    weight: 3,
     options: [
-      { label: 'Fait des étirements réguliers', points: 100 },
-      { label: 'Pourrait mais ne le fait pas', points: 50 },
-      { label: "Impossible (pas d'espace, pas de temps)", points: 0 },
+      { label: 'Renforcement ciblé ≥ 3x/semaine, régulier (≥ 10 semaines)', points: 0 },
+      { label: 'Renforcement musculaire régulier mais non adapté au travail', points: 60 },
+      { label: 'Exercices très rares, seulement si douleur ou prescrits par un pro de santé', points: 90 },
+      { label: 'Impossible (pas d\u2019espace, de temps, d\u2019envie)', points: 100 },
     ],
   },
   {
     id: 'paille_hydratation',
     element: 'paille',
     type: 'single',
-    question: "Peux-tu boire de l'eau facilement ?",
+    question: "L'opérateur peut-il boire de l'eau facilement ?",
     weight: 1,
-    maxPoints: 100,
     options: [
-      { label: 'Bouteille à portée ou fontaine proche', points: 100 },
-      { label: 'Accessible mais à distance', points: 75 },
-      { label: 'Difficile (loin ou interdit pendant la tâche)', points: 30 },
+      { label: 'Boit régulièrement, augmente les apports si besoin (≈ 2-2,5 L/j ou plus)', points: 0 },
+      { label: 'Boit entre 1,5 et 2,5 L', points: 50 },
+      { label: 'Boit moins de 1,5 L sur le poste', points: 100 },
     ],
   },
   {
-    id: 'paille_repos',
+    id: 'paille_sommeil',
     element: 'paille',
     type: 'single',
-    question: 'Y a-t-il un endroit calme pour se reposer aux pauses ?',
-    weight: 1,
-    maxPoints: 100,
+    question: 'Le sommeil permet-il de récupérer avant la journée suivante ?',
+    weight: 2,
     options: [
-      { label: 'Salle de pause dédiée, calme', points: 100 },
-      { label: 'Existe mais bruyante/partagée', points: 65 },
-      { label: 'Non — pause sur le poste ou debout', points: 30 },
-    ],
-  },
-  {
-    id: 'paille_preparation',
-    element: 'paille',
-    type: 'single',
-    question: "Fais-tu des exercices de préparation (réveil musculaire) avant les tâches critiques ?",
-    weight: 1,
-    maxPoints: 100,
-    options: [
-      { label: 'Protocole structuré avant chaque tâche critique', points: 100 },
-      { label: 'Parfois, selon la motivation du jour', points: 60 },
-      { label: 'Rare, uniquement en cas de douleur existante', points: 30 },
-      { label: 'Jamais — aucune préparation physique', points: 0 },
+      { label: 'Réveil généralement reposé, 7-9h de sommeil', points: 0 },
+      { label: 'Récupère bien mais nuits parfois plus courtes', points: 30 },
+      { label: 'Fatigue persistante régulière ou < 7h fréquemment', points: 60 },
+      { label: 'Reprend l\u2019activité encore fatigué, nuits très courtes (< 5-6h)', points: 100 },
     ],
   },
 ]
 
 function computeScore(answers: AnswersMap): number {
-  let sum = 0
-  let count = 0
-
-  for (const q of questions) {
-    const raw = answers[q.id]
-    if (raw === undefined) continue
-    const value = typeof raw === 'number' ? raw : 0
-    sum += value
-    count++
-  }
-
-  if (count === 0) return 0
-  return Math.max(0, Math.min(100, Math.round(sum / count)))
+  return scoreFromAnsweredQuestions(questions, answers, 'positive')
 }
 
 export const pailleDefinition: ElementDefinition = {
   id: 'paille',
   name: 'Paille',
   emoji: '🥤',
-  description: 'Récupération',
+  description: 'Stratégies de récupération',
   questions,
+  direction: 'positive',
   computeScore,
 }

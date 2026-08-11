@@ -1,19 +1,23 @@
 /**
  * Questions de l'élément ROBINET - Charge de travail (version Sensibilisation).
  *
- * 5 curseurs 0-100 sur les grandes familles de contraintes, précédés d'un
- * exercice de pondération (répartir 100 points entre les 5 aspects).
+ * Élément NÉGATIF : score élevé = charge importante.
  *
- * Formule : Score_R = MOYENNE PONDÉRÉE des 5 aspects, avec les poids saisis
- * lors de la pondération (clés `robinet_w_*` dans `answers`). Sans pondération,
- * les 5 aspects pèsent également (20 points chacun).
+ * Deux étapes côté participant :
+ *   1. Il CLASSE les 5 aspects par importance → chaque rang donne un poids wᵢ
+ *      (1er = 3, puis 2,5 / 2 / 1,5 / 1). Stockés dans `answers` (`robinet_w_*`).
+ *   2. Il place un curseur 0-100 par aspect → ce sont les défaveurs xᵢ.
+ *
+ * Score_R = moyenne quadratique pondérée des curseurs avec ces poids
+ * (voir scoring.ts). Sans classement, tous les aspects pèsent également.
  */
 
 import type { ElementDefinition, Question, AnswersMap } from './types'
+import { applyDirection, weightedQuadraticMean } from './scoring'
 
 /**
  * Correspondance aspect → clé du poids stocké dans `answers`.
- * L'ordre définit aussi l'ordre d'affichage de la pondération.
+ * L'ordre définit aussi l'ordre d'affichage par défaut du classement.
  */
 export const ROBINET_ASPECTS = [
   { questionId: 'robinet_charge', weightKey: 'robinet_w_charge', label: 'Charge physique' },
@@ -25,8 +29,14 @@ export const ROBINET_ASPECTS = [
 
 export const ROBINET_WEIGHT_KEYS = ROBINET_ASPECTS.map((a) => a.weightKey)
 
-/** Poids total à répartir lors de la pondération. */
-export const ROBINET_PONDERATION_TOTAL = 100
+/**
+ * Poids attribués selon le rang du classement (du plus au moins important).
+ * `RANK_WEIGHTS[0]` = poids du 1er aspect classé, etc.
+ */
+export const RANK_WEIGHTS = [3, 2.5, 2, 1.5, 1] as const
+
+/** Poids neutre utilisé tant que le participant n'a pas classé les aspects. */
+export const DEFAULT_ASPECT_WEIGHT = 2
 
 const questions: Question[] = [
   {
@@ -35,10 +45,7 @@ const questions: Question[] = [
     type: 'scale',
     question: 'Charge physique',
     subtitle: 'Poids manipulés, efforts, port de charges',
-    description:
-      '0 = aucune charge / 100 = charges très lourdes et fréquentes',
-    weight: 1,
-    maxPoints: 100,
+    description: '0 = aucune charge / 100 = charges très lourdes et fréquentes',
     minValue: 0,
     maxValue: 100,
     minLabel: 'Aucune',
@@ -50,10 +57,7 @@ const questions: Question[] = [
     type: 'scale',
     question: 'Posture',
     subtitle: 'Contraintes articulaires (dos, épaules, poignets…)',
-    description:
-      '0 = posture neutre et confortable / 100 = postures extrêmes maintenues',
-    weight: 1,
-    maxPoints: 100,
+    description: '0 = posture neutre et confortable / 100 = postures extrêmes maintenues',
     minValue: 0,
     maxValue: 100,
     minLabel: 'Confortable',
@@ -65,10 +69,7 @@ const questions: Question[] = [
     type: 'scale',
     question: 'Fréquence et durée',
     subtitle: 'Répétition des gestes, temps passé en contrainte',
-    description:
-      '0 = geste ponctuel / 100 = répété en continu une grande partie du temps',
-    weight: 1,
-    maxPoints: 100,
+    description: '0 = geste ponctuel / 100 = répété en continu une grande partie du temps',
     minValue: 0,
     maxValue: 100,
     minLabel: 'Ponctuel',
@@ -80,10 +81,7 @@ const questions: Question[] = [
     type: 'scale',
     question: 'Charge mentale',
     subtitle: 'Concentration, attention, prise de décisions',
-    description:
-      '0 = tâche simple et routinière / 100 = très forte sollicitation cognitive',
-    weight: 1,
-    maxPoints: 100,
+    description: '0 = tâche simple et routinière / 100 = très forte sollicitation cognitive',
     minValue: 0,
     maxValue: 100,
     minLabel: 'Faible',
@@ -95,10 +93,7 @@ const questions: Question[] = [
     type: 'scale',
     question: 'Risques psychosociaux',
     subtitle: 'Pression, relations, reconnaissance, autonomie',
-    description:
-      '0 = environnement sain / 100 = tensions fortes, mal-être ressenti',
-    weight: 1,
-    maxPoints: 100,
+    description: '0 = environnement sain / 100 = tensions fortes, mal-être ressenti',
     minValue: 0,
     maxValue: 100,
     minLabel: 'Sain',
@@ -106,27 +101,22 @@ const questions: Question[] = [
   },
 ]
 
-function readWeight(answers: AnswersMap, key: string): number | null {
+function readNumber(answers: AnswersMap, key: string): number | null {
   const raw = answers[key]
   return typeof raw === 'number' ? raw : null
 }
 
 function computeScore(answers: AnswersMap): number {
-  let weightedSum = 0
-  let weightTotal = 0
+  const items = []
 
   for (const aspect of ROBINET_ASPECTS) {
-    const raw = answers[aspect.questionId]
-    if (raw === undefined) continue
-    const value = typeof raw === 'number' ? raw : 0
-    // Poids saisi lors de la pondération, sinon poids égal par défaut.
-    const weight = readWeight(answers, aspect.weightKey) ?? ROBINET_PONDERATION_TOTAL / ROBINET_ASPECTS.length
-    weightedSum += value * weight
-    weightTotal += weight
+    const value = readNumber(answers, aspect.questionId)
+    if (value === null) continue
+    const weight = readNumber(answers, aspect.weightKey) ?? DEFAULT_ASPECT_WEIGHT
+    items.push({ value, weight })
   }
 
-  if (weightTotal === 0) return 0
-  return Math.max(0, Math.min(100, Math.round(weightedSum / weightTotal)))
+  return applyDirection(weightedQuadraticMean(items), 'negative')
 }
 
 export const robinetDefinition: ElementDefinition = {
@@ -135,5 +125,6 @@ export const robinetDefinition: ElementDefinition = {
   emoji: '🚰',
   description: 'Charge de travail',
   questions,
+  direction: 'negative',
   computeScore,
 }
