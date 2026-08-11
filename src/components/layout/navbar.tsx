@@ -31,7 +31,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link href="/vitrine" className="flex items-center gap-3 group">
+          <Link href="/" className="flex items-center gap-3 group">
             <img
               src="/photo%20video/logo_noir-removebg-preview.png"
               alt="LeVerre Labs Logo"
@@ -249,7 +249,7 @@ function IndicateurActif() {
 /* ---------- Contenu statique ---------- */
 
 const NAV_ITEMS: (LienSimple | MenuDeroulant)[] = [
-  { name: 'Accueil', href: '/vitrine' },
+  { name: 'Accueil', href: '/' },
   { name: 'Fondements', href: '/fondements' },
   {
     name: 'Ressources',

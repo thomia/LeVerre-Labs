@@ -1,10 +1,10 @@
 /**
- * PAGE VITRINE - PRÉSENTATION DU MODÈLE (contenu interactif)
- * Route: /vitrine
+ * CONTENU D'ACCUEIL - PRÉSENTATION DU MODÈLE (contenu interactif)
+ * Rendu par la route `/` (voir `src/app/page.tsx`).
  * Présentation complète du modèle LeVerre Labs avec explications scientifiques.
  *
  * Composant client : le rendu (SSR/SSG) et les metadata de la page vivent
- * dans `page.tsx` (Server Component). Ce fichier ne porte que
+ * dans `src/app/page.tsx` (Server Component). Ce fichier ne porte que
  * l'interactivité (scroll, animations, sections dépliables).
  */
 
