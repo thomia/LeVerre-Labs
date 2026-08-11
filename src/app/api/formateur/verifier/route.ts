@@ -10,6 +10,19 @@ export async function POST(request: Request) {
   try {
     const { password } = await request.json()
 
+    // La variable n'est pas configurée sur cet environnement (ex. Preview
+    // Vercel) : on le signale clairement au lieu du trompeur "mot de passe
+    // incorrect", qui laisse croire à une erreur de saisie.
+    if (!process.env.FORMATEUR_PASSWORD) {
+      return NextResponse.json(
+        {
+          error:
+            "Accès formateur non configuré sur cet environnement (variable FORMATEUR_PASSWORD manquante).",
+        },
+        { status: 500 }
+      )
+    }
+
     if (password !== process.env.FORMATEUR_PASSWORD) {
       return NextResponse.json({ error: 'Mot de passe incorrect' }, { status: 401 })
     }

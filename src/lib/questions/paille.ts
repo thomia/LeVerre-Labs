@@ -42,7 +42,7 @@ const questions: Question[] = [
     question: "Réalise-t-il des exercices de renforcement/mobilisation entre les périodes d'activité ?",
     weight: 3,
     options: [
-      { label: 'Renforcement ciblé ≥ 3x/semaine, régulier (≥ 10 semaines)', points: 0 },
+      { label: 'Renforcement ciblé au moins 3x/semaine, régulier depuis des mois', points: 0 },
       { label: 'Renforcement musculaire régulier mais non adapté au travail', points: 60 },
       { label: 'Exercices très rares, seulement si douleur ou prescrits par un pro de santé', points: 90 },
       { label: 'Impossible (pas d\u2019espace, de temps, d\u2019envie)', points: 100 },
@@ -69,8 +69,8 @@ const questions: Question[] = [
     options: [
       { label: 'Réveil généralement reposé, 7-9h de sommeil', points: 0 },
       { label: 'Récupère bien mais nuits parfois plus courtes', points: 30 },
-      { label: 'Fatigue persistante régulière ou < 7h fréquemment', points: 60 },
-      { label: 'Reprend l\u2019activité encore fatigué, nuits très courtes (< 5-6h)', points: 100 },
+      { label: 'Fatigue persistante régulière ou nuits souvent trop courtes', points: 60 },
+      { label: 'Reprend l\u2019activité encore fatigué, nuits très courtes', points: 100 },
     ],
   },
 ]

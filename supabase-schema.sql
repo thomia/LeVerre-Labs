@@ -30,6 +30,9 @@ create table if not exists public.participants (
   pseudo          text not null,
   scores          jsonb not null default '{}'::jsonb,
   answers         jsonb not null default '{}'::jsonb,
+  -- Score final "temps avant débordement" (secondes-modèle), figé en fin de
+  -- session pour les stats. NULL = le verre ne déborde pas.
+  overflow_seconds numeric,
   joined_at       timestamptz not null default now()
 );
 

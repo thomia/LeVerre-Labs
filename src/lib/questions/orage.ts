@@ -3,9 +3,8 @@
  *
  * Élément NÉGATIF : score élevé = aléas lourds.
  *
- * Méthode AMDEC (criticité = fréquence × gravité) pour CHAQUE imprévu, puis
- * moyenne quadratique entre imprévus :
- *
+ * Pour CHAQUE imprévu, le participant le NOMME puis répond à 3 dimensions
+ * (méthode AMDEC, criticité = fréquence × gravité) :
  *   - Fréquence (F) : multiplicateur d'occurrence (0-1).
  *   - Gravité (G)   : moyenne des deux facettes temps (T) et énergie (E), 0-100.
  *   - Criticité xⱼ  = F × (T + E) / 2
@@ -18,8 +17,9 @@
 import type { ElementDefinition, Question, AnswersMap } from './types'
 import { applyDirection, weightedQuadraticMean } from './scoring'
 
-/** Un imprévu = un triplet de questions (fréquence, temps, énergie). */
+/** Un imprévu = un titre + un triplet de questions (fréquence, temps, énergie). */
 interface ImprevuKeys {
+  titre: string
   frequence: string
   temps: string
   energie: string
@@ -27,11 +27,13 @@ interface ImprevuKeys {
 
 export const ORAGE_IMPREVUS: ImprevuKeys[] = [
   {
+    titre: 'orage_imprevu1_titre',
     frequence: 'orage_imprevu1_frequence',
     temps: 'orage_imprevu1_temps',
     energie: 'orage_imprevu1_energie',
   },
   {
+    titre: 'orage_imprevu2_titre',
     frequence: 'orage_imprevu2_frequence',
     temps: 'orage_imprevu2_temps',
     energie: 'orage_imprevu2_energie',
@@ -46,7 +48,7 @@ const FREQUENCE_OPTIONS = [
 ]
 
 const TEMPS_OPTIONS = [
-  { label: 'Quelques minutes (< 10 min)', points: 20 },
+  { label: 'Quelques minutes (moins de 10 min)', points: 20 },
   { label: "Un quart d'heure (10-30 min)", points: 40 },
   { label: 'Une demi-heure à 1h (30-60 min)', points: 70 },
   { label: "Plus d'une heure", points: 100 },
@@ -61,18 +63,30 @@ const ENERGIE_OPTIONS = [
 
 function buildImprevuQuestions(index: number, keys: ImprevuKeys): Question[] {
   const section = `Imprévu ${index + 1}`
-  const intro =
+  const titreQuestion =
     index === 0
-      ? "Quel est l'imprévu n°1 qui complique le plus votre journée ?"
-      : "Quel est l'imprévu n°2 qui complique le plus votre journée ?"
+      ? "Nomme l'imprévu qui complique le plus ta journée"
+      : 'Nomme un 2ème imprévu pénalisant'
+  const titreSubtitle =
+    index === 0
+      ? 'Un titre court, ex. « Panne machine », « Commande urgente »'
+      : 'Un titre court, ex. « Absence collègue », « Matériel manquant »'
+
   return [
+    {
+      id: keys.titre,
+      element: 'orage',
+      type: 'text',
+      section,
+      question: titreQuestion,
+      subtitle: titreSubtitle,
+    },
     {
       id: keys.frequence,
       element: 'orage',
       type: 'single',
       section,
       question: 'À quelle fréquence cet imprévu survient-il ?',
-      subtitle: intro,
       options: FREQUENCE_OPTIONS,
     },
     {
@@ -105,9 +119,9 @@ function num(answers: AnswersMap, key: string): number | null {
 }
 
 /**
- * Criticité AMDEC d'un imprévu = F × (T + E) / 2, ou `null` si l'imprévu n'a
- * pas été renseigné du tout (aucune de ses 3 dimensions). Les dimensions non
- * renseignées comptent comme 0 (utile pour un score progressif).
+ * Criticité AMDEC d'un imprévu = F × (T + E) / 2, ou `null` si aucune de ses
+ * dimensions n'est renseignée. Les dimensions manquantes comptent comme 0
+ * (utile pour un score progressif). Le titre n'entre pas dans le calcul.
  */
 function criticite(answers: AnswersMap, keys: ImprevuKeys): number | null {
   const f = num(answers, keys.frequence)

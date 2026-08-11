@@ -14,19 +14,31 @@ import type { ElementId } from '@/lib/supabase/types'
 import { ELEMENT_THEME, ELEMENTS_ORDER } from '@/lib/element-theme'
 import { computeOverflowSeconds, formatOverflowSeconds } from '@/lib/indicateur'
 import { ParticipantMiniModel } from '../participant/mon-mini-modele'
+import { ReponsesTooltip } from './tooltip-reponses'
 
 interface ParticipantFocusModalProps {
   participant: LiveParticipant | null
   onClose: () => void
+  /** Temps de simulation écoulé (ms) diffusé par le formateur (null = construction). */
+  simulationElapsedMs?: number | null
 }
 
 export function ParticipantFocusModal({
   participant,
   onClose,
+  simulationElapsedMs = null,
 }: ParticipantFocusModalProps) {
   const scores = (participant?.scores ?? {}) as Partial<Record<ElementId, number>>
   const overflowSeconds = computeOverflowSeconds(scores)
   const hasRobinet = scores.robinet !== undefined
+
+  // Décompte pendant la simulation diffusée : temps restant avant débordement.
+  const elapsedSec = simulationElapsedMs !== null ? simulationElapsedMs / 1000 : null
+  const isSimActive = elapsedSec !== null
+  const remainingSeconds =
+    overflowSeconds !== null && elapsedSec !== null
+      ? Math.max(0, overflowSeconds - elapsedSec)
+      : null
 
   return (
     <AnimatePresence>
@@ -71,17 +83,35 @@ export function ParticipantFocusModal({
 
             {/* Mini modèle en grand */}
             <div className="flex justify-center">
-              <ParticipantMiniModel scores={scores} height={400} />
+              <ParticipantMiniModel
+                scores={scores}
+                height={400}
+                simulationElapsedMs={simulationElapsedMs}
+              />
             </div>
 
-            {/* Indicateur temps avant débordement */}
+            {/* Indicateur discret : temps avant débordement (fixe) + décompte
+                du temps restant en rouge pendant la simulation. */}
             {hasRobinet && (
-              <div className="flex items-center justify-center gap-2 rounded-xl border border-blue-400/30 bg-blue-500/10 px-4 py-3 text-blue-100">
-                <Timer className="h-5 w-5 text-blue-300" />
-                <span className="text-sm">Temps avant débordement :</span>
-                <span className="text-xl font-bold tabular-nums text-blue-300">
-                  {formatOverflowSeconds(overflowSeconds)}
+              <div className="flex items-center justify-center gap-4 text-sm">
+                <span className="flex items-center gap-2 text-slate-400">
+                  <Timer className="h-4 w-4 text-slate-500" />
+                  Temps avant débordement
+                  <span className="font-bold tabular-nums text-white">
+                    {formatOverflowSeconds(overflowSeconds)}
+                  </span>
                 </span>
+
+                {isSimActive && (
+                  <span className="text-[rgb(255,30,90)]">
+                    Reste{' '}
+                    <span className="font-bold tabular-nums">
+                      {remainingSeconds !== null
+                        ? formatOverflowSeconds(remainingSeconds)
+                        : '—'}
+                    </span>
+                  </span>
+                )}
               </div>
             )}
 
@@ -91,10 +121,9 @@ export function ParticipantFocusModal({
                 const score = scores[el]
                 const isDone = score !== undefined
                 const theme = ELEMENT_THEME[el]
-                return (
+                const cell = (
                   <div
-                    key={el}
-                    className={`flex flex-col items-center justify-center gap-1 rounded-xl border px-2 py-3 ${
+                    className={`flex w-full flex-col items-center justify-center gap-1 rounded-xl border px-2 py-3 ${
                       isDone
                         ? theme.chipClass
                         : 'border-white/5 bg-slate-800/60 text-slate-600'
@@ -108,6 +137,18 @@ export function ParticipantFocusModal({
                     </span>
                   </div>
                 )
+                if (isDone && participant.answers) {
+                  return (
+                    <ReponsesTooltip
+                      key={el}
+                      element={el}
+                      answers={participant.answers as Record<string, unknown>}
+                    >
+                      {cell}
+                    </ReponsesTooltip>
+                  )
+                }
+                return <div key={el} className="flex">{cell}</div>
               })}
             </div>
           </motion.div>

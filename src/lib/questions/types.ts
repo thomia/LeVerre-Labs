@@ -9,7 +9,7 @@
 import type { ElementId } from '@/lib/supabase/types'
 import type { ElementDirection } from './scoring'
 
-export type QuestionType = 'single' | 'multiple' | 'scale'
+export type QuestionType = 'single' | 'multiple' | 'scale' | 'text'
 
 export interface QuestionOption {
   label: string
@@ -42,8 +42,9 @@ export interface Question {
  * Valeur d'une réponse :
  *  - number pour type 'single' ou 'scale' (= points de l'option / valeur curseur)
  *  - number[] pour type 'multiple' (= tableau des points cumulés)
+ *  - string pour type 'text' (= texte libre, ex. titre d'un imprévu Orage)
  */
-export type AnswerValue = number | number[]
+export type AnswerValue = number | number[] | string
 
 export type AnswersMap = Record<string, AnswerValue>
 

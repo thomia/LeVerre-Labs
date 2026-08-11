@@ -36,6 +36,13 @@ interface DashboardSimplifiedProps {
   }) => void
   externalIsPaused?: boolean
   externalSimulationSpeed?: number
+  /**
+   * Niveau de remplissage contrôlé de l'extérieur (0-100). Quand défini, le
+   * remplissage n'est plus calculé en interne (tick désactivé) : le verre
+   * affiche exactement cette valeur. Permet d'afficher un état déterministe et
+   * synchronisé entre plusieurs instances (ex. mosaïque + modale focus formateur).
+   */
+  externalFillLevel?: number
   resetTrigger?: number
   /**
    * Flags de visibilité pour construire le modèle progressivement (mode pédagogique).
@@ -58,6 +65,7 @@ export default function DashboardSimplified({
   onScoresChange,
   externalIsPaused,
   externalSimulationSpeed,
+  externalFillLevel,
   resetTrigger,
   showTap = true,
   showStraw = true,
@@ -76,6 +84,9 @@ export default function DashboardSimplified({
   // 🥃 Score V - Verre (Capacité)
   const [scoreV, setScoreV] = useState(savedScores?.scoreV ?? 50)
   const [fillLevel, setFillLevel] = useState(0)
+  // Remplissage effectivement affiché : contrôlé de l'extérieur si fourni.
+  const isFillControlled = externalFillLevel !== undefined
+  const displayFillLevel = isFillControlled ? externalFillLevel : fillLevel
   const [glassWidth, setGlassWidth] = useState(20)
   
   // 🚰 Score R - Robinet (Débit/Charge de travail)
@@ -164,6 +175,8 @@ export default function DashboardSimplified({
   // Simulation du remplissage du verre
   useEffect(() => {
     if (isPaused) return
+    // Remplissage piloté de l'extérieur : on n'accumule pas en interne.
+    if (isFillControlled) return
     
     const interval = setInterval(() => {
       setFillLevel(prev => {
@@ -192,7 +205,7 @@ export default function DashboardSimplified({
     }, 50)
     
     return () => clearInterval(interval)
-  }, [scoreR, scoreP, scoreB, scoreO, scoreV, isPaused, simulationSpeed])
+  }, [scoreR, scoreP, scoreB, scoreO, scoreV, isPaused, simulationSpeed, isFillControlled])
 
   // Formatage du temps
   const formattedWorkTime = () => {
@@ -384,7 +397,7 @@ export default function DashboardSimplified({
                   <div className="glass-container absolute left-1/2 top-[87%] transform -translate-x-1/2 -translate-y-1/2 scale-125 z-10">
                     <div ref={glassRef} className="relative">
                       <GlassComponent 
-                        fillLevel={fillLevel} 
+                        fillLevel={displayFillLevel} 
                         absorptionRate={scoreP}
                         width={glassWidth}
                       />

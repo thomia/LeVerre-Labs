@@ -8,9 +8,10 @@
 
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Square, Flag, RotateCcw } from 'lucide-react'
+import { Square, Flag, RotateCcw, Play } from 'lucide-react'
 import { useFormateurControl } from '@/hooks/use-formateur-control'
 import type { LiveSession } from '@/hooks/use-session'
+import type { SimulationState } from '@/hooks/use-simulation-clock'
 import type { ElementId } from '@/lib/supabase/types'
 import { ELEMENT_THEME, ELEMENTS_ORDER } from '@/lib/element-theme'
 
@@ -18,6 +19,10 @@ interface FormateurControlsProps {
   code: string
   session: LiveSession | null
   timerDurationSeconds: number
+  /** État de la simulation partagée (idle / playing / paused). */
+  simulationState: SimulationState
+  /** Temps de simulation écoulé (ms) — sert à reprendre après une pause. */
+  simulationElapsedMs: number | null
 }
 
 // Classes spécifiques à la barre de contrôle formateur (état "en cours")
@@ -51,12 +56,21 @@ function useCountdown(timerEndAt: string | null) {
   return remaining
 }
 
-export function FormateurControls({ code, session, timerDurationSeconds }: FormateurControlsProps) {
+export function FormateurControls({
+  code,
+  session,
+  timerDurationSeconds,
+  simulationState,
+  simulationElapsedMs,
+}: FormateurControlsProps) {
   const {
     startElement,
     stopElement,
     endSession,
     resetSession,
+    startSimulation,
+    stopSimulation,
+    resumeSimulation,
     isSending,
     error,
   } = useFormateurControl(code)
@@ -132,8 +146,55 @@ export function FormateurControls({ code, session, timerDurationSeconds }: Forma
             className="flex items-center gap-2 rounded-lg bg-slate-800 px-5 py-3 text-base text-slate-200 transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
           >
             <Square className="h-5 w-5" />
-            <span className="hidden sm:inline">Arrêter</span>
+            <span className="hidden sm:inline">Arrêter l&apos;élément</span>
           </button>
+
+          <div className="mx-2 h-8 w-px bg-white/10" />
+
+          {/* Simulation diffusée : anime TOUS les verres de la session (écrans
+              participants + mosaïque formateur). Lecture / pause / reprise. */}
+          {simulationState === 'playing' ? (
+            <button
+              onClick={stopSimulation}
+              disabled={isSending}
+              title="Mettre la simulation en pause (état conservé)"
+              className="flex items-center gap-2 rounded-lg bg-cyan-600/80 px-5 py-3 text-base font-semibold text-white transition hover:bg-cyan-500 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              <Square className="h-5 w-5" />
+              <span className="hidden sm:inline">Stopper la simulation</span>
+            </button>
+          ) : simulationState === 'paused' ? (
+            <>
+              <button
+                onClick={() => resumeSimulation(simulationElapsedMs ?? 0)}
+                disabled={isSending || isEnded}
+                title="Reprendre la simulation là où elle a été mise en pause"
+                className="flex items-center gap-2 rounded-lg bg-cyan-600/80 px-5 py-3 text-base font-semibold text-white transition hover:bg-cyan-500 disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                <Play className="h-5 w-5" />
+                <span className="hidden sm:inline">Reprendre</span>
+              </button>
+              <button
+                onClick={startSimulation}
+                disabled={isSending || isEnded}
+                title="Recommencer la simulation depuis le début"
+                className="flex items-center gap-2 rounded-lg bg-slate-800 px-5 py-3 text-base text-slate-200 transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                <RotateCcw className="h-5 w-5" />
+                <span className="hidden sm:inline">Recommencer</span>
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={startSimulation}
+              disabled={isSending || isEnded}
+              title="Lancer la simulation sur tous les verres de la session"
+              className="flex items-center gap-2 rounded-lg bg-cyan-600/80 px-5 py-3 text-base font-semibold text-white transition hover:bg-cyan-500 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              <Play className="h-5 w-5" />
+              <span className="hidden sm:inline">Simulation</span>
+            </button>
+          )}
 
           <div className="mx-2 h-8 w-px bg-white/10" />
 
@@ -144,7 +205,7 @@ export function FormateurControls({ code, session, timerDurationSeconds }: Forma
             className="flex items-center gap-2 rounded-lg bg-red-600/80 px-5 py-3 text-base font-semibold text-white transition hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-40"
           >
             <Flag className="h-5 w-5" />
-            <span className="hidden sm:inline">Terminer</span>
+            <span className="hidden sm:inline">Terminer la session</span>
           </button>
 
           {isEnded && (
