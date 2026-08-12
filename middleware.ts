@@ -10,7 +10,17 @@ export function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/sandbox', request.url))
     }
   }
-  
+
+  // Redirection permanente 301 de l'ancienne URL /vitrine vers l'accueil /.
+  // Le contenu d'accueil est désormais servi directement sur / (URL canonique
+  // unique) ; /vitrine ne doit plus être indexée ni considérée comme un doublon.
+  if (request.nextUrl.pathname === '/vitrine') {
+    const url = request.nextUrl.clone()
+    url.pathname = '/'
+    url.search = ''
+    return NextResponse.redirect(url, 301)
+  }
+
   return NextResponse.next()
 }
 
