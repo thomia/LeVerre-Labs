@@ -20,6 +20,7 @@ import { GraphiqueFilRouge } from './graphique-fil-rouge'
 import { PopupActions } from './popup-actions'
 import { useParticipants, type LiveParticipant } from '@/hooks/use-participants'
 import { useSession } from '@/hooks/use-session'
+import { useSimulationClock } from '@/hooks/use-simulation-clock'
 import { LineChart, ClipboardList } from 'lucide-react'
 
 interface FormateurDashboardProps {
@@ -32,6 +33,11 @@ export function FormateurDashboard({ code }: FormateurDashboardProps) {
   const [focusedId, setFocusedId] = useState<string | null>(null)
   const [isGraphOpen, setIsGraphOpen] = useState(false)
   const [isActionsOpen, setIsActionsOpen] = useState(false)
+
+  // Horloge de simulation partagée (mosaïque + modale focus). Le remplissage des
+  // verres est déterministe : fonction du temps écoulé, diffusé à toute la session.
+  const { elapsedMs: simulationElapsedMs, state: simulationState } =
+    useSimulationClock(session)
 
   // On retrouve toujours le participant à jour dans la liste live (et pas une
   // copie figée) → le modal reflète les scores temps réel.
@@ -115,6 +121,7 @@ export function FormateurDashboard({ code }: FormateurDashboardProps) {
                   key={p.id}
                   participant={p}
                   onSelect={(participant) => setFocusedId(participant.id)}
+                  simulationElapsedMs={simulationElapsedMs}
                 />
               ))}
             </AnimatePresence>
@@ -126,6 +133,7 @@ export function FormateurDashboard({ code }: FormateurDashboardProps) {
       <ParticipantFocusModal
         participant={focusedParticipant}
         onClose={() => setFocusedId(null)}
+        simulationElapsedMs={simulationElapsedMs}
       />
 
       {/* Récap graphique de l'indicateur (fil rouge) */}
@@ -147,6 +155,8 @@ export function FormateurDashboard({ code }: FormateurDashboardProps) {
         code={code}
         session={session}
         timerDurationSeconds={session?.timer_duration ?? 120}
+        simulationState={simulationState}
+        simulationElapsedMs={simulationElapsedMs}
       />
     </div>
   )

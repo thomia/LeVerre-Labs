@@ -23,14 +23,32 @@ interface ParticipantCardProps {
   participant: LiveParticipant
   /** Handler appelé au clic sur la carte → ouvre le mode focus côté parent */
   onSelect?: (participant: LiveParticipant) => void
+  /**
+   * Temps de simulation écoulé (ms) diffusé par le formateur. Non-null → le
+   * verre affiche son remplissage à cet instant (animé si le temps avance, figé
+   * s'il est en pause) ; null → verre en construction.
+   */
+  simulationElapsedMs?: number | null
 }
 
-export function ParticipantCard({ participant, onSelect }: ParticipantCardProps) {
+export function ParticipantCard({
+  participant,
+  onSelect,
+  simulationElapsedMs = null,
+}: ParticipantCardProps) {
   const scores = participant.scores as Partial<Record<ElementId, number>>
   const completedElements = Object.keys(scores) as ElementId[]
   const progressPercent = (completedElements.length / 5) * 100
   const hasRobinet = scores.robinet !== undefined
   const overflowSeconds = computeOverflowSeconds(scores)
+
+  // Décompte pendant la simulation diffusée : temps restant avant débordement.
+  const elapsedSec = simulationElapsedMs !== null ? simulationElapsedMs / 1000 : null
+  const isSimActive = elapsedSec !== null
+  const remainingSeconds =
+    overflowSeconds !== null && elapsedSec !== null
+      ? Math.max(0, overflowSeconds - elapsedSec)
+      : null
 
   return (
     <motion.button
@@ -43,9 +61,14 @@ export function ParticipantCard({ participant, onSelect }: ParticipantCardProps)
       transition={{ duration: 0.25 }}
       className="flex flex-col items-center rounded-2xl border border-white/10 bg-slate-900/60 p-4 text-left shadow-lg backdrop-blur transition hover:border-white/30 hover:bg-slate-900/80 focus:outline-none focus:ring-2 focus:ring-blue-400/60"
     >
-      {/* Modèle complet live (figé, construit au fil des réponses) */}
+      {/* Modèle complet live : figé (construction) ou remplissage déterministe
+          quand le formateur lance la simulation sur toute la mosaïque. */}
       <div className="mb-3 w-full">
-        <ParticipantMiniModel scores={scores} height={150} />
+        <ParticipantMiniModel
+          scores={scores}
+          height={150}
+          simulationElapsedMs={simulationElapsedMs}
+        />
       </div>
 
       <h3 className="mb-0.5 max-w-full truncate text-sm font-semibold text-white">
@@ -77,11 +100,10 @@ export function ParticipantCard({ participant, onSelect }: ParticipantCardProps)
           const score = scores[el]
           const isDone = score !== undefined
           const theme = ELEMENT_THEME[el]
-          return (
+          const cell = (
             <div
-              key={el}
               title={`${theme.name}${isDone ? ` : ${score}` : ''}`}
-              className={`flex flex-col items-center justify-center gap-0.5 rounded-md border px-1 py-1 transition ${
+              className={`flex w-full flex-col items-center justify-center gap-0.5 rounded-md border px-1 py-1 transition ${
                 isDone
                   ? theme.chipClass
                   : 'border-white/5 bg-slate-800/60 text-slate-600'
@@ -95,16 +117,24 @@ export function ParticipantCard({ participant, onSelect }: ParticipantCardProps)
               </span>
             </div>
           )
+          return <div key={el} className="flex">{cell}</div>
         })}
       </div>
 
-      {/* Indicateur temps avant débordement (dès que le Robinet est renseigné) */}
+      {/* Indicateur discret : temps avant débordement (fixe) + décompte du
+          temps restant en rouge pendant la simulation. Texte uniforme et léger
+          pour se fondre dans la carte. */}
       {hasRobinet && (
-        <p className="mt-2 text-[11px] text-slate-400">
-          Débordement :{' '}
-          <span className="font-bold tabular-nums text-blue-300">
+        <p className="mt-2 flex flex-wrap items-center justify-center gap-x-1.5 text-[10px] font-normal leading-tight text-slate-500">
+          <span>Débordement</span>
+          <span className="tabular-nums text-slate-400">
             {formatOverflowSeconds(overflowSeconds)}
           </span>
+          {isSimActive && (
+            <span className="tabular-nums text-[rgb(255,30,90)]/80">
+              · reste {remainingSeconds !== null ? formatOverflowSeconds(remainingSeconds) : '—'}
+            </span>
+          )}
         </p>
       )}
     </motion.button>

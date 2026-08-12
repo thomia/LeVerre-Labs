@@ -41,8 +41,18 @@ export function useFormateurControl(sessionCode: string) {
 
   const call = useCallback(
     async (
-      action: 'start_element' | 'stop_element' | 'end_session' | 'reset',
-      extras: { element?: ElementId; timerDurationSeconds?: number } = {}
+      action:
+        | 'start_element'
+        | 'stop_element'
+        | 'end_session'
+        | 'reset'
+        | 'start_simulation'
+        | 'stop_simulation',
+      extras: {
+        element?: ElementId
+        timerDurationSeconds?: number
+        simulationStartedAt?: string
+      } = {}
     ) => {
       const password = getFormateurPassword()
       if (!password) {
@@ -85,5 +95,12 @@ export function useFormateurControl(sessionCode: string) {
     stopElement: () => call('stop_element'),
     endSession: () => call('end_session'),
     resetSession: () => call('reset'),
+    startSimulation: () => call('start_simulation'),
+    stopSimulation: () => call('stop_simulation'),
+    /** Reprend la simulation là où elle a été mise en pause (temps antidaté). */
+    resumeSimulation: (elapsedMs: number) =>
+      call('start_simulation', {
+        simulationStartedAt: new Date(Date.now() - Math.max(0, elapsedMs)).toISOString(),
+      }),
   }
 }

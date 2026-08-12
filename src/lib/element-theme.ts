@@ -13,6 +13,8 @@ export interface ElementTheme {
   name: string
   /** Description courte (sous-titre) */
   description: string
+  /** Couleur d'accent en hexadécimal (pour les graphiques / SVG, hors classes Tailwind) */
+  color: string
   /** Classes Tailwind pour un badge / chip (bg + texte + bordure) */
   chipClass: string
   /** Classe Tailwind pour un titre en couleur pleine */
@@ -27,6 +29,7 @@ export const ELEMENT_THEME: Record<ElementId, ElementTheme> = {
   verre: {
     name: 'Verre',
     description: "Capacité d'absorption (profil personnel)",
+    color: '#9ca3af',
     chipClass: 'bg-gray-500/15 text-gray-200 border-gray-400/30',
     titleClass: 'text-gray-200',
     accentClass: 'text-gray-400',
@@ -35,6 +38,7 @@ export const ELEMENT_THEME: Record<ElementId, ElementTheme> = {
   robinet: {
     name: 'Robinet',
     description: 'Charge de travail',
+    color: '#60a5fa',
     chipClass: 'bg-blue-500/15 text-blue-200 border-blue-400/30',
     titleClass: 'text-blue-300',
     accentClass: 'text-blue-400',
@@ -43,6 +47,7 @@ export const ELEMENT_THEME: Record<ElementId, ElementTheme> = {
   bulle: {
     name: 'Bulle',
     description: 'Environnement',
+    color: '#c084fc',
     chipClass: 'bg-purple-500/15 text-purple-200 border-purple-400/30',
     titleClass: 'text-purple-300',
     accentClass: 'text-purple-400',
@@ -51,6 +56,7 @@ export const ELEMENT_THEME: Record<ElementId, ElementTheme> = {
   orage: {
     name: 'Orage',
     description: 'Aléas',
+    color: '#fbbf24',
     chipClass: 'bg-amber-500/15 text-amber-200 border-amber-400/30',
     titleClass: 'text-amber-300',
     accentClass: 'text-amber-400',
@@ -59,6 +65,7 @@ export const ELEMENT_THEME: Record<ElementId, ElementTheme> = {
   paille: {
     name: 'Paille',
     description: 'Récupération',
+    color: '#4ade80',
     chipClass: 'bg-green-500/15 text-green-200 border-green-400/30',
     titleClass: 'text-green-300',
     accentClass: 'text-green-400',

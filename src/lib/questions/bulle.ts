@@ -1,158 +1,149 @@
 /**
  * Questions de l'élément BULLE - Environnement de travail.
  *
- * Formule : Score_B = MOYENNE((points_i / maxPoints_i) × 100)
- * Score élevé = environnement dégradé (agression).
- *
- * Questions extraites de `src/components/analyse-video/analysis-modal.tsx`.
+ * Élément NÉGATIF : score élevé = environnement dégradé (amplifie le Robinet).
+ * Chaque option porte une défaveur (0 = idéal, 100 = pire). Le score est la
+ * moyenne quadratique pondérée des défaveurs (voir scoring.ts).
  */
 
 import type { ElementDefinition, Question, AnswersMap } from './types'
+import { scoreFromAnsweredQuestions } from './scoring'
 
 const questions: Question[] = [
   {
     id: 'bulle_temperature',
     element: 'bulle',
     type: 'single',
-    question: 'Température ambiante',
-    weight: 1,
-    maxPoints: 80,
+    question: 'Quelle est la température ambiante ?',
+    weight: 2,
     options: [
-      { label: '18-24°C (confortable)', points: 0 },
-      { label: '12-18°C ou 24-28°C', points: 20 },
-      { label: '5-12°C (froid)', points: 50 },
-      { label: '< 5°C ou > 28°C', points: 80 },
+      { label: 'Confortable 18-24°C', points: 0 },
+      { label: 'Un peu frais/chaud 12-18°C ou 24-28°C', points: 20 },
+      { label: 'Froid 5-12°C', points: 50 },
+      { label: 'Très froid/chaud < 5°C ou > 28°C', points: 100 },
     ],
   },
   {
     id: 'bulle_eclairage',
     element: 'bulle',
     type: 'single',
-    question: 'Éclairage',
+    question: "L'éclairage est-il suffisant ?",
     weight: 1,
-    maxPoints: 75,
     options: [
-      { label: '> 500 lux', points: 0 },
-      { label: '300-500 lux', points: 15 },
-      { label: '100-300 lux', points: 45 },
-      { label: '< 100 lux', points: 75 },
+      { label: 'Très bon > 500 lux', points: 0 },
+      { label: 'Correct 300-500 lux', points: 15 },
+      { label: 'Faible 100-300 lux', points: 45 },
+      { label: 'Insuffisant < 100 lux', points: 100 },
     ],
   },
   {
     id: 'bulle_bruit',
     element: 'bulle',
     type: 'single',
-    question: 'Bruit',
-    weight: 1,
-    maxPoints: 90,
+    question: 'Quel est le niveau sonore ?',
+    weight: 2,
     options: [
-      { label: '< 70 dB(A)', points: 0 },
-      { label: '70-80 dB(A)', points: 35 },
-      { label: '80-85 dB', points: 50 },
-      { label: '> 85 dB', points: 80 },
+      { label: 'Calme < 70 dB(A)', points: 0 },
+      { label: 'Bruyant 70-80 dB(A)', points: 35 },
+      { label: 'Très bruyant 80-85 dB(A)', points: 60 },
+      { label: 'Excessif > 85 dB(A)', points: 100 },
     ],
   },
   {
-    id: 'bulle_espace',
+    id: 'bulle_vibrations',
     element: 'bulle',
     type: 'single',
-    question: 'Espace de travail',
-    weight: 1,
-    maxPoints: 90,
+    question: 'Outils vibrants ou conduite de véhicules ?',
+    weight: 2,
     options: [
-      { label: '> 2 m² (dégagé)', points: 0 },
-      { label: '1-2 m² (correct)', points: 25 },
-      { label: '0.5-1 m² (encombré)', points: 60 },
-      { label: '< 0.5 m² (très exigu)', points: 90 },
+      { label: 'Non', points: 0 },
+      { label: 'Occasionnel < 2h', points: 25 },
+      { label: 'Régulier 2-4h', points: 50 },
+      { label: 'Prolongé > 4h', points: 100 },
     ],
   },
   {
     id: 'bulle_horaires',
     element: 'bulle',
     type: 'single',
-    question: 'Horaires de travail',
-    weight: 1,
-    maxPoints: 75,
+    question: 'Horaires décalés ou de nuit ?',
+    weight: 2,
     options: [
       { label: 'Jour normal 8h-18h', points: 0 },
       { label: 'Décalés tôt/tard', points: 30 },
-      { label: 'Nuit ≥ 3h entre 21h-6h', points: 55 },
-      { label: '3×8 ou tournants', points: 75 },
+      { label: 'Nuit > 3h entre 21h-6h', points: 55 },
+      { label: 'Équipes en 3×8 ou horaires tournants', points: 100 },
+    ],
+  },
+  {
+    id: 'bulle_espace',
+    element: 'bulle',
+    type: 'single',
+    question: 'Assez de place pour travailler ?',
+    weight: 1,
+    options: [
+      { label: 'Dégagé > 2 m²', points: 0 },
+      { label: 'Correct 1-2 m²', points: 25 },
+      { label: 'Encombré 0,5-1 m²', points: 60 },
+      { label: 'Très exigu < 0,5 m²', points: 100 },
     ],
   },
   {
     id: 'bulle_salubrite',
     element: 'bulle',
     type: 'single',
-    question: 'Salubrité',
+    question: 'Environnement propre et sain ?',
     weight: 1,
-    maxPoints: 85,
     options: [
       { label: 'Propre et agréable', points: 0 },
       { label: 'Moyennement propre', points: 20 },
       { label: 'Sale, poussiéreux, odeurs', points: 50 },
-      { label: 'Insalubre', points: 85 },
+      { label: 'Insalubre (déchets, sanitaires pollués)', points: 100 },
     ],
   },
   {
     id: 'bulle_isolement',
     element: 'bulle',
     type: 'single',
-    question: 'Isolement du travailleur',
+    question: 'Travaillez-vous seul ?',
     weight: 1,
-    maxPoints: 75,
     options: [
       { label: 'Toujours avec collègues < 50 m', points: 0 },
       { label: 'Seul, collègues proches < 50 m', points: 15 },
       { label: 'Seul, éloigné > 50 m', points: 45 },
-      { label: 'Complètement isolé', points: 75 },
+      { label: 'Complètement isolé', points: 100 },
     ],
   },
   {
     id: 'bulle_materiel',
     element: 'bulle',
     type: 'single',
-    question: 'Matériel à disposition',
+    question: 'Les bons outils/équipements sont-ils disponibles ?',
     weight: 1,
-    maxPoints: 90,
     options: [
       { label: 'Tout nécessaire, bon état', points: 0 },
-      { label: 'Certains manquants ou usés', points: 25 },
-      { label: 'Expositions chimiques fréquentes', points: 50 },
-      { label: 'Expositions à risque sans protection', points: 80 },
+      { label: 'Globalement oui, certains manquants/usés', points: 25 },
+      { label: 'Utilise des bricolages inadaptés', points: 60 },
+      { label: 'Matériel vétuste ou dangereux', points: 100 },
     ],
   },
   {
     id: 'bulle_epi',
     element: 'bulle',
     type: 'single',
-    question: "Port d'EPI contraignants",
+    question: "Port d'équipements de protection individuelle (EPI) contraignants (combinaison, masque, gants épais…) ?",
     weight: 1,
-    maxPoints: 80,
     options: [
       { label: 'Aucun EPI ou EPI légers', points: 0 },
-      { label: 'EPI modérés', points: 20 },
-      { label: 'EPI lourds', points: 50 },
-      { label: 'EPI complets isolants / NRBC', points: 80 },
+      { label: 'EPI modérés (casque, chaussures, gants moyens)', points: 20 },
+      { label: 'EPI lourds (combinaison, masque, gants épais)', points: 50 },
+      { label: 'EPI complets isolants ou ventilation forcée (risques chimiques ou biologiques)', points: 100 },
     ],
   },
 ]
 
 function computeScore(answers: AnswersMap): number {
-  let sum = 0
-  let count = 0
-
-  for (const q of questions) {
-    const raw = answers[q.id]
-    if (raw === undefined) continue
-    const value = typeof raw === 'number' ? raw : 0
-    // Normalisation sur 100 pour cette question
-    sum += (value / q.maxPoints) * 100
-    count++
-  }
-
-  if (count === 0) return 0
-  return Math.max(0, Math.min(100, Math.round(sum / count)))
+  return scoreFromAnsweredQuestions(questions, answers, 'negative')
 }
 
 export const bulleDefinition: ElementDefinition = {
@@ -161,5 +152,6 @@ export const bulleDefinition: ElementDefinition = {
   emoji: '🫧',
   description: 'Environnement de travail',
   questions,
+  direction: 'negative',
   computeScore,
 }

@@ -18,7 +18,8 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import DashboardSimplified from '@/components/modele/dashboard-simplified'
-import type { ElementId } from '@/lib/supabase/types'
+import { computeOverflowSeconds } from '@/lib/indicateur'
+import type { ElementId, ParticipantScores } from '@/lib/supabase/types'
 
 interface ParticipantMiniModelProps {
   scores: Partial<Record<ElementId, number>>
@@ -35,6 +36,14 @@ interface ParticipantMiniModelProps {
    * quand on relance une nouvelle simulation (changement de timestamp).
    */
   simulationStartedAt?: string | null
+  /**
+   * Mode déterministe (formateur) : temps écoulé de simulation en ms. Quand
+   * fourni (non-null), le remplissage est calculé analytiquement à partir des
+   * scores et de ce temps — identique pour toutes les instances (mosaïque ET
+   * modale focus), et figé si le temps ne change plus (pause). `null` = verre en
+   * construction (pas de simulation).
+   */
+  simulationElapsedMs?: number | null
 }
 
 // Le DashboardSimplified natif occupe environ 800×700px.
@@ -49,6 +58,7 @@ export function ParticipantMiniModel({
   height = 150,
   simulationSpeed = null,
   simulationStartedAt = null,
+  simulationElapsedMs = null,
 }: ParticipantMiniModelProps) {
   // Reset le verre à chaque nouvelle simulation. Le DashboardSimplified
   // accepte un `resetTrigger` (numérique qui s'incrémente) — on incrémente
@@ -66,6 +76,19 @@ export function ParticipantMiniModel({
   }, [simulationStartedAt])
 
   const isAnimating = simulationSpeed !== null && simulationSpeed > 0
+
+  // Mode déterministe (formateur) : le remplissage est une fonction du temps
+  // écoulé et des scores. Le verre atteint 100 % pile au « temps avant
+  // débordement ». Résultat identique pour toutes les instances → la modale
+  // focus affiche exactement le même niveau que la carte, y compris en pause.
+  const isDeterministic = simulationElapsedMs !== null
+  const deterministicFill = useMemo(() => {
+    if (simulationElapsedMs === null) return undefined
+    const overflow = computeOverflowSeconds(scores as ParticipantScores)
+    if (overflow === null || overflow <= 0) return 0
+    const elapsedSec = simulationElapsedMs / 1000
+    return Math.max(0, Math.min(100, (elapsedSec / overflow) * 100))
+  }, [simulationElapsedMs, scores])
   // Mappe les scores {verre, robinet,...} vers le format attendu {scoreV, scoreR,...}
   // useMemo pour éviter de recréer l'objet à chaque render (sinon le useEffect
   // interne de DashboardSimplified se redéclenche en boucle).
@@ -115,8 +138,9 @@ export function ParticipantMiniModel({
         <DashboardSimplified
           hideControlPanel
           hideIcons
-          externalIsPaused={!isAnimating}
+          externalIsPaused={isDeterministic ? true : !isAnimating}
           externalSimulationSpeed={isAnimating ? simulationSpeed ?? undefined : undefined}
+          externalFillLevel={deterministicFill}
           resetTrigger={resetTrigger}
           savedScores={savedScores}
           showTap={showTap}

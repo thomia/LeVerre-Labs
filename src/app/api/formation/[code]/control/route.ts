@@ -11,16 +11,27 @@
  */
 
 import { NextResponse } from 'next/server'
+import type { SupabaseClient } from '@supabase/supabase-js'
 import { createAdminClient } from '@/lib/supabase/server'
 import { isValidSessionCode, normalizeSessionCode } from '@/lib/session/generate-code'
+import { computeOverflowSeconds } from '@/lib/indicateur'
+import type { ParticipantScores } from '@/lib/supabase/types'
 
 type ElementId = 'verre' | 'robinet' | 'bulle' | 'orage' | 'paille'
 
 interface ControlBody {
   password: string
-  action: 'start_element' | 'stop_element' | 'end_session' | 'reset'
+  action:
+    | 'start_element'
+    | 'stop_element'
+    | 'end_session'
+    | 'reset'
+    | 'start_simulation'
+    | 'stop_simulation'
   element?: ElementId
   timerDurationSeconds?: number
+  /** Instant de lancement forcé (ISO) — utilisé pour reprendre une simulation. */
+  simulationStartedAt?: string
 }
 
 const VALID_ELEMENTS: ElementId[] = ['verre', 'robinet', 'bulle', 'orage', 'paille']
@@ -38,6 +49,16 @@ export async function POST(
     }
 
     const body = (await request.json()) as ControlBody
+
+    if (!process.env.FORMATEUR_PASSWORD) {
+      return NextResponse.json(
+        {
+          error:
+            "Accès formateur non configuré sur cet environnement (variable FORMATEUR_PASSWORD manquante).",
+        },
+        { status: 500 }
+      )
+    }
 
     if (body.password !== process.env.FORMATEUR_PASSWORD) {
       return NextResponse.json({ error: 'Mot de passe incorrect' }, { status: 401 })
@@ -75,11 +96,30 @@ export async function POST(
         break
       }
       case 'end_session': {
+        // On fige les scores finaux "temps avant débordement" pour les stats
+        // avant de basculer la session en état terminé.
+        await snapshotOverflowSeconds(supabase, code)
         update = {
           status: 'ended',
           current_element: null,
           timer_end_at: null,
+          simulation_started_at: null,
         }
+        break
+      }
+      // Lecture animée synchronisée : on diffuse l'instant de lancement à tous
+      // les participants (et à la mosaïque formateur) via `simulation_started_at`.
+      case 'start_simulation': {
+        // Timestamp fourni = reprise (antidaté) ; sinon = lancement depuis 0.
+        const startedAt =
+          typeof body.simulationStartedAt === 'string'
+            ? body.simulationStartedAt
+            : new Date().toISOString()
+        update = { simulation_started_at: startedAt }
+        break
+      }
+      case 'stop_simulation': {
+        update = { simulation_started_at: null }
         break
       }
       case 'reset': {
@@ -110,4 +150,36 @@ export async function POST(
     console.error('[formation/control] Exception:', err)
     return NextResponse.json({ error: 'Requête invalide' }, { status: 400 })
   }
+}
+
+/**
+ * Fige le score final "temps avant débordement" (en secondes, `null` = ne
+ * déborde pas) de chaque participant de la session, à partir de ses scores
+ * courants. Utilisé pour les statistiques post-session. Best-effort : on ne
+ * bloque pas la fin de session si l'écriture échoue.
+ */
+async function snapshotOverflowSeconds(
+  supabase: SupabaseClient,
+  code: string
+): Promise<void> {
+  const { data, error } = await supabase
+    .from('participants')
+    .select('id, scores')
+    .eq('session_code', code)
+
+  if (error || !data) {
+    if (error) console.error('[formation/control] snapshot select:', error)
+    return
+  }
+
+  await Promise.all(
+    data.map((row) => {
+      const scores = (row.scores ?? {}) as ParticipantScores
+      const overflow = computeOverflowSeconds(scores)
+      return supabase
+        .from('participants')
+        .update({ overflow_seconds: overflow })
+        .eq('id', row.id)
+    })
+  )
 }

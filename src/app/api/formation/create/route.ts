@@ -12,6 +12,16 @@ export async function POST(request: Request) {
   try {
     const { password, timerDuration } = await request.json()
 
+    if (!process.env.FORMATEUR_PASSWORD) {
+      return NextResponse.json(
+        {
+          error:
+            "Accès formateur non configuré sur cet environnement (variable FORMATEUR_PASSWORD manquante).",
+        },
+        { status: 500 }
+      )
+    }
+
     // Vérification du mot de passe formateur
     if (password !== process.env.FORMATEUR_PASSWORD) {
       return NextResponse.json(
