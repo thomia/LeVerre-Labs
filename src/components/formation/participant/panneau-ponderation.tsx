@@ -11,7 +11,7 @@
  */
 
 import { useState } from 'react'
-import { Reorder, useDragControls } from 'framer-motion'
+import { Reorder } from 'framer-motion'
 import { CheckCircle2, Loader2, GripVertical, ArrowUp, ArrowDown } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { ROBINET_ASPECTS, ROBINET_RANK_WEIGHTS } from '@/lib/questions/robinet'
@@ -161,14 +161,13 @@ interface RankItemProps {
 
 function RankItem({ weightKey, rank }: RankItemProps) {
   const aspect = ASPECT_BY_KEY.get(weightKey)
-  const controls = useDragControls()
 
+  // Toute la barre est draggable (dragListener par défaut de Reorder.Item) :
+  // le participant attrape n'importe où sur la ligne, pas seulement la poignée.
   return (
     <Reorder.Item
       value={weightKey}
-      dragListener={false}
-      dragControls={controls}
-      className="flex touch-none items-center gap-3 rounded-xl border border-white/10 bg-slate-900/60 p-3 shadow-sm"
+      className="flex cursor-grab touch-none select-none items-center gap-3 rounded-xl border border-white/10 bg-slate-900/60 p-3 shadow-sm active:cursor-grabbing"
       whileDrag={{ scale: 1.03, boxShadow: '0 8px 24px rgba(0,0,0,0.4)' }}
     >
       <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-500/20 text-sm font-bold tabular-nums text-blue-300">
@@ -177,14 +176,7 @@ function RankItem({ weightKey, rank }: RankItemProps) {
       <p className="min-w-0 flex-1 truncate text-sm font-semibold text-white">
         {aspect?.label ?? weightKey}
       </p>
-      <button
-        type="button"
-        aria-label="Réordonner"
-        onPointerDown={(event) => controls.start(event)}
-        className="flex shrink-0 cursor-grab touch-none items-center text-slate-500 transition hover:text-slate-300 active:cursor-grabbing"
-      >
-        <GripVertical className="h-5 w-5" />
-      </button>
+      <GripVertical className="h-5 w-5 shrink-0 text-slate-500" aria-hidden />
     </Reorder.Item>
   )
 }
