@@ -26,7 +26,7 @@ export const SITE_NAME = 'LeVerre Labs'
 export const GOOGLE_SITE_VERIFICATION =
   process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
 
-/** Construit une URL absolue à partir d'un chemin (ex: "/vitrine"). */
+/** Construit une URL absolue à partir d'un chemin (ex: "/fondements"). */
 export function absoluteUrl(path: string): string {
   return new URL(path, SITE_URL).toString()
 }
