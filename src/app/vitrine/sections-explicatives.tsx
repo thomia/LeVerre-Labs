@@ -121,8 +121,12 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
                   min={0}
                   max={100}
                   step={1}
-                  className="mx-auto w-[250px] [&_.bg-black]:!bg-blue-500 [&_.dark\\:bg-white]:!bg-blue-500"
+                  className="mx-auto w-[250px]"
                   valueColor="text-blue-400"
+                  style={{
+                    '--slider-range-bg': 'rgb(96 165 250)',
+                    '--slider-thumb-ring': 'rgb(96 165 250 / 0.2)',
+                  } as React.CSSProperties}
                 />
               </div>
             </div>
@@ -227,8 +231,12 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
                   min={0}
                   max={100}
                   step={1}
-                  className="mx-auto w-[250px] [&_.bg-black]:!bg-purple-500 [&_.dark\\:bg-white]:!bg-purple-500"
+                  className="mx-auto w-[250px]"
                   valueColor="text-purple-400"
+                  style={{
+                    '--slider-range-bg': 'rgb(192 132 252)',
+                    '--slider-thumb-ring': 'rgb(192 132 252 / 0.2)',
+                  } as React.CSSProperties}
                 />
               </div>
             </div>
@@ -257,8 +265,12 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
                   min={0}
                   max={100}
                   step={1}
-                  className="mx-auto w-[250px] [&_.bg-black]:!bg-yellow-500 [&_.dark\\:bg-white]:!bg-yellow-500"
+                  className="mx-auto w-[250px]"
                   valueColor="text-yellow-400"
+                  style={{
+                    '--slider-range-bg': 'rgb(251 191 36)',
+                    '--slider-thumb-ring': 'rgb(251 191 36 / 0.2)',
+                  } as React.CSSProperties}
                 />
               </div>
             </div>
@@ -351,8 +363,12 @@ export function SectionsExplicatives({ expandedSections, toggleSection }: Sectio
                   min={0}
                   max={100}
                   step={1}
-                  className="mx-auto w-[250px] [&_.bg-black]:!bg-green-500 [&_.dark\\:bg-white]:!bg-green-500"
+                  className="mx-auto w-[250px]"
                   valueColor="text-green-400"
+                  style={{
+                    '--slider-range-bg': 'rgb(74 222 128)',
+                    '--slider-thumb-ring': 'rgb(74 222 128 / 0.2)',
+                  } as React.CSSProperties}
                 />
               </div>
             </div>
