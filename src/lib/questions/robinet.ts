@@ -53,7 +53,7 @@ const questions: Question[] = [
     element: 'robinet',
     type: 'scale',
     section: 'Charge physique',
-    question: 'Ce que je porte, pousse ou tire',
+    question: 'Ce que vous portez, poussez ou tirez',
     subtitle:
       'Comme le ferait un ergonome en visite : poids réel, prise en main, nombre de fois dans la tâche.',
     description: '0 = rien à manipuler / 100 = charges lourdes, prise difficile, répétées',
@@ -67,7 +67,7 @@ const questions: Question[] = [
     element: 'robinet',
     type: 'scale',
     section: 'Posture',
-    question: 'Ce que mon corps doit tenir comme position',
+    question: 'Ce que votre corps doit tenir comme position',
     subtitle:
       'Dos penché, bras levés, position accroupie… les 3 points qu\u2019un ergonome regarde en premier sur le terrain.',
     description: '0 = position neutre / 100 = position extrême maintenue longtemps',
@@ -81,7 +81,7 @@ const questions: Question[] = [
     element: 'robinet',
     type: 'scale',
     section: 'Fréquence et durée',
-    question: 'Le temps réel passé dans l\u2019effort',
+    question: 'Le temps réel que vous passez dans l\u2019effort',
     subtitle:
       'Pas le temps total de la tâche, mais le temps où le corps est vraiment sollicité — ce qu\u2019on chronomètre sur le terrain.',
     description: '0 = ponctuel / 100 = quasi continu',
@@ -95,7 +95,7 @@ const questions: Question[] = [
     element: 'robinet',
     type: 'scale',
     section: 'Charge mentale',
-    question: 'Ce que ma tête doit gérer en même temps',
+    question: 'Ce que votre tête doit gérer en même temps',
     subtitle:
       'Attention, décisions à prendre, risque d\u2019erreur — le type de charge que mesure le NASA-TLX utilisé en ergonomie.',
     description: '0 = automatique / 100 = jongler avec plusieurs choses en même temps',
@@ -109,7 +109,7 @@ const questions: Question[] = [
     element: 'robinet',
     type: 'scale',
     section: 'Risques psychosociaux',
-    question: 'L\u2019ambiance dans laquelle je fais cette tâche',
+    question: 'L\u2019ambiance dans laquelle vous faites cette tâche',
     subtitle:
       'Pression du temps, soutien de l\u2019équipe, marge de manœuvre — les facteurs psychosociaux qu\u2019identifie l\u2019INRS.',
     description: '0 = climat serein / 100 = tensions fortes, isolement',

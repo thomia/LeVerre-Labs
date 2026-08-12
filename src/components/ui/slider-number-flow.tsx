@@ -20,8 +20,11 @@ export default function Slider({ value, className, valueColor, hideThumbValue, .
 			className={clsx(className, 'relative flex h-6 w-[200px] touch-none select-none items-center')}
 		>
 			<RadixSlider.Track className="relative h-[4px] grow rounded-full bg-zinc-100 dark:bg-zinc-800">
-				<RadixSlider.Range 
-					className="absolute h-full rounded-full bg-black dark:bg-white"
+				{/* Partie pleine : couleur de l'élément via --slider-range-bg
+				    (repli bleu). Évite le noir/blanc par défaut au déplacement. */}
+				<RadixSlider.Range
+					className="absolute h-full rounded-full"
+					style={{ backgroundColor: 'var(--slider-range-bg, rgb(96 165 250))' }}
 				/>
 			</RadixSlider.Track>
 			<RadixSlider.Thumb

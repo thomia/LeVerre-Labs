@@ -14,7 +14,7 @@ const questions: Question[] = [
     id: 'paille_pauses',
     element: 'paille',
     type: 'single',
-    question: "L'opérateur peut-il faire des pauses quand il en a besoin ?",
+    question: 'Pouvez-vous faire des pauses quand vous en avez besoin ?',
     weight: 2,
     options: [
       { label: 'Peut interrompre l\u2019activité, micro-pauses régulières (jusqu\u2019à 1 min/10 min)', points: 0 },
@@ -27,7 +27,7 @@ const questions: Question[] = [
     id: 'paille_mobilite',
     element: 'paille',
     type: 'single',
-    question: "L'opérateur peut-il bouger et changer de position ?",
+    question: 'Pouvez-vous bouger et changer de position ?',
     weight: 2,
     options: [
       { label: 'Variation réelle de posture/groupe musculaire dans la tâche', points: 0 },
@@ -39,7 +39,7 @@ const questions: Question[] = [
     id: 'paille_renforcement',
     element: 'paille',
     type: 'single',
-    question: "Réalise-t-il des exercices de renforcement/mobilisation entre les périodes d'activité ?",
+    question: 'Faites-vous des exercices de renforcement / mobilisation entre les périodes d\u2019activité ?',
     weight: 3,
     options: [
       { label: 'Renforcement ciblé au moins 3x/semaine, régulier depuis des mois', points: 0 },
@@ -52,7 +52,7 @@ const questions: Question[] = [
     id: 'paille_hydratation',
     element: 'paille',
     type: 'single',
-    question: "L'opérateur peut-il boire de l'eau facilement ?",
+    question: 'Pouvez-vous boire de l\u2019eau facilement ?',
     weight: 1,
     options: [
       { label: 'Boit régulièrement, augmente les apports si besoin (≈ 2-2,5 L/j ou plus)', points: 0 },
@@ -64,7 +64,7 @@ const questions: Question[] = [
     id: 'paille_sommeil',
     element: 'paille',
     type: 'single',
-    question: 'Le sommeil permet-il de récupérer avant la journée suivante ?',
+    question: 'Votre sommeil vous permet-il de récupérer avant la journée suivante ?',
     weight: 2,
     options: [
       { label: 'Réveil généralement reposé, 7-9h de sommeil', points: 0 },

@@ -18,7 +18,7 @@
  * donc le modèle et l'indicateur se mettent à jour dès que le participant répond.
  */
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Hourglass, Flag, Timer, CheckCircle2, Play, RotateCcw } from 'lucide-react'
 import { useSession } from '@/hooks/use-session'
@@ -97,6 +97,18 @@ export function ParticipantView({
       setLocalFrozen(null)
     }
   }, [formateurActive])
+
+  // Si le participant modifie une réponse (le temps avant débordement change),
+  // on remet sa simulation perso à zéro : sinon l'animation en cours serait
+  // incohérente avec le nouveau niveau de remplissage.
+  const overflowRef = useRef<number | null>(overflowSeconds)
+  useEffect(() => {
+    if (overflowRef.current !== overflowSeconds) {
+      setLocalStart(null)
+      setLocalFrozen(null)
+    }
+    overflowRef.current = overflowSeconds
+  }, [overflowSeconds])
 
   const localElapsedMs =
     localFrozen !== null

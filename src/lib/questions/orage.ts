@@ -65,8 +65,8 @@ function buildImprevuQuestions(index: number, keys: ImprevuKeys): Question[] {
   const section = `Imprévu ${index + 1}`
   const titreQuestion =
     index === 0
-      ? "Nomme l'imprévu qui complique le plus ta journée"
-      : 'Nomme un 2ème imprévu pénalisant'
+      ? "Nommez l'imprévu qui complique le plus votre journée"
+      : 'Nommez un 2ème imprévu pénalisant'
   const titreSubtitle =
     index === 0
       ? 'Un titre court, ex. « Panne machine », « Commande urgente »'
@@ -94,7 +94,7 @@ function buildImprevuQuestions(index: number, keys: ImprevuKeys): Question[] {
       element: 'orage',
       type: 'single',
       section,
-      question: 'Quand il survient, combien de temps te fait-il perdre ?',
+      question: 'Quand il survient, combien de temps cela vous fait-il perdre ?',
       subtitle: 'Attente, rattrapage, reprise',
       options: TEMPS_OPTIONS,
     },
@@ -103,7 +103,7 @@ function buildImprevuQuestions(index: number, keys: ImprevuKeys): Question[] {
       element: 'orage',
       type: 'single',
       section,
-      question: 'Sur le moment, à quel point ça te coûte en énergie / stress ?',
+      question: 'Sur le moment, à quel point cela vous coûte en énergie / stress ?',
       options: ENERGIE_OPTIONS,
     },
   ]

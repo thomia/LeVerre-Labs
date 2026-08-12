@@ -105,7 +105,7 @@ const questions: Question[] = [
     id: 'bulle_isolement',
     element: 'bulle',
     type: 'single',
-    question: "L'opérateur travaille-t-il seul ?",
+    question: 'Travaillez-vous seul ?',
     weight: 1,
     options: [
       { label: 'Toujours avec collègues < 50 m', points: 0 },
