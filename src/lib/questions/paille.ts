@@ -42,7 +42,7 @@ const questions: Question[] = [
     question: 'Faites-vous des exercices de renforcement / mobilisation entre les périodes d\u2019activité ?',
     weight: 3,
     options: [
-      { label: 'Renforcement ciblé au moins 3x/semaine, régulier depuis des mois', points: 0 },
+      { label: 'Renforcement ciblé au moins 3 fois par semaine, régulier depuis des mois', points: 0 },
       { label: 'Renforcement musculaire régulier mais non adapté au travail', points: 60 },
       { label: 'Exercices très rares, seulement si douleur ou prescrits par un pro de santé', points: 90 },
       { label: 'Impossible (pas d\u2019espace, de temps, d\u2019envie)', points: 100 },
@@ -55,9 +55,9 @@ const questions: Question[] = [
     question: 'Pouvez-vous boire de l\u2019eau facilement ?',
     weight: 1,
     options: [
-      { label: 'Boit régulièrement, augmente les apports si besoin (≈ 2-2,5 L/j ou plus)', points: 0 },
-      { label: 'Boit entre 1,5 et 2,5 L', points: 50 },
-      { label: 'Boit moins de 1,5 L sur le poste', points: 100 },
+      { label: 'Boit régulièrement, augmente les apports si besoin (environ 2 à 2,5 litres par jour ou plus)', points: 0 },
+      { label: 'Boit entre 1,5 et 2,5 litres', points: 50 },
+      { label: 'Boit moins de 1,5 litre sur le poste', points: 100 },
     ],
   },
   {

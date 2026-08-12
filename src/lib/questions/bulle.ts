@@ -72,7 +72,7 @@ const questions: Question[] = [
       { label: 'Jour normal 8h-18h', points: 0 },
       { label: 'Décalés tôt/tard', points: 30 },
       { label: 'Nuit > 3h entre 21h-6h', points: 55 },
-      { label: '3x8 ou tournants', points: 100 },
+      { label: 'Équipes en 3×8 ou horaires tournants', points: 100 },
     ],
   },
   {
@@ -131,13 +131,13 @@ const questions: Question[] = [
     id: 'bulle_epi',
     element: 'bulle',
     type: 'single',
-    question: "Port d'EPI contraignants (combinaison, masque, gants épais…) ?",
+    question: "Port d'équipements de protection individuelle (EPI) contraignants (combinaison, masque, gants épais…) ?",
     weight: 1,
     options: [
       { label: 'Aucun EPI ou EPI légers', points: 0 },
-      { label: 'EPI modérés (casque + chaussures + gants moyens)', points: 20 },
-      { label: 'EPI lourds (combinaison + masque + gants épais)', points: 50 },
-      { label: 'EPI complets isolants / NRBC / ventilation forcée', points: 100 },
+      { label: 'EPI modérés (casque, chaussures, gants moyens)', points: 20 },
+      { label: 'EPI lourds (combinaison, masque, gants épais)', points: 50 },
+      { label: 'EPI complets isolants ou ventilation forcée (risques chimiques ou biologiques)', points: 100 },
     ],
   },
 ]
