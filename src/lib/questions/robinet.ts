@@ -32,13 +32,14 @@ export const ROBINET_WEIGHT_KEYS = ROBINET_ASPECTS.map((a) => a.weightKey)
 
 /**
  * Poids attribués selon le rang du classement (du plus au moins important).
- * `ROBINET_RANK_WEIGHTS[0]` = poids du 1er aspect classé, etc. Seuls les
- * rapports comptent (la moyenne quadratique renormalise par la somme).
+ * `ROBINET_RANK_WEIGHTS[0]` = poids du 1er aspect classé (le plus important),
+ * etc. Seuls les rapports comptent (la moyenne quadratique renormalise par la
+ * somme des poids).
  */
-export const ROBINET_RANK_WEIGHTS = [35, 25, 20, 12, 8] as const
+export const ROBINET_RANK_WEIGHTS = [3, 2.5, 2, 1.5, 1] as const
 
 /** Poids neutre utilisé tant que le participant n'a pas classé les aspects. */
-export const DEFAULT_ASPECT_WEIGHT = 20
+export const DEFAULT_ASPECT_WEIGHT = 2
 
 /**
  * Curseurs reformulés « aperçu terrain » : le titre parle à la première
