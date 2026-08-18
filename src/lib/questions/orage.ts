@@ -65,8 +65,8 @@ function buildImprevuQuestions(index: number, keys: ImprevuKeys): Question[] {
   const section = `Imprévu ${index + 1}`
   const titreQuestion =
     index === 0
-      ? "Nommez l'imprévu qui complique le plus votre journée"
-      : 'Nommez un 2ème imprévu pénalisant'
+      ? 'Quel aléa vous vient à l’esprit dans votre journée de travail ?'
+      : 'Un autre aléa vous vient à l’esprit ?'
   const titreSubtitle =
     index === 0
       ? 'Un titre court, ex. « Panne machine », « Commande urgente »'
