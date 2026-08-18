@@ -65,12 +65,8 @@ function buildImprevuQuestions(index: number, keys: ImprevuKeys): Question[] {
   const section = `Imprévu ${index + 1}`
   const titreQuestion =
     index === 0
-      ? "Nommez l'imprévu qui complique le plus votre journée"
-      : 'Nommez un 2ème imprévu pénalisant'
-  const titreSubtitle =
-    index === 0
-      ? 'Un titre court, ex. « Panne machine », « Commande urgente »'
-      : 'Un titre court, ex. « Absence collègue », « Matériel manquant »'
+      ? 'Dans la tâche que vous avez choisie, quel imprévu vous semble le plus significatif ?'
+      : 'Identifiez un second imprévu significatif dans cette tâche'
 
   return [
     {
@@ -79,7 +75,6 @@ function buildImprevuQuestions(index: number, keys: ImprevuKeys): Question[] {
       type: 'text',
       section,
       question: titreQuestion,
-      subtitle: titreSubtitle,
     },
     {
       id: keys.frequence,
