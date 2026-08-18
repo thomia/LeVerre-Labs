@@ -65,12 +65,8 @@ function buildImprevuQuestions(index: number, keys: ImprevuKeys): Question[] {
   const section = `Imprévu ${index + 1}`
   const titreQuestion =
     index === 0
-      ? 'Quel aléa vous vient à l’esprit dans votre journée de travail ?'
-      : 'Un autre aléa vous vient à l’esprit ?'
-  const titreSubtitle =
-    index === 0
-      ? 'Un titre court, ex. « Panne machine », « Commande urgente »'
-      : 'Un titre court, ex. « Absence collègue », « Matériel manquant »'
+      ? 'En situation de travail, quel imprévu vous semble important dans la tâche que vous avez choisie ?'
+      : 'Un second imprévu vous semble-t-il important dans cette même tâche ?'
 
   return [
     {
@@ -79,7 +75,6 @@ function buildImprevuQuestions(index: number, keys: ImprevuKeys): Question[] {
       type: 'text',
       section,
       question: titreQuestion,
-      subtitle: titreSubtitle,
     },
     {
       id: keys.frequence,
