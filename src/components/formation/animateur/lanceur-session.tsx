@@ -2,10 +2,15 @@
 
 /**
  * Onglet « Sensibilisation » de l'espace formateur.
- * Lance une session de sensibilisation collective (style Kahoot) :
- * choix de la durée par élément + bouton de lancement.
+ * Lance une session de sensibilisation collective (style Kahoot) : un simple
+ * bouton de lancement.
  * Le mot de passe est déjà validé en amont (verrou de l'espace), on le
  * récupère depuis sessionStorage pour appeler l'API de création.
+ *
+ * Note : la session ne demande plus de « durée par élément » à la création —
+ * cette valeur n'avait aucun effet réel (le passage d'un élément à l'autre
+ * reste entièrement manuel, piloté par le formateur depuis la barre de
+ * contrôle une fois la session lancée).
  */
 
 import { useState } from 'react'
@@ -16,7 +21,6 @@ import { getFormateurPassword } from '@/hooks/use-formateur-control'
 
 export function LanceurSession() {
   const router = useRouter()
-  const [timerDuration, setTimerDuration] = useState(120)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -36,7 +40,7 @@ export function LanceurSession() {
       const response = await fetch('/api/formation/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password, timerDuration }),
+        body: JSON.stringify({ password }),
       })
 
       const data = await response.json()
@@ -70,24 +74,6 @@ export function LanceurSession() {
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="mb-1 block text-sm font-medium text-slate-300">
-              Durée par élément (secondes)
-            </label>
-            <input
-              type="number"
-              min={30}
-              max={600}
-              step={10}
-              value={timerDuration}
-              onChange={(e) => setTimerDuration(Number(e.target.value))}
-              className="w-full rounded-lg border border-white/10 bg-slate-950 px-3 py-2 text-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-            />
-            <p className="mt-1 text-xs text-slate-500">
-              Tu pourras aussi passer manuellement à l&apos;élément suivant.
-            </p>
-          </div>
-
           {error && (
             <div className="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-300">
               {error}
