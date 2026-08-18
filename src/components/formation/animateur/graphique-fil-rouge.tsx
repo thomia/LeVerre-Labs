@@ -32,18 +32,77 @@ interface GraphiqueFilRougeProps {
   onClose: () => void
 }
 
-// Palette cyclique pour distinguer les participants : uniquement des NUANCES
-// DE ROUGE, pour former une famille visuelle distincte des lignes verticales
-// d'éléments (qui, elles, gardent la couleur de leur élément). La sélection au
-// clic + la légende permettent d'isoler un cas précis si besoin.
+// Palette cyclique pour distinguer les participants : des teintes variées et
+// franches (plutôt qu'une seule famille de rouges, trop proches les unes des
+// autres pour être lues rapidement) qui restent dans l'univers LeVerre Labs —
+// la 1ère couleur reprend le rose-rouge de marque (cf. navbar / logo), les
+// suivantes sont choisies dans la même intensité (Tailwind 400) que les
+// couleurs des éléments (bleu, violet, ambre, vert) pour rester cohérentes
+// avec le reste de l'interface. Les lignes verticales d'éléments gardent leur
+// propre couleur (ELEMENT_THEME), la sélection au clic + la légende
+// permettent d'isoler un cas précis si besoin.
 const PALETTE = [
-  '#ff1e5a', '#dc2626', '#fb7185', '#991b1b', '#f87171',
-  '#e11d48', '#fca5a5', '#7f1d1d', '#ff8a8a', '#b91c1c',
+  '#ff1e5a', // rose-rouge (couleur de marque)
+  '#22d3ee', // cyan
+  '#facc15', // jaune
+  '#818cf8', // indigo
+  '#fb923c', // orange
+  '#34d399', // émeraude
+  '#e879f9', // fuchsia
+  '#38bdf8', // bleu ciel
+  '#a3e635', // vert lime
+  '#f472b6', // rose clair
 ]
 
 // Étapes de l'axe X : chaque colonne correspond à un élément du modèle
 // (dans l'ordre où ils s'empilent sur l'indicateur).
 const STAGES: ElementId[] = ['robinet', 'bulle', 'orage', 'paille']
+
+interface ScoreTooltipEntry {
+  dataKey?: string | number
+  value?: number | string | null
+  name?: string
+  color?: string
+}
+
+// Tooltip custom : quand un participant est sélectionné, on n'affiche QUE sa
+// valeur (au lieu de celles de tous les participants, qui restent visibles
+// par défaut avec le Tooltip natif de recharts même quand les autres courbes
+// sont estompées).
+function ScoreTooltip({
+  active,
+  payload,
+  label,
+  selectedId,
+}: {
+  active?: boolean
+  payload?: ScoreTooltipEntry[]
+  label?: string
+  selectedId: string | null
+}) {
+  if (!active || !payload || payload.length === 0) return null
+
+  const entries = selectedId
+    ? payload.filter((entry) => entry.dataKey === selectedId)
+    : payload
+
+  if (entries.length === 0) return null
+
+  return (
+    <div
+      className="rounded-xl border border-white/10 px-3 py-2 text-xs shadow-lg"
+      style={{ backgroundColor: '#0f172a' }}
+    >
+      <p className="mb-1 font-semibold text-slate-300">{label}</p>
+      {entries.map((entry) => (
+        <p key={String(entry.dataKey)} style={{ color: entry.color }}>
+          {entry.name} :{' '}
+          {entry.value === null || entry.value === undefined ? '—' : `${entry.value} s`}
+        </p>
+      ))}
+    </div>
+  )
+}
 
 // Tick de l'axe X coloré au code couleur de l'élément.
 function ColoredAxisTick({
@@ -224,15 +283,7 @@ export function GraphiqueFilRouge({ participants, isOpen, onClose }: GraphiqueFi
                           fontSize: 12,
                         }}
                       />
-                      <Tooltip
-                        contentStyle={{
-                          backgroundColor: '#0f172a',
-                          border: '1px solid rgba(255,255,255,0.1)',
-                          borderRadius: 12,
-                          fontSize: 12,
-                        }}
-                        formatter={(value: unknown) => [`${value} s`, ''] as [string, string]}
-                      />
+                      <Tooltip content={<ScoreTooltip selectedId={selectedId} />} />
                       {orderedActive.map((p) => {
                         const isSelected = selectedId === p.id
                         const isDimmed = selectedId !== null && !isSelected
