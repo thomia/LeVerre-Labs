@@ -384,9 +384,13 @@ export default function DashboardSimplified({
                 {/* Bulle environnementale */}
                 {showBubble && (
                   <div className="bubble-container absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full overflow-hidden border-2 border-purple-400/40 bg-transparent shadow-[0_0_20px_rgba(168,85,247,0.15)] z-0" style={{ top: '70%' }}>
+                    {/* L'agitation des billes reflète le score Bulle en continu :
+                        contrairement au remplissage du verre, elle ne doit PAS
+                        se figer quand la simulation n'a pas encore démarré
+                        (ex. session Sensibilisation en construction). */}
                     <EnvironmentParticles 
                       score={scoreB} 
-                      isPaused={isPaused}
+                      isPaused={false}
                     />
                   </div>
                 )}
