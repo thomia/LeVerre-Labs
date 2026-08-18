@@ -66,7 +66,7 @@ function buildImprevuQuestions(index: number, keys: ImprevuKeys): Question[] {
   const titreQuestion =
     index === 0
       ? 'Dans la tâche que vous avez choisie, quel imprévu vous semble le plus significatif ?'
-      : 'Identifiez-vous un second imprévu significatif dans cette tâche ?'
+      : 'Identifiez un second imprévu significatif dans cette tâche'
 
   return [
     {
