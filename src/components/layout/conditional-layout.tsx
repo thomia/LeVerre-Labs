@@ -7,14 +7,16 @@ import Footer from './footer'
 export function ConditionalLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const isSandbox = pathname?.startsWith('/sandbox')
+  const isEssaiVideo = pathname?.startsWith('/essai-60s')
+  const sansChrome = isSandbox || isEssaiVideo
 
   return (
     <>
-      {!isSandbox && <Navbar />}
+      {!sansChrome && <Navbar />}
       <main className="min-h-screen">
         {children}
       </main>
-      {!isSandbox && <Footer />}
+      {!sansChrome && <Footer />}
     </>
   )
 }

@@ -12,7 +12,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/formation', '/session', '/espace-formateur', '/sandbox', '/dev', '/api'],
+      disallow: ['/formation', '/session', '/espace-formateur', '/sandbox', '/dev', '/api', '/essai-60s'],
     },
     sitemap: `${SITE_URL}/sitemap.xml`,
   }
