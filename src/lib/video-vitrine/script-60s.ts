@@ -195,3 +195,10 @@ export function visuelA(ms: number): 'accroche' | 'modele' | 'salle' | 'offre' {
   if (ms < 49_500) return 'salle'
   return 'offre'
 }
+
+export function formaterTimecode(ms: number): string {
+  const totalSec = Math.min(60, Math.max(0, Math.floor(ms / 1000)))
+  const minutes = Math.floor(totalSec / 60)
+  const secondes = totalSec % 60
+  return `${minutes}:${secondes.toString().padStart(2, '0')}`
+}

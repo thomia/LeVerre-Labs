@@ -10,6 +10,7 @@ import { Play } from 'lucide-react'
 import {
   DUREE_VIDEO_MS,
   etatModeleA,
+  formaterTimecode,
   legendeA,
   VERRES_SALLE,
   visuelA,
@@ -26,14 +27,15 @@ export function LecteurEssai60s() {
   const frameRef = useRef(0)
   const startedAtRef = useRef(0)
 
-  elapsedRef.current = elapsedMs
   playingRef.current = isPlaying
 
   const isTermine = elapsedMs >= DUREE_VIDEO_MS
   const visuel = visuelA(Math.min(elapsedMs, DUREE_VIDEO_MS - 1))
   const etat = etatModeleA(elapsedMs)
   const legende =
-    hasStarted && !isTermine && visuel !== 'accroche' ? legendeA(elapsedMs) : ''
+    hasStarted && !isTermine && visuel !== 'accroche' && visuel !== 'offre'
+      ? legendeA(elapsedMs)
+      : ''
 
   const arreterFrame = useCallback(() => {
     if (frameRef.current) cancelAnimationFrame(frameRef.current)
@@ -45,6 +47,13 @@ export function LecteurEssai60s() {
     startedAtRef.current = performance.now() - elapsedRef.current
 
     function tick(now: number) {
+      if (!playingRef.current) return
+
+      const brut = now - startedAtRef.current
+      if (brut < elapsedRef.current || brut > elapsedRef.current + 250) {
+        startedAtRef.current = now - elapsedRef.current
+      }
+
       const suivant = Math.min(DUREE_VIDEO_MS, now - startedAtRef.current)
       elapsedRef.current = suivant
       setElapsedMs(suivant)
@@ -125,6 +134,12 @@ export function LecteurEssai60s() {
             {legende}
           </p>
         ) : null}
+
+        {hasStarted && (
+          <span className="absolute right-4 top-3 text-[11px] font-light tabular-nums text-white/30">
+            {formaterTimecode(elapsedMs)}
+          </span>
+        )}
 
         <div className="absolute bottom-0 left-0 right-0 h-px bg-white/10">
           <div
