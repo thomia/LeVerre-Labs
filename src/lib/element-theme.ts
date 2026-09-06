@@ -11,6 +11,11 @@ import type { ElementId } from './supabase/types'
 export interface ElementTheme {
   /** Nom affiché (ex. "Verre") */
   name: string
+  /**
+   * Intitulé scientifique / physiologique (poster ModACT), affiché sur la
+   * face cachée avant que le formateur ne lance l'élément.
+   */
+  officialName: string
   /** Description courte (sous-titre) */
   description: string
   /** Couleur d'accent en hexadécimal (pour les graphiques / SVG, hors classes Tailwind) */
@@ -28,6 +33,7 @@ export interface ElementTheme {
 export const ELEMENT_THEME: Record<ElementId, ElementTheme> = {
   verre: {
     name: 'Verre',
+    officialName: 'Facteurs individuels',
     description: "Capacité d'absorption (profil personnel)",
     color: '#9ca3af',
     chipClass: 'bg-gray-500/15 text-gray-200 border-gray-400/30',
@@ -37,6 +43,7 @@ export const ELEMENT_THEME: Record<ElementId, ElementTheme> = {
   },
   robinet: {
     name: 'Robinet',
+    officialName: 'Contraintes du travail',
     description: 'Charge de travail',
     color: '#60a5fa',
     chipClass: 'bg-blue-500/15 text-blue-200 border-blue-400/30',
@@ -46,6 +53,7 @@ export const ELEMENT_THEME: Record<ElementId, ElementTheme> = {
   },
   bulle: {
     name: 'Bulle',
+    officialName: 'Environnement de travail',
     description: 'Environnement',
     color: '#c084fc',
     chipClass: 'bg-purple-500/15 text-purple-200 border-purple-400/30',
@@ -55,6 +63,7 @@ export const ELEMENT_THEME: Record<ElementId, ElementTheme> = {
   },
   orage: {
     name: 'Orage',
+    officialName: 'Imprévus',
     description: 'Aléas',
     color: '#fbbf24',
     chipClass: 'bg-amber-500/15 text-amber-200 border-amber-400/30',
@@ -64,6 +73,7 @@ export const ELEMENT_THEME: Record<ElementId, ElementTheme> = {
   },
   paille: {
     name: 'Paille',
+    officialName: 'Stratégies de récupération',
     description: 'Récupération',
     color: '#4ade80',
     chipClass: 'bg-green-500/15 text-green-200 border-green-400/30',
