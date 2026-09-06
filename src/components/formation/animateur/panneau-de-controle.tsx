@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Square, Flag, RotateCcw, Play } from 'lucide-react'
 import { useFormateurControl } from '@/hooks/use-formateur-control'
+import { CarteElementLancement } from './carte-element-lancement'
 import type { LiveSession } from '@/hooks/use-session'
 import type { SimulationState } from '@/hooks/use-simulation-clock'
 import type { ElementId } from '@/lib/supabase/types'
@@ -25,13 +26,30 @@ interface FormateurControlsProps {
   simulationElapsedMs: number | null
 }
 
-// Classes spécifiques à la barre de contrôle formateur (état "en cours")
-const ACTIVE_BTN_CLASS: Record<ElementId, string> = {
-  verre: 'bg-gray-600/60 text-white ring-2 ring-gray-300',
-  robinet: 'bg-blue-600/60 text-white ring-2 ring-blue-300',
-  bulle: 'bg-purple-600/60 text-white ring-2 ring-purple-300',
-  orage: 'bg-amber-600/60 text-white ring-2 ring-amber-300',
-  paille: 'bg-green-600/60 text-white ring-2 ring-green-300',
+function storageKey(code: string) {
+  return `formateur_elements_revealed_${code}`
+}
+
+function loadRevealed(code: string): ElementId[] {
+  try {
+    const raw = sessionStorage.getItem(storageKey(code))
+    if (!raw) return []
+    const parsed = JSON.parse(raw) as unknown
+    if (!Array.isArray(parsed)) return []
+    return parsed.filter((id): id is ElementId =>
+      ELEMENTS_ORDER.includes(id as ElementId)
+    )
+  } catch {
+    return []
+  }
+}
+
+function persistRevealed(code: string, ids: ElementId[]) {
+  try {
+    sessionStorage.setItem(storageKey(code), JSON.stringify(ids))
+  } catch {
+    /* ignore (mode privé, etc.) */
+  }
 }
 
 function useCountdown(timerEndAt: string | null) {
@@ -78,6 +96,35 @@ export function FormateurControls({
   const countdown = useCountdown(session?.timer_end_at ?? null)
   const currentElement = session?.current_element ?? null
   const isEnded = session?.status === 'ended'
+  const [revealedIds, setRevealedIds] = useState<ElementId[]>(() =>
+    loadRevealed(code)
+  )
+
+  // Si un élément est déjà en cours (refresh en plein questionnaire),
+  // sa carte doit être révélée.
+  useEffect(() => {
+    if (!currentElement || revealedIds.includes(currentElement)) return
+    const next = [...revealedIds, currentElement]
+    setRevealedIds(next)
+    persistRevealed(code, next)
+  }, [code, currentElement, revealedIds])
+
+  function revealAndStart(id: ElementId) {
+    if (!revealedIds.includes(id)) {
+      const next = [...revealedIds, id]
+      setRevealedIds(next)
+      persistRevealed(code, next)
+    }
+    void startElement(id, timerDurationSeconds)
+  }
+
+  async function handleReset() {
+    const result = await resetSession()
+    if (result.ok) {
+      setRevealedIds([])
+      persistRevealed(code, [])
+    }
+  }
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-white/10 bg-slate-950/95 px-6 py-4 backdrop-blur">
@@ -116,26 +163,18 @@ export function FormateurControls({
           {error && <span className="text-sm text-red-300">{error}</span>}
         </div>
 
-        {/* Boutons d'éléments : titre uppercase coloré, badge allumé si en cours */}
+        {/* Cartes d'éléments : face officielle puis nom du modèle une fois lancé */}
         <div className="flex flex-wrap items-center gap-3">
-          {ELEMENTS_ORDER.map((id) => {
-            const theme = ELEMENT_THEME[id]
-            const isCurrent = currentElement === id
-            return (
-              <button
-                key={id}
-                onClick={() => startElement(id, timerDurationSeconds)}
-                disabled={isSending || isEnded}
-                className={`flex items-center gap-2 rounded-lg px-5 py-3 text-base font-bold uppercase tracking-wide transition disabled:cursor-not-allowed disabled:opacity-40 ${
-                  isCurrent
-                    ? ACTIVE_BTN_CLASS[id]
-                    : `bg-slate-800 ${theme.titleClass} hover:bg-slate-700`
-                }`}
-              >
-                {theme.name}
-              </button>
-            )
-          })}
+          {ELEMENTS_ORDER.map((id) => (
+            <CarteElementLancement
+              key={id}
+              elementId={id}
+              isRevealed={revealedIds.includes(id) || currentElement === id}
+              isCurrent={currentElement === id}
+              disabled={isSending || isEnded}
+              onLaunch={() => revealAndStart(id)}
+            />
+          ))}
 
           <div className="mx-2 h-8 w-px bg-white/10" />
 
@@ -210,7 +249,7 @@ export function FormateurControls({
 
           {isEnded && (
             <button
-              onClick={resetSession}
+              onClick={handleReset}
               disabled={isSending}
               title="Réinitialiser la session"
               className="flex items-center gap-2 rounded-lg bg-slate-800 px-5 py-3 text-base text-slate-200 transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
