@@ -27,13 +27,13 @@ const questions: Question[] = [
     id: 'bulle_eclairage',
     element: 'bulle',
     type: 'single',
-    question: "L'éclairage est-il suffisant ?",
+    question: "Comment est la qualité de l'éclairage ?",
     weight: 1,
     options: [
-      { label: 'Très bon > 500 lux', points: 0 },
-      { label: 'Correct 300-500 lux', points: 15 },
-      { label: 'Faible 100-300 lux', points: 45 },
-      { label: 'Insuffisant < 100 lux', points: 100 },
+      { label: 'Correct et ajustable selon les besoins', points: 0 },
+      { label: 'Correct mais fixe (non ajustable)', points: 25 },
+      { label: 'Trop faible', points: 55 },
+      { label: 'Éblouissant (reflets, contre-jour)', points: 100 },
     ],
   },
   {
