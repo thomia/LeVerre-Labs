@@ -131,7 +131,6 @@ export function ParticipantView({
 
   const isEnded = session?.status === 'ended'
   const currentElement = session?.current_element ?? null
-  const hasAnyScore = Object.keys(scores).length > 0
   const allElementsDone = Object.keys(scores).length === 5
 
   return (
