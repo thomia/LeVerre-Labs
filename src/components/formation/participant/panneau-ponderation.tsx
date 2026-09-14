@@ -12,7 +12,7 @@
 
 import { useState } from 'react'
 import { Reorder } from 'framer-motion'
-import { CheckCircle2, Loader2, GripVertical, ArrowUp, ArrowDown } from 'lucide-react'
+import { CheckCircle2, Loader2, GripVertical } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { ROBINET_ASPECTS, ROBINET_RANK_WEIGHTS } from '@/lib/questions/robinet'
 import type { AnswersMap } from '@/lib/questions'
@@ -94,18 +94,17 @@ export function PonderationPanel({
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex items-center gap-3 rounded-xl border border-blue-400/30 bg-blue-500/10 p-3">
-        <ArrowUp className="h-5 w-5 shrink-0 text-blue-300" />
-        <div>
-          <p className="text-base font-bold uppercase tracking-wide text-blue-300">
-            Classe les aspects du Robinet
-          </p>
-          <p className="text-xs text-slate-400">
-            Glisse-dépose du plus important (en haut) au moins important (en
-            bas) pour ta tâche. On s&apos;occupe du calcul.
-          </p>
-        </div>
+    // Compact volontairement : sur un écran de téléphone, les 5 lignes à
+    // classer et le bouton de validation doivent tenir sans défilement.
+    <div className="flex flex-col gap-2.5">
+      <div className="rounded-xl border border-blue-400/30 bg-blue-500/10 px-3 py-2">
+        <p className="text-sm font-bold uppercase tracking-wide text-blue-300">
+          Classe les aspects du Robinet
+        </p>
+        <p className="text-[11px] leading-snug text-slate-400">
+          Glisse-dépose : n° 1 = le plus important pour ta tâche, n° 5 = le
+          moins. On s&apos;occupe du calcul.
+        </p>
       </div>
 
       {error && (
@@ -114,20 +113,11 @@ export function PonderationPanel({
         </div>
       )}
 
-      <div className="flex items-center justify-between px-1 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
-        <span className="flex items-center gap-1 text-blue-300">
-          <ArrowUp className="h-3 w-3" /> Le plus important
-        </span>
-        <span className="flex items-center gap-1">
-          Le moins <ArrowDown className="h-3 w-3" />
-        </span>
-      </div>
-
       <Reorder.Group
         axis="y"
         values={order}
         onReorder={setOrder}
-        className="flex flex-col gap-2"
+        className="flex flex-col gap-1.5"
       >
         {order.map((key, index) => (
           <RankItem key={key} weightKey={key} rank={index} />
@@ -137,7 +127,7 @@ export function PonderationPanel({
       <button
         onClick={handleValidate}
         disabled={isSaving}
-        className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-blue-500 px-4 py-3 text-sm font-semibold uppercase tracking-wide text-white shadow-lg shadow-blue-500/30 transition hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-50"
+        className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-blue-500 px-4 py-2.5 text-sm font-semibold uppercase tracking-wide text-white shadow-lg shadow-blue-500/30 transition hover:bg-blue-400 disabled:cursor-not-allowed disabled:opacity-50"
       >
         {isSaving ? (
           <Loader2 className="h-4 w-4 animate-spin" />
@@ -167,10 +157,10 @@ function RankItem({ weightKey, rank }: RankItemProps) {
   return (
     <Reorder.Item
       value={weightKey}
-      className="flex cursor-grab touch-none select-none items-center gap-3 rounded-xl border border-white/10 bg-slate-900/60 p-3 shadow-sm active:cursor-grabbing"
+      className="flex cursor-grab touch-none select-none items-center gap-2.5 rounded-xl border border-white/10 bg-slate-900/60 px-3 py-2.5 shadow-sm active:cursor-grabbing"
       whileDrag={{ scale: 1.03, boxShadow: '0 8px 24px rgba(0,0,0,0.4)' }}
     >
-      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-500/20 text-sm font-bold tabular-nums text-blue-300">
+      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-500/20 text-xs font-bold tabular-nums text-blue-300">
         {rank + 1}
       </span>
       <p className="min-w-0 flex-1 truncate text-sm font-semibold text-white">

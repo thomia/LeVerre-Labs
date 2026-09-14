@@ -61,13 +61,14 @@ export default function SessionPage({ params }: PageProps) {
     setParticipant(entry)
   }
 
-  // Layout adaptatif :
+  // Layout adaptatif (`100dvh` : on suit la zone visible du navigateur mobile,
+  // barres d'URL et d'onglets déduites, contrairement à `100vh`) :
   //   - Avant de rejoindre (ParticipantJoin) : centré verticalement
   //   - Après avoir rejoint (ParticipantView split-screen) : aligné en haut
   //     pour laisser la place au split modèle + questionnaire sur mobile
   const wrapperClass = participant
-    ? 'flex min-h-screen justify-center bg-gradient-to-br from-black via-slate-950 to-slate-900 px-3 py-4 sm:p-6'
-    : 'flex min-h-screen items-center justify-center bg-gradient-to-br from-black via-slate-950 to-slate-900 p-4'
+    ? 'flex min-h-[100dvh] justify-center bg-gradient-to-br from-black via-slate-950 to-slate-900 px-3 py-3 sm:p-6'
+    : 'flex min-h-[100dvh] items-center justify-center bg-gradient-to-br from-black via-slate-950 to-slate-900 p-4'
 
   return (
     <div className={wrapperClass}>
