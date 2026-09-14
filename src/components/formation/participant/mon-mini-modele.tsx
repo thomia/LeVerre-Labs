@@ -23,7 +23,11 @@ import type { ElementId, ParticipantScores } from '@/lib/supabase/types'
 
 interface ParticipantMiniModelProps {
   scores: Partial<Record<ElementId, number>>
-  /** Hauteur finale affichée en pixels (défaut 150px) */
+  /**
+   * Hauteur MAXIMALE en pixels (défaut 150px). La hauteur réellement occupée
+   * peut être plus faible : le modèle est recadré sur les éléments affichés et
+   * son échelle est aussi limitée par la largeur disponible.
+   */
   height?: number
   /**
    * Vitesse de simulation en mode animation. Quand non-null, le verre se
@@ -52,6 +56,52 @@ interface ParticipantMiniModelProps {
 // pour voir le fond du verre entier.
 const NATIVE_WIDTH = 800
 const NATIVE_HEIGHT = 820
+
+/**
+ * Zone réellement occupée par chaque élément dans le repère natif (800×820),
+ * relevée sur le DashboardSimplified rendu (positions `top-[87%]`, `top-[35%]`,
+ * `top-[53%]`, `top-[-230px]`, bulle de 700px…).
+ *
+ * `demiLargeur` = écart maximal au centre horizontal (400) : on garde un cadre
+ * symétrique pour que le modèle reste centré.
+ *
+ * Sans ce recadrage, on réservait toujours 820px de haut alors que le verre
+ * seul n'en occupe que 375 — plus de la moitié de la place était du vide, ce
+ * qui écrasait le questionnaire sur mobile.
+ */
+const ZONE_ELEMENT: Record<ElementId, { haut: number; bas: number; demiLargeur: number }> = {
+  verre: { haut: 415, bas: 800, demiLargeur: 130 },
+  robinet: { haut: 238, bas: 800, demiLargeur: 110 },
+  orage: { haut: 358, bas: 800, demiLargeur: 80 },
+  paille: { haut: 126, bas: 800, demiLargeur: 135 },
+  bulle: { haut: 133, bas: 845, demiLargeur: 355 },
+}
+
+interface CadreModele {
+  haut: number
+  gauche: number
+  largeur: number
+  hauteur: number
+}
+
+/**
+ * Cadre englobant les éléments visibles. Le verre est toujours affiché, il sert
+ * de socle au cadre.
+ */
+function calculeCadre(elementsVisibles: ElementId[]): CadreModele {
+  const zones = [ZONE_ELEMENT.verre, ...elementsVisibles.map((el) => ZONE_ELEMENT[el])]
+
+  const haut = Math.min(...zones.map((z) => z.haut))
+  const bas = Math.max(...zones.map((z) => z.bas))
+  const demiLargeur = Math.max(...zones.map((z) => z.demiLargeur))
+
+  return {
+    haut,
+    gauche: NATIVE_WIDTH / 2 - demiLargeur,
+    largeur: demiLargeur * 2,
+    hauteur: bas - haut,
+  }
+}
 
 export function ParticipantMiniModel({
   scores,
@@ -112,42 +162,71 @@ export function ParticipantMiniModel({
   const showStorm = scores.orage !== undefined
   const showBubble = scores.bulle !== undefined
 
-  // Calcule le facteur de scale pour atteindre la hauteur cible
-  const scale = height / NATIVE_HEIGHT
-  const scaledWidth = NATIVE_WIDTH * scale
+  // Recadrage sur les seuls éléments affichés : le verre seul tient dans 375px
+  // de haut, pas 820. À hauteur égale, le modèle apparaît donc bien plus grand.
+  const cadre = useMemo(() => {
+    const visibles: ElementId[] = []
+    if (showTap) visibles.push('robinet')
+    if (showStorm) visibles.push('orage')
+    if (showStraw) visibles.push('paille')
+    if (showBubble) visibles.push('bulle')
+    return calculeCadre(visibles)
+  }, [showTap, showStorm, showStraw, showBubble])
+
+  // Largeur réellement disponible : sans elle, un modèle recadré déborderait
+  // latéralement de l'écran sur mobile.
+  const conteneurRef = useRef<HTMLDivElement>(null)
+  const [largeurDisponible, setLargeurDisponible] = useState<number | null>(null)
+
+  useEffect(() => {
+    const noeud = conteneurRef.current
+    if (!noeud) return
+    const observateur = new ResizeObserver(([entree]) => {
+      setLargeurDisponible(entree.contentRect.width)
+    })
+    observateur.observe(noeud)
+    return () => observateur.disconnect()
+  }, [])
+
+  const scale = Math.min(
+    height / cadre.hauteur,
+    largeurDisponible ? largeurDisponible / cadre.largeur : Infinity
+  )
 
   return (
-    <div
-      className="relative mx-auto overflow-hidden"
-      style={{
-        width: `${scaledWidth}px`,
-        height: `${height}px`,
-      }}
-    >
+    <div ref={conteneurRef} className="w-full">
       <div
+        className="relative mx-auto overflow-hidden"
         style={{
-          width: `${NATIVE_WIDTH}px`,
-          height: `${NATIVE_HEIGHT}px`,
-          transform: `scale(${scale})`,
-          transformOrigin: 'top left',
-          // Désactiver toute interaction — c'est un preview, pas un dashboard
-          // interactif pour le formateur
-          pointerEvents: 'none',
+          width: `${cadre.largeur * scale}px`,
+          height: `${cadre.hauteur * scale}px`,
         }}
       >
-        <DashboardSimplified
-          hideControlPanel
-          hideIcons
-          externalIsPaused={isDeterministic ? true : !isAnimating}
-          externalSimulationSpeed={isAnimating ? simulationSpeed ?? undefined : undefined}
-          externalFillLevel={deterministicFill}
-          resetTrigger={resetTrigger}
-          savedScores={savedScores}
-          showTap={showTap}
-          showStraw={showStraw}
-          showStorm={showStorm}
-          showBubble={showBubble}
-        />
+        <div
+          style={{
+            width: `${NATIVE_WIDTH}px`,
+            height: `${NATIVE_HEIGHT}px`,
+            transform: `translate(${-cadre.gauche * scale}px, ${-cadre.haut * scale}px) scale(${scale})`,
+            transformOrigin: 'top left',
+            // Désactiver toute interaction — c'est un preview, pas un dashboard
+            // interactif pour le formateur
+            pointerEvents: 'none',
+          }}
+        >
+          <DashboardSimplified
+            hideControlPanel
+            hideIcons
+            externalIsPaused={isDeterministic ? true : !isAnimating}
+            externalSimulationSpeed={isAnimating ? simulationSpeed ?? undefined : undefined}
+            externalFillLevel={deterministicFill}
+            resetTrigger={resetTrigger}
+            savedScores={savedScores}
+            showTap={showTap}
+            showStraw={showStraw}
+            showStorm={showStorm}
+            showBubble={showBubble}
+          />
+        </div>
       </div>
     </div>
   )
