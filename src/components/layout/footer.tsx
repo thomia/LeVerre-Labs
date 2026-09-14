@@ -50,6 +50,11 @@ export default function Footer() {
                   Collaborer
                 </Link>
               </li>
+              <li>
+                <Link href="/session" className="text-gray-400 hover:text-white transition-colors text-sm">
+                  Rejoindre une session
+                </Link>
+              </li>
             </ul>
           </div>
 

@@ -259,4 +259,7 @@ const NAV_ITEMS: (LienSimple | MenuDeroulant)[] = [
     ],
   },
   { name: 'Collaborer', href: '/collaborer' },
+  // Porte d'entrée des participants qui tapent juste le domaine au lieu de
+  // scanner le QR code : ils trouvent la saisie de code sans connaître l'URL.
+  { name: 'Rejoindre une session', href: '/session' },
 ]
