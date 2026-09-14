@@ -22,8 +22,24 @@ export function isValidSessionCode(code: string): boolean {
 }
 
 /**
- * Normalise un code saisi par l'utilisateur (majuscules + trim)
+ * Normalise un code saisi ou tapé dans la barre d'adresse.
+ *
+ * Tolérant, car un participant recopie le code depuis un écran projeté : on
+ * accepte les minuscules, les espaces, les séparateurs fantaisistes
+ * (`LV_ABCD`, `LV.ABCD`), l'oubli du tiret (`LVABCD`) ou du préfixe (`ABCD`),
+ * et même une URL complète collée (`leverre-labs.com/session/LV-ABCD`).
+ *
+ * Renvoie toujours la forme canonique `LV-XXXX` quand c'est possible, sinon
+ * l'entrée nettoyée (à charge de `isValidSessionCode` de la rejeter).
  */
 export function normalizeSessionCode(input: string): string {
-  return input.trim().toUpperCase()
+  // Une URL collée : on ne garde que ce qui suit le dernier "/".
+  const dernierSegment = input.trim().split(/[/?#]/).filter(Boolean).pop() ?? ''
+
+  const caracteres = dernierSegment.toUpperCase().replace(/[^A-Z0-9]/g, '')
+  const sansPrefixe = caracteres.startsWith('LV')
+    ? caracteres.slice(2)
+    : caracteres
+
+  return sansPrefixe ? `LV-${sansPrefixe}` : caracteres
 }
