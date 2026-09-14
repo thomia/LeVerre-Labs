@@ -17,6 +17,7 @@
  */
 
 import { useState } from 'react'
+import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Maximize2, Play, RotateCcw, Timer, X } from 'lucide-react'
 import { useIsDesktop } from '@/hooks/use-is-desktop'
@@ -53,7 +54,9 @@ interface PanneauMonModeleProps {
 // avec des bornes pour rester lisible sur petit écran comme sur tablette.
 const HAUTEUR_COMPACTE = { fraction: 0.22, min: 100, max: 180 }
 const HAUTEUR_ETENDUE = { fraction: 0.4, min: 180, max: 360 }
-const HAUTEUR_PLEIN_ECRAN = { fraction: 0.56, min: 220, max: 520 }
+// En plein écran, l'indicateur et les badges s'affichent sous le modèle : on
+// leur réserve de la place pour que l'ensemble tienne sans défilement.
+const HAUTEUR_PLEIN_ECRAN = { fraction: 0.42, min: 180, max: 420 }
 const HAUTEUR_DESKTOP = 420
 
 function hauteurModele(
@@ -393,43 +396,51 @@ function ModelePleinEcran({
 }: ModelePleinEcranProps) {
   const hasRobinet = scores.robinet !== undefined
 
-  return (
+  // Portal obligatoire : le panneau parent utilise `backdrop-blur`, qui crée un
+  // bloc conteneur pour les éléments `fixed`. Sans portal, l'overlay resterait
+  // enfermé dans la carte du modèle au lieu de couvrir l'écran.
+  return createPortal(
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       onClick={onClose}
-      className="fixed inset-0 z-50 flex flex-col overflow-y-auto bg-black/90 p-4 backdrop-blur"
+      className="fixed inset-0 z-50 overflow-y-auto bg-black/90 p-4 backdrop-blur"
     >
-      <div
-        onClick={(event) => event.stopPropagation()}
-        className="m-auto flex w-full max-w-md flex-col"
-      >
-        <div className="mb-2 flex items-center justify-between">
-          <p className="text-sm font-semibold text-white">Mon modèle</p>
-          <button
-            onClick={onClose}
-            aria-label="Fermer"
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-slate-300 transition hover:bg-slate-700 hover:text-white"
-          >
-            <X className="h-5 w-5" />
-          </button>
+      {/* `min-h-full` + centrage : le contenu reste centré quand il tient, et
+          défile normalement (sans être rogné) quand l'écran est très court. */}
+      <div className="flex min-h-full items-center justify-center">
+        <div
+          onClick={(event) => event.stopPropagation()}
+          className="flex w-full max-w-md flex-col"
+        >
+          <div className="mb-2 flex items-center justify-between">
+            <p className="text-sm font-semibold text-white">Mon modèle</p>
+            <button
+              onClick={onClose}
+              aria-label="Fermer"
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-800 text-slate-300 transition hover:bg-slate-700 hover:text-white"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+
+          <ParticipantMiniModel
+            scores={scores}
+            height={hauteur}
+            simulationElapsedMs={indicateur.simulationElapsedMs}
+          />
+
+          {hasRobinet && <IndicateurDetaille {...indicateur} />}
+
+          <BadgesScores
+            scores={scores}
+            currentElement={currentElement}
+            currentElementFinished={currentElementFinished}
+          />
         </div>
-
-        <ParticipantMiniModel
-          scores={scores}
-          height={hauteur}
-          simulationElapsedMs={indicateur.simulationElapsedMs}
-        />
-
-        {hasRobinet && <IndicateurDetaille {...indicateur} />}
-
-        <BadgesScores
-          scores={scores}
-          currentElement={currentElement}
-          currentElementFinished={currentElementFinished}
-        />
       </div>
-    </motion.div>
+    </motion.div>,
+    document.body
   )
 }
