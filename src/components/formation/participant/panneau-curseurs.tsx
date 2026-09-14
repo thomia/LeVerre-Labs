@@ -163,16 +163,18 @@ export function ParticipantSlidersPanel({
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-3">
       {/* En-tête : titre coloré + description + statut de sauvegarde */}
-      <div className={`flex items-center gap-3 rounded-xl border p-3 ${theme.sectionClass}`}>
-        <div className="flex-1">
-          <p className={`text-base font-bold uppercase tracking-wide ${theme.titleClass}`}>
+      <div className={`flex items-center gap-3 rounded-xl border px-3 py-2 ${theme.sectionClass}`}>
+        <div className="min-w-0 flex-1">
+          <p className={`text-sm font-bold uppercase tracking-wide ${theme.titleClass}`}>
             {theme.name}
           </p>
-          <p className="text-xs text-slate-400">{definition.description}</p>
+          <p className="text-[11px] leading-snug text-slate-400">
+            {definition.description}
+          </p>
         </div>
-        <div className="flex items-center gap-1 text-xs text-slate-500">
+        <div className="flex shrink-0 items-center gap-1 text-[11px] text-slate-500">
           {isSaving ? (
             <>
               <Loader2 className="h-3 w-3 animate-spin" />
@@ -194,7 +196,7 @@ export function ParticipantSlidersPanel({
       )}
 
       {/* Liste des sliders */}
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-3">
         {definition.questions.map((q) => {
           const min = q.minValue ?? 0
           const max = q.maxValue ?? 100
@@ -202,10 +204,10 @@ export function ParticipantSlidersPanel({
           return (
             <div
               key={q.id}
-              className="rounded-xl border border-white/10 bg-slate-900/60 p-4"
+              className="rounded-xl border border-white/10 bg-slate-900/60 p-3"
             >
-              <div className="mb-2 flex items-baseline justify-between gap-3">
-                <div>
+              <div className="mb-1 flex items-baseline justify-between gap-3">
+                <div className="min-w-0">
                   {q.section && (
                     <span className={`text-[10px] font-bold uppercase tracking-wider ${theme.accentClass}`}>
                       {q.section}
@@ -218,7 +220,7 @@ export function ParticipantSlidersPanel({
                     <p className="mt-0.5 text-[11px] leading-snug text-slate-400">{q.subtitle}</p>
                   )}
                 </div>
-                <span className={`text-2xl font-bold tabular-nums ${theme.accentClass}`}>
+                <span className={`shrink-0 text-xl font-bold tabular-nums ${theme.accentClass}`}>
                   {current}
                 </span>
               </div>
@@ -244,7 +246,7 @@ export function ParticipantSlidersPanel({
               </div>
 
               {/* Labels min/max */}
-              <div className="mt-2 flex justify-between text-[10px] uppercase tracking-wider text-slate-500">
+              <div className="mt-1 flex justify-between text-[10px] uppercase tracking-wider text-slate-500">
                 <span>{q.minLabel ?? min}</span>
                 <span>{q.maxLabel ?? max}</span>
               </div>
@@ -256,7 +258,7 @@ export function ParticipantSlidersPanel({
       <button
         onClick={handleFinish}
         disabled={isSaving}
-        className={`mt-2 flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold uppercase tracking-wide shadow-lg transition disabled:opacity-60 ${FINISH_BUTTON_CLASS[definition.id]}`}
+        className={`flex w-full items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold uppercase tracking-wide shadow-lg transition disabled:opacity-60 ${FINISH_BUTTON_CLASS[definition.id]}`}
       >
         {isSaving ? (
           <Loader2 className="h-4 w-4 animate-spin" />
