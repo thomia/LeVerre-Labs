@@ -9,7 +9,7 @@
 
 'use client'
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { ArrowRight, CheckCircle2, Loader2 } from 'lucide-react'
 import { DELAI_REPONSE, EMAIL_CONTACT } from '@/lib/contact'
 
@@ -18,6 +18,7 @@ type EtatEnvoi = 'saisie' | 'envoi' | 'envoye'
 export function FormulaireContact() {
   const [etat, setEtat] = useState<EtatEnvoi>('saisie')
   const [messageErreur, setMessageErreur] = useState<string | null>(null)
+  const confirmationRef = useRef<HTMLDivElement>(null)
 
   const isEnvoi = etat === 'envoi'
 
@@ -43,6 +44,12 @@ export function FormulaireContact() {
       }
 
       setEtat('envoye')
+      // Le bouton d'envoi est en bas du formulaire : sans ce recentrage, la
+      // confirmation s'affiche au-dessus de la zone regardée et l'utilisateur
+      // ne voit que le pied de page, sans savoir si sa demande est partie.
+      requestAnimationFrame(() => {
+        confirmationRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      })
     } catch {
       setMessageErreur(
         "Connexion impossible. Vérifiez votre réseau, ou écrivez-nous directement."
@@ -54,10 +61,13 @@ export function FormulaireContact() {
   if (etat === 'envoye') {
     return (
       <div
+        ref={confirmationRef}
         role="status"
-        className="rounded-2xl border border-[rgb(255,30,90)]/30 bg-[rgb(255,30,90)]/5 p-10 text-center"
+        className="scroll-mt-28 rounded-2xl border border-[rgb(255,30,90)]/30 bg-[rgb(255,30,90)]/5 p-10 text-center"
       >
-        <CheckCircle2 className="mx-auto h-12 w-12 text-[rgb(255,30,90)]" aria-hidden />
+        <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[rgb(255,30,90)]">
+          <CheckCircle2 className="h-9 w-9 text-white" strokeWidth={2.2} aria-hidden />
+        </span>
         <h2 className="mt-6 text-2xl font-bold text-white">Demande bien reçue</h2>
         <p className="mx-auto mt-4 max-w-md leading-relaxed text-gray-300">
           Nous revenons vers vous sous {DELAI_REPONSE}. Si votre besoin est

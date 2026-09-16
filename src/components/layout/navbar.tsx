@@ -20,11 +20,16 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  // La barre ne reste transparente qu'en haut de l'accueil, où elle se pose sur
+  // la photo du premier écran. Partout ailleurs elle est opaque : sans fond, le
+  // contenu défilant passait au travers et se mélangeait aux liens du menu.
+  const aFondOpaque = isScrolled || pathname !== '/'
+
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? 'bg-black/90 backdrop-blur-xl border-b border-white/10 shadow-lg'
+        aFondOpaque
+          ? 'bg-black/95 backdrop-blur-xl border-b border-white/10 shadow-lg'
           : 'bg-transparent'
       }`}
     >

@@ -301,23 +301,34 @@ zone géographique, avis structurés.
 Trois étapes, de la plus rentable à la plus ambitieuse. Chaque étape est utile même si les
 suivantes n'arrivent jamais.
 
-### Étape 1 — Rendre le site vendable et conforme
+### Étape 1 — Rendre le site vendable et conforme — ✅ réalisée
 
-*Aucune refonte graphique. On ajoute ce qui manque, on ne touche pas à ce qui existe.*
+*Aucune refonte graphique. On a ajouté ce qui manquait, sans toucher à l'identité visuelle.*
 
-1. **Décider du modèle économique** (formation / logiciel / conseil — voir §5). Tout découle de là.
-2. **Créer une page `/contact`** avec un vrai formulaire (nom, entreprise, effectif concerné,
-   besoin, email professionnel, téléphone) et une promesse de délai de réponse.
-3. **Basculer l'email** vers `contact@leverre-labs.com` et retirer l'adresse Gmail du site.
-4. **Créer `/mentions-legales` et `/politique-de-confidentialite`**, avec liens dans le pied de page.
-5. **Ajouter des CTA** : un bouton permanent dans la barre de navigation, un dans le premier écran,
-   un en fin de page d'accueil.
-6. **Réécrire le premier écran** pour qu'il dise en une phrase ce que vous vendez et à qui, avec
-   deux boutons (action principale + action secondaire).
-7. **Compresser la vidéo** et passer en `preload="none"`.
-8. **Réparer la navigation clavier** du hero et respecter `prefers-reduced-motion`.
-9. **Nettoyer** : supprimer « Développé avec ❤️ », protéger ou supprimer `/dev/owas`, sortir les
-   fichiers de travail de `public/`, renommer `photo video` en `medias`.
+1. ✅ **Modèle économique décidé** : organisme de formation dont l'outil interactif est la méthode
+   pédagogique différenciante. Toute la rédaction découle de ce choix.
+2. ✅ **Page `/contact`** avec formulaire (nom, organisation, email, téléphone, effectif, besoin),
+   piège à robots, enregistrement en base (`demandes_contact`, migration 005) et promesse de délai.
+3. ⏳ **Email professionnel** : l'adresse est centralisée dans `src/lib/contact.ts`. Le basculement
+   vers `contact@leverre-labs.com` demande de créer la boîte chez l'hébergeur du domaine, puis de
+   changer une seule ligne. Tant que la boîte n'existe pas, afficher l'adresse ferait perdre les
+   messages — l'adresse Gmail reste donc en place, en second recours derrière le formulaire.
+4. ✅ **`/mentions-legales` et `/politique-de-confidentialite`**, liées depuis le pied de page.
+   Trois informations d'immatriculation restent à compléter dans `src/lib/editeur.ts`.
+5. ✅ **CTA** : bouton permanent dans la barre de navigation (desktop et mobile), deux boutons dans
+   le premier écran, un bloc d'appel à l'action en fin d'accueil, un bouton dans le pied de page.
+6. ✅ **Premier écran réécrit** : titre d'offre, badge de preuve ModACT, deux boutons, trois
+   arguments. Rendu côté serveur, donc visible sans attendre le JavaScript.
+7. ✅ **Vidéo supprimée** plutôt que compressée : elle montrait une version périmée de l'outil,
+   imposait le défilement détourné et pesait 28,7 Mo. Le premier écran s'appuie désormais sur une
+   photo servie par `next/image` (28 Ko en AVIF).
+8. ✅ **Navigation clavier réparée** (le défilement détourné a disparu avec la vidéo), lien
+   d'évitement ajouté, `prefers-reduced-motion` respecté côté CSS et côté Framer Motion.
+9. ✅ **Nettoyage** : « Développé avec ❤️ » retiré, `/dev/*` renvoie 404 en production, `public/`
+   passe de 38 Mo à 0,5 Mo, `photo video` renommé `medias`, logo converti en WebP (55 Ko → 4 Ko).
+
+**Mesures après étape 1** — page d'accueil : 54 599 Ko → 80 Ko (÷ 682), 7 requêtes → 22 requêtes
+légères, défilement clavier fonctionnel, un seul `<h1>` correctement placé en tête de page.
 
 ### Étape 2 — Construire l'argumentaire commercial
 
@@ -375,35 +386,38 @@ suivantes n'arrivent jamais.
 
 **Conformité (bloquant)**
 
-- [ ] Page mentions légales publiée et liée dans le pied de page
-- [ ] Page politique de confidentialité (traitement Supabase des données de session)
-- [ ] Entité juridique et responsable de publication identifiés
-- [ ] Bandeau cookies si des outils de mesure sont ajoutés
+- [x] Page mentions légales publiée et liée dans le pied de page
+- [x] Page politique de confidentialité (traitement Supabase des données de session)
+- [ ] Entité juridique et responsable de publication identifiés — *statut, immatriculation et
+      adresse à renseigner dans `src/lib/editeur.ts`, seule action qui demande vos informations*
+- [x] Bandeau cookies si des outils de mesure sont ajoutés — *sans objet : aucun cookie, aucun
+      outil de mesure, ce qui est dit explicitement dans la politique de confidentialité*
 
 **Conversion**
 
-- [ ] Premier écran : offre + destinataire + preuve + 2 boutons
-- [ ] Page contact avec formulaire
-- [ ] Email sur le domaine, Gmail retiré
+- [x] Premier écran : offre + destinataire + preuve + 2 boutons
+- [x] Page contact avec formulaire
+- [ ] Email sur le domaine, Gmail retiré — *boîte à créer chez l'hébergeur du domaine, puis une
+      ligne à changer dans `src/lib/contact.ts`*
 - [ ] Téléphone ou créneau de rendez-vous en ligne
-- [ ] CTA permanent dans la barre de navigation
-- [ ] Au moins une page décrivant une prestation vendable
+- [x] CTA permanent dans la barre de navigation
+- [ ] Au moins une page décrivant une prestation vendable — *étape 2*
 
 **Crédibilité**
 
-- [ ] Page « À propos » avec le fondateur
-- [ ] 3 références ou témoignages
-- [ ] Preuves remontées en page d'accueil (ModACT, références bibliographiques)
-- [ ] « Développé avec ❤️ » remplacé par une information de structure
+- [ ] Page « À propos » avec le fondateur — *étape 2*
+- [ ] 3 références ou témoignages — *étape 2*
+- [x] Preuves remontées en page d'accueil (ModACT, références bibliographiques)
+- [x] « Développé avec ❤️ » remplacé par une information de structure
 
 **Technique**
 
-- [ ] Vidéo d'accueil sous 4 Mo, `preload="none"`
-- [ ] Navigation clavier fonctionnelle sur l'accueil
-- [ ] `prefers-reduced-motion` respecté
-- [ ] `<h1>` en tête du document, hiérarchie des titres corrigée
-- [ ] `/dev/owas` protégé ou supprimé
-- [ ] `public/photo video/` nettoyé et renommé
+- [x] Vidéo d'accueil sous 4 Mo — *supprimée : 28,7 Mo économisés, remplacée par une photo de 28 Ko*
+- [x] Navigation clavier fonctionnelle sur l'accueil
+- [x] `prefers-reduced-motion` respecté
+- [x] `<h1>` en tête du document, hiérarchie des titres corrigée
+- [x] `/dev/owas` protégé ou supprimé — *404 en production*
+- [x] `public/photo video/` nettoyé et renommé — *38 Mo → 0,5 Mo*
 
 ---
 
