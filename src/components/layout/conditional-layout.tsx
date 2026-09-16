@@ -25,8 +25,18 @@ export function ConditionalLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <>
+      {/* Lien d'évitement : invisible à la souris, il apparaît au premier Tab
+          et permet de sauter la navigation pour atteindre le contenu. */}
+      <a
+        href="#contenu"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-[rgb(255,30,90)] focus:px-5 focus:py-3 focus:text-sm focus:font-semibold focus:text-white"
+      >
+        Aller au contenu principal
+      </a>
       <Navbar />
-      <main className="min-h-screen">{children}</main>
+      <main id="contenu" className="min-h-screen">
+        {children}
+      </main>
       <Footer />
     </>
   )

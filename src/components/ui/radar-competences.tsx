@@ -148,7 +148,7 @@ export function RadarCompetences() {
           style={{ animation: "radar-pulse 2.5s ease-in-out infinite" }}
         />
         <img
-          src="/photo%20video/logo_noir-removebg-preview.png"
+          src="/medias/logo.png"
           alt="LeVerre Labs"
           className="relative h-14 w-14 object-contain brightness-0 invert sm:h-16 sm:w-16"
           style={{ filter: "brightness(0) invert(1) drop-shadow(0 0 10px rgba(255,30,90,0.7))" }}

@@ -503,7 +503,7 @@ export function SandboxInteractive() {
       <div className="bg-gradient-to-r from-slate-950 via-black to-slate-950 border-b border-white/10 py-1 px-3 flex-shrink-0">
         <div className="flex items-center justify-center gap-1.5">
           <img 
-            src="/photo%20video/logo_noir-removebg-preview.png" 
+            src="/medias/logo.png" 
             alt="LeVerre Labs Logo" 
             className="h-5 w-5 object-contain brightness-0 invert"
           />

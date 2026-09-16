@@ -1,7 +1,7 @@
 "use client"
 
 import Link from 'next/link'
-import { motion } from 'framer-motion'
+import { DELAI_REPONSE, EMAIL_CONTACT } from '@/lib/contact'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
@@ -17,7 +17,7 @@ export default function Footer() {
           <div className="space-y-4">
             <Link href="/" className="flex items-center gap-3 group">
               <img 
-                src="/photo%20video/logo_noir-removebg-preview.png" 
+                src="/medias/logo.png" 
                 alt="LeVerre Labs Logo" 
                 className="h-10 w-10 object-contain brightness-0 invert group-hover:scale-110 transition-transform duration-200"
               />
@@ -79,13 +79,21 @@ export default function Footer() {
           <div>
             <h4 className="text-white font-semibold mb-4">Contact</h4>
             <ul className="space-y-3">
+              <li>
+                <Link
+                  href="/contact"
+                  className="inline-flex rounded-full bg-[rgb(255,30,90)] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[rgb(255,60,120)]"
+                >
+                  Nous contacter
+                </Link>
+              </li>
               <li className="text-gray-400 text-sm">
-                <a href="mailto:leverrelabs@gmail.com" className="hover:text-white transition-colors">
-                  leverrelabs@gmail.com
+                <a href={`mailto:${EMAIL_CONTACT}`} className="hover:text-white transition-colors">
+                  {EMAIL_CONTACT}
                 </a>
               </li>
               <li className="text-gray-400 text-sm">
-                Développé avec ❤️
+                Réponse sous {DELAI_REPONSE}.
               </li>
             </ul>
           </div>
@@ -97,6 +105,24 @@ export default function Footer() {
             <p className="text-gray-500 text-sm">
               © {currentYear} LeVerre Labs. Tous droits réservés.
             </p>
+            <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+              <li>
+                <Link
+                  href="/mentions-legales"
+                  className="text-gray-500 hover:text-white transition-colors text-sm"
+                >
+                  Mentions légales
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/politique-de-confidentialite"
+                  className="text-gray-500 hover:text-white transition-colors text-sm"
+                >
+                  Politique de confidentialité
+                </Link>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
