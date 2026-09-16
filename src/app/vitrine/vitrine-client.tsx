@@ -50,7 +50,7 @@ export default function VitrineClient() {
   return (
     <div className="min-h-screen bg-black">
       {/* Problématique chiffrée */}
-      <div className="px-4 py-16">
+      <div className="px-4 pt-24 pb-8">
         <HeroSection />
       </div>
 

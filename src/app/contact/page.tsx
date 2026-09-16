@@ -29,21 +29,21 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <div className="min-h-screen bg-black px-6 pb-24 pt-32 sm:pt-40">
+    <div className="min-h-screen bg-black px-6 pb-24 pt-28 sm:pt-32">
       <div className="mx-auto max-w-5xl">
         <div className="max-w-2xl">
           <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
             Parlons de vos équipes
           </h1>
-          <p className="mt-6 text-lg leading-relaxed text-gray-300">
+          <p className="mt-5 text-lg leading-relaxed text-gray-300">
             Dites-nous qui vous êtes et ce que vous cherchez à faire bouger. Nous
             vous répondons avec une proposition concrète, pas un catalogue
             générique.
           </p>
         </div>
 
-        <div className="mt-16 grid gap-12 lg:grid-cols-[minmax(0,1fr)_280px]">
-          <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-6 sm:p-10">
+        <div className="mt-10 grid gap-12 lg:grid-cols-[minmax(0,1fr)_280px]">
+          <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-6 sm:p-8">
             <FormulaireContact />
           </div>
 

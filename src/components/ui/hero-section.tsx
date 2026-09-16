@@ -29,12 +29,15 @@ export default function HeroSection() {
         </div>
 
         {/* Title with gradient */}
+        {/* `margin` déclenche l'animation avant que l'élément n'entre à l'écran :
+            sans cela, un défilement rapide traverse une zone encore invisible
+            (opacity 0) et donne l'impression d'un trou noir dans la page. */}
         <motion.h2 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.9 }}
-          className="relative text-5xl md:text-6xl lg:text-7xl font-bold mb-16 tracking-tight"
+          viewport={{ once: true, margin: '250px' }}
+          transition={{ duration: 0.6 }}
+          className="relative text-5xl md:text-6xl lg:text-7xl font-bold mb-10 tracking-tight"
         >
           <span className="bg-clip-text text-transparent bg-gradient-to-b from-white via-white to-gray-400">
             Comprendre pour transformer
@@ -45,8 +48,8 @@ export default function HeroSection() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          viewport={{ once: true, margin: '250px' }}
+          transition={{ duration: 0.6, delay: 0.1 }}
           className="relative group"
         >
           {/* Glow effect on hover */}
