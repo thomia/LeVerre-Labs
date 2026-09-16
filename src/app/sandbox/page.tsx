@@ -51,7 +51,7 @@ export default function SandboxPage() {
             <div className="text-center mb-6">
               <div className="flex items-center justify-center gap-2 mb-4">
                 <img 
-                  src="/medias/logo.png" 
+                  src="/medias/logo.webp" 
                   alt="LeVerre Labs Logo" 
                   className="h-8 w-8 object-contain brightness-0 invert"
                 />

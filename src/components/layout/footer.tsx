@@ -17,8 +17,10 @@ export default function Footer() {
           <div className="space-y-4">
             <Link href="/" className="flex items-center gap-3 group">
               <img 
-                src="/medias/logo.png" 
+                src="/medias/logo.webp" 
                 alt="LeVerre Labs Logo" 
+                width={40}
+                height={40}
                 className="h-10 w-10 object-contain brightness-0 invert group-hover:scale-110 transition-transform duration-200"
               />
               <h3 className="text-2xl font-bold">

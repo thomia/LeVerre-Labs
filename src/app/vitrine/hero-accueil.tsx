@@ -41,7 +41,7 @@ export function HeroAccueil() {
           </p>
 
           <h1 className="mt-6 text-4xl font-extrabold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
-            Formez vos équipes aux TMS
+            Formez vos équipes aux TMS{' '}
             <span className="block text-[rgb(255,30,90)]">
               sans un seul diaporama
             </span>
