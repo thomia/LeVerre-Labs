@@ -39,6 +39,10 @@ next-env.d.ts
 .vscode/
 .idea/
 
+# Python (scripts de generation du support PowerPoint)
+__pycache__/
+*.pyc
+
 # Prisma
 /prisma/dev.db
 /prisma/dev.db-journal
