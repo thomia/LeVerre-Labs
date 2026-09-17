@@ -43,6 +43,9 @@ next-env.d.ts
 __pycache__/
 *.pyc
 
+# Verrous LibreOffice (ouverture d'un .pptx en cours d'edition)
+.~lock.*#
+
 # Prisma
 /prisma/dev.db
 /prisma/dev.db-journal
