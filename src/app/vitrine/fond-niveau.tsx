@@ -13,11 +13,12 @@ export function FondNiveau({ className = '' }: { className?: string }) {
   return (
     <div className={`pointer-events-none absolute inset-0 overflow-hidden ${className}`} aria-hidden>
       {/* halo diffus au-dessus de la ligne d'eau */}
-      <div className="animate-respiration absolute inset-x-0 bottom-0 h-[62%] bg-[radial-gradient(ellipse_80%_100%_at_50%_100%,rgb(37_99_235/0.32),transparent_70%)]" />
+      <div className="animate-respiration absolute inset-x-0 bottom-0 h-[52%] bg-[radial-gradient(ellipse_80%_100%_at_50%_100%,rgb(37_99_235/0.3),transparent_70%)]" />
 
-      <div className="animate-montee-niveau absolute inset-x-0 bottom-0 h-[46%]">
-        {/* masse d'eau */}
-        <div className="absolute inset-x-0 bottom-0 top-10 bg-gradient-to-b from-[rgb(30_70_150/0.75)] via-[rgb(18_45_100/0.7)] to-[rgb(8_20_45/0.85)]" />
+      <div className="animate-montee-niveau absolute inset-x-0 bottom-0 h-[26%]">
+        {/* masse d'eau : elle doit se lire jusqu'au bas de l'écran, sinon seule
+            la ligne de surface ressort et l'ensemble passe pour un bandeau */}
+        <div className="absolute inset-x-0 bottom-0 top-10 bg-gradient-to-b from-[rgb(34_78_160/0.8)] via-[rgb(24_58_125/0.78)] to-[rgb(16_40_90/0.75)]" />
 
         {/* vague de fond, lente */}
         <svg
