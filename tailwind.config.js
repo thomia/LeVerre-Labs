@@ -122,6 +122,22 @@ module.exports = {
   				to: {
   					transform: 'translateY(22%)'
   				}
+  			},
+  			'nappe-avant': {
+  				'0%, 100%': {
+  					opacity: 1
+  				},
+  				'50%': {
+  					opacity: 0
+  				}
+  			},
+  			'nappe-arriere': {
+  				'0%, 100%': {
+  					opacity: 0
+  				},
+  				'50%': {
+  					opacity: 1
+  				}
   			}
   		},
   		animation: {
@@ -132,7 +148,9 @@ module.exports = {
   			'derive-vague-rapide': 'derive-vague 17s linear infinite',
   			'montee-niveau': 'montee-niveau 1.8s cubic-bezier(0.22, 1, 0.36, 1) forwards',
   			'respiration': 'respiration 7s ease-in-out infinite',
-  			'remplissage-filigrane': 'remplissage-filigrane 3.2s cubic-bezier(0.22, 1, 0.36, 1) forwards'
+  			'remplissage-filigrane': 'remplissage-filigrane 3.2s cubic-bezier(0.22, 1, 0.36, 1) forwards',
+  			'nappe-avant': 'nappe-avant 26s ease-in-out infinite',
+  			'nappe-arriere': 'nappe-arriere 26s ease-in-out infinite'
   		}
   	}
   },
