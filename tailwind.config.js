@@ -88,12 +88,51 @@ module.exports = {
   				to: {
   					height: 'var(--fill-level, 70%)'
   				}
+  			},
+  			'derive-vague': {
+  				from: {
+  					transform: 'translateX(0)'
+  				},
+  				to: {
+  					transform: 'translateX(-50%)'
+  				}
+  			},
+  			'montee-niveau': {
+  				from: {
+  					transform: 'translateY(35%)',
+  					opacity: 0
+  				},
+  				to: {
+  					transform: 'translateY(0)',
+  					opacity: 1
+  				}
+  			},
+  			'respiration': {
+  				'0%, 100%': {
+  					opacity: 0.45
+  				},
+  				'50%': {
+  					opacity: 0.75
+  				}
+  			},
+  			'remplissage-filigrane': {
+  				from: {
+  					transform: 'translateY(100%)'
+  				},
+  				to: {
+  					transform: 'translateY(22%)'
+  				}
   			}
   		},
   		animation: {
   			'accordion-down': 'accordion-down 0.2s ease-out',
   			'accordion-up': 'accordion-up 0.2s ease-out',
-  			'fill-glass': 'fill-glass 2s ease-out forwards'
+  			'fill-glass': 'fill-glass 2s ease-out forwards',
+  			'derive-vague-lente': 'derive-vague 26s linear infinite',
+  			'derive-vague-rapide': 'derive-vague 17s linear infinite',
+  			'montee-niveau': 'montee-niveau 1.8s cubic-bezier(0.22, 1, 0.36, 1) forwards',
+  			'respiration': 'respiration 7s ease-in-out infinite',
+  			'remplissage-filigrane': 'remplissage-filigrane 3.2s cubic-bezier(0.22, 1, 0.36, 1) forwards'
   		}
   	}
   },
