@@ -88,7 +88,7 @@ export function RechercheScientifique() {
                 style={{ boxShadow: '0 12px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04)' }}
               >
                 <img
-                  src="/photo%20video/poster.JPG"
+                  src="/medias/poster-modact.jpg"
                   alt="Poster scientifique LeVerre Labs présenté à ModACT 2026"
                   className="block h-auto w-full transition-transform duration-500 group-hover:scale-[1.03]"
                   loading="lazy"

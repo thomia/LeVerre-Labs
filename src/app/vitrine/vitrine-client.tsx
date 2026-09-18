@@ -1,11 +1,10 @@
 /**
  * CONTENU D'ACCUEIL - PRÉSENTATION DU MODÈLE (contenu interactif)
- * Rendu par la route `/` (voir `src/app/page.tsx`).
- * Présentation complète du modèle LeVerre Labs avec explications scientifiques.
+ * Rendu par la route `/` (voir `src/app/page.tsx`), sous <HeroAccueil>.
  *
- * Composant client : le rendu (SSR/SSG) et les metadata de la page vivent
+ * Composant client : le premier écran, les metadata et le rendu initial vivent
  * dans `src/app/page.tsx` (Server Component). Ce fichier ne porte que
- * l'interactivité (scroll, animations, sections dépliables).
+ * l'interactivité (démos du modèle, sections dépliables).
  */
 
 "use client"
@@ -19,7 +18,6 @@ import StormComponent from '@/components/modele/storm-component'
 import BubbleComponent from '@/components/modele/bubble-component'
 import { SectionsExplicatives } from './sections-explicatives'
 import { FaqTms } from './faq-tms'
-import ScrollExpandMedia from '@/components/ui/scroll-expansion-hero'
 import FeaturesCards from '@/components/ui/feature-shader-cards'
 import HeroSection from '@/components/ui/hero-section'
 
@@ -50,50 +48,41 @@ export default function VitrineClient() {
   }
 
   return (
-    <>
-      {/* Section d'expansion avec scroll */}
-      <ScrollExpandMedia
-        mediaType="video"
-        mediaSrc="/photo%20video/Vid%C3%A9o%20pres.mp4?v=3"
-        posterSrc="/photo%20video/TMSsht-1-1372841116.jpg"
-        bgImageSrc="/photo%20video/TMSsht-1-1372841116.jpg"
-        title="LeVerre Labs"
-        date="Une approche visuelle des risques au travail"
-        scrollToExpand="Faites défiler pour découvrir notre solution"
-        textBlend
-      >
-        {/* Section Intro - Problématique */}
+    <div className="min-h-screen bg-black">
+      {/* Problématique chiffrée */}
+      <div className="px-4 pt-24 pb-8">
         <HeroSection />
+      </div>
 
-        {/* Section des Forces avec Shaders */}
-        <div className="mb-16">
-          <FeaturesCards />
-        </div>
-      </ScrollExpandMedia>
+      {/* Ce que le modèle permet de faire */}
+      <div className="mb-16">
+        <FeaturesCards />
+      </div>
 
-      <div className="min-h-screen bg-black">
-        {/* Hero Section avec le modèle */}
-        <section className="relative py-16 overflow-hidden">
+      {/* Le modèle, manipulable */}
+      <section id="le-modele" className="relative scroll-mt-24 py-16 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <motion.div
             initial={{ opacity: 0, y: -30 }}
-            animate={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <p className="text-6xl md:text-7xl lg:text-8xl font-extrabold mb-8 tracking-tight">
-              <span className="text-[rgb(255,30,90)] drop-shadow-[0_0_8px_rgba(255,30,90,0.5)]">LeVerre</span> <span className="text-gray-400">Labs</span>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl text-white mb-4 max-w-4xl mx-auto font-bold leading-tight">
+              Le modèle du verre : rendre visibles les facteurs de risque
+            </h2>
+            <p className="text-gray-400 text-lg font-light">
+              Cliquez sur chaque élément pour comprendre ce qu&apos;il représente.
             </p>
-            <h1 className="text-2xl md:text-3xl text-white mb-4 max-w-4xl mx-auto font-bold leading-relaxed">
-              Prévention des TMS : rendre visibles les facteurs de risque au travail
-            </h1>
           </motion.div>
 
           {/* Modèle visuel complet */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.3 }}
-            className="relative w-full max-w-[800px] h-[800px] mx-auto"
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, delay: 0.2 }}
+            className="relative w-full max-w-[800px] h-[800px] mx-auto mt-12"
           >
             {/* Structure du modèle */}
             <div className="flex flex-col items-center justify-center relative" style={{ height: '700px' }}>
@@ -174,15 +163,6 @@ export default function VitrineClient() {
               </div>
             </div>
           </motion.div>
-
-          <motion.p 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1 }}
-            className="text-gray-400 mt-12 text-lg font-light"
-          >
-            Cliquez sur chaque élément pour en savoir plus
-          </motion.p>
         </div>
       </section>
 
@@ -191,7 +171,6 @@ export default function VitrineClient() {
 
       {/* FAQ : capte la longue traîne + réponses enrichies Google */}
       <FaqTms />
-      </div>
-    </>
+    </div>
   )
 }

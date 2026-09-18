@@ -20,11 +20,16 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  // La barre ne reste transparente qu'en haut de l'accueil, où elle se pose sur
+  // la photo du premier écran. Partout ailleurs elle est opaque : sans fond, le
+  // contenu défilant passait au travers et se mélangeait aux liens du menu.
+  const aFondOpaque = isScrolled || pathname !== '/'
+
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? 'bg-black/90 backdrop-blur-xl border-b border-white/10 shadow-lg'
+        aFondOpaque
+          ? 'bg-black/95 backdrop-blur-xl border-b border-white/10 shadow-lg'
           : 'bg-transparent'
       }`}
     >
@@ -33,8 +38,10 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
             <img
-              src="/photo%20video/logo_noir-removebg-preview.png"
+              src="/medias/logo.webp"
               alt="LeVerre Labs Logo"
+              width={40}
+              height={40}
               className="h-10 w-10 object-contain brightness-0 invert group-hover:scale-110 transition-transform duration-200"
             />
             {/* Nom de marque : volontairement pas un <h1> (la navbar est
@@ -64,6 +71,14 @@ export default function Navbar() {
                 <DesktopLink key={item.href} item={item} pathname={pathname} />
               )
             )}
+
+            {/* Action commerciale : toujours visible, sur toutes les pages. */}
+            <Link
+              href="/contact"
+              className="ml-3 rounded-full bg-[rgb(255,30,90)] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[rgb(255,60,120)]"
+            >
+              Nous contacter
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -112,6 +127,14 @@ export default function Navbar() {
                   />
                 )
               )}
+
+              <Link
+                href="/contact"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="block rounded-lg bg-[rgb(255,30,90)] px-4 py-3 text-center font-semibold text-white"
+              >
+                Nous contacter
+              </Link>
             </div>
           </motion.div>
         )}
@@ -250,15 +273,15 @@ function IndicateurActif() {
 
 const NAV_ITEMS: (LienSimple | MenuDeroulant)[] = [
   { name: 'Accueil', href: '/' },
-  { name: 'Fondements', href: '/fondements' },
+  { name: 'Notre démarche', href: '/fondements' },
   {
     name: 'Ressources',
     children: [
       { name: 'Statistiques nationales AT/MP', href: '/statistiques' },
       { name: 'Recherche scientifique', href: '/recherche-scientifique' },
+      { name: 'Recherche & partenariats', href: '/collaborer' },
     ],
   },
-  { name: 'Collaborer', href: '/collaborer' },
   // Porte d'entrée des participants qui tapent juste le domaine au lieu de
   // scanner le QR code : ils trouvent la saisie de code sans connaître l'URL.
   { name: 'Rejoindre une session', href: '/session' },

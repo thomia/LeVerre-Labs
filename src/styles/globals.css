@@ -89,4 +89,20 @@
   body {
     @apply bg-background text-foreground;
   }
-} 
+}
+
+/* Respect du réglage système « réduire les animations » (macOS, Windows,
+   iOS, Android). Le site est très animé : sans cette règle, il est
+   inconfortable, voire nauséeux, pour les personnes sensibles au mouvement.
+   On neutralise animations, transitions et défilement animé, sans masquer
+   aucun contenu. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
