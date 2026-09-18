@@ -121,10 +121,18 @@ export function FondGouttes({ className = '' }: { className?: string }) {
       }
     }
 
+    /**
+     * Le fond est en `pointer-events: none` pour ne jamais gêner les liens :
+     * on écoute donc la fenêtre, et on ne retient que les clics tombant dans
+     * la zone couverte par le canvas.
+     */
     function auClic(evenement: PointerEvent) {
       if (!canvas) return
       const rect = canvas.getBoundingClientRect()
-      ajouterOnde(evenement.clientX - rect.left, evenement.clientY - rect.top, performance.now())
+      const x = evenement.clientX - rect.left
+      const y = evenement.clientY - rect.top
+      if (x < 0 || y < 0 || x > rect.width || y > rect.height) return
+      ajouterOnde(x, y, performance.now())
     }
 
     redimensionner()
@@ -142,13 +150,13 @@ export function FondGouttes({ className = '' }: { className?: string }) {
     observateur.observe(canvas)
 
     window.addEventListener('resize', redimensionner)
-    canvas.parentElement?.addEventListener('pointerdown', auClic)
+    window.addEventListener('pointerdown', auClic)
 
     return () => {
       cancelAnimationFrame(image)
       observateur.disconnect()
       window.removeEventListener('resize', redimensionner)
-      canvas.parentElement?.removeEventListener('pointerdown', auClic)
+      window.removeEventListener('pointerdown', auClic)
     }
   }, [])
 
