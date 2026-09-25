@@ -19,6 +19,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import DashboardSimplified from '@/components/modele/dashboard-simplified'
 import { computeOverflowSeconds } from '@/lib/indicateur'
+import { NATIVE_HEIGHT, NATIVE_WIDTH, calculeCadre } from '@/lib/modele/cadrage-modele'
 import type { ElementId, ParticipantScores } from '@/lib/supabase/types'
 
 interface ParticipantMiniModelProps {
@@ -48,59 +49,6 @@ interface ParticipantMiniModelProps {
    * construction (pas de simulation).
    */
   simulationElapsedMs?: number | null
-}
-
-// Le DashboardSimplified natif occupe environ 800×700px.
-// MAIS le verre (positionné à top-87% + scale-125) déborde d'environ 100px
-// sous le conteneur de 700px. On capture donc une hauteur plus large
-// pour voir le fond du verre entier.
-const NATIVE_WIDTH = 800
-const NATIVE_HEIGHT = 820
-
-/**
- * Zone réellement occupée par chaque élément dans le repère natif (800×820),
- * relevée sur le DashboardSimplified rendu (positions `top-[87%]`, `top-[35%]`,
- * `top-[53%]`, `top-[-230px]`, bulle de 700px…).
- *
- * `demiLargeur` = écart maximal au centre horizontal (400) : on garde un cadre
- * symétrique pour que le modèle reste centré.
- *
- * Sans ce recadrage, on réservait toujours 820px de haut alors que le verre
- * seul n'en occupe que 375 — plus de la moitié de la place était du vide, ce
- * qui écrasait le questionnaire sur mobile.
- */
-const ZONE_ELEMENT: Record<ElementId, { haut: number; bas: number; demiLargeur: number }> = {
-  verre: { haut: 415, bas: 800, demiLargeur: 130 },
-  robinet: { haut: 238, bas: 800, demiLargeur: 110 },
-  orage: { haut: 358, bas: 800, demiLargeur: 80 },
-  paille: { haut: 126, bas: 800, demiLargeur: 135 },
-  bulle: { haut: 133, bas: 845, demiLargeur: 355 },
-}
-
-interface CadreModele {
-  haut: number
-  gauche: number
-  largeur: number
-  hauteur: number
-}
-
-/**
- * Cadre englobant les éléments visibles. Le verre est toujours affiché, il sert
- * de socle au cadre.
- */
-function calculeCadre(elementsVisibles: ElementId[]): CadreModele {
-  const zones = [ZONE_ELEMENT.verre, ...elementsVisibles.map((el) => ZONE_ELEMENT[el])]
-
-  const haut = Math.min(...zones.map((z) => z.haut))
-  const bas = Math.max(...zones.map((z) => z.bas))
-  const demiLargeur = Math.max(...zones.map((z) => z.demiLargeur))
-
-  return {
-    haut,
-    gauche: NATIVE_WIDTH / 2 - demiLargeur,
-    largeur: demiLargeur * 2,
-    hauteur: bas - haut,
-  }
 }
 
 export function ParticipantMiniModel({

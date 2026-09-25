@@ -2,8 +2,9 @@
 
 /**
  * Espace formateur : zone privée regroupant les outils de l'animateur.
- * Deux onglets pour l'instant (sensibilisation collective + analyse vidéo),
- * navigables et persistés dans l'URL via `nuqs` (?onglet=...).
+ * Trois onglets (sensibilisation collective, analyse vidéo détaillée et
+ * analyse rapide au fil de l'eau), navigables et persistés dans l'URL via
+ * `nuqs` (?onglet=...).
  * Le style des onglets reprend celui de la navbar du site vitrine.
  */
 
@@ -11,13 +12,15 @@ import { useQueryState, parseAsStringLiteral } from 'nuqs'
 import { motion } from 'framer-motion'
 import { LanceurSession } from '@/components/formation/animateur/lanceur-session'
 import VideoTaskEditor from '@/components/analyse-video/video-task-editor'
+import { AnalyseRapide } from '@/components/analyse-rapide/analyse-rapide'
 
-const ONGLETS = ['sensibilisation', 'analyse-video'] as const
+const ONGLETS = ['sensibilisation', 'analyse-video', 'analyse-rapide'] as const
 type Onglet = (typeof ONGLETS)[number]
 
 const LABELS: Record<Onglet, string> = {
   sensibilisation: 'Sensibilisation',
   'analyse-video': 'Analyse Vidéo',
+  'analyse-rapide': 'Analyse rapide',
 }
 
 export function EspaceFormateur() {
@@ -26,12 +29,18 @@ export function EspaceFormateur() {
     parseAsStringLiteral(ONGLETS).withDefault('sensibilisation')
   )
 
+  // L'analyse rapide se joue en pleine largeur : sa disposition (vidéo,
+  // notation, verre) est calibrée pour l'enregistrement d'écran en 16:9.
+  const isPleineLargeur = onglet === 'analyse-rapide'
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-slate-950 to-slate-900 pt-20">
       <BarreOnglets onglet={onglet} onChange={setOnglet} />
 
-      <main className="container mx-auto">
-        {onglet === 'sensibilisation' ? <LanceurSession /> : <VideoTaskEditor />}
+      <main className={isPleineLargeur ? 'w-full' : 'container mx-auto'}>
+        {onglet === 'sensibilisation' && <LanceurSession />}
+        {onglet === 'analyse-video' && <VideoTaskEditor />}
+        {onglet === 'analyse-rapide' && <AnalyseRapide />}
       </main>
     </div>
   )
