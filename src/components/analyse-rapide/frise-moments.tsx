@@ -110,6 +110,7 @@ export function FriseMoments({
             return (
               <div
                 key={moment.id}
+                title={`${moment.nom} · ${formateTemps(moment.debut)} → ${formateTemps(moment.fin)}`}
                 className="group absolute top-0 bottom-0 overflow-hidden rounded-lg border transition-[box-shadow,border-color] duration-150"
                 style={{
                   left: pourcent(moment.debut),

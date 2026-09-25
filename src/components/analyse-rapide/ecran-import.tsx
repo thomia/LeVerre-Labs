@@ -18,7 +18,10 @@ const ETAPES = [
   { titre: 'Lancer la vidéo', detail: 'Espace pour jouer, ×0,5 pour observer un geste au ralenti.' },
   { titre: 'Découper au fil de l’eau', detail: 'M au début du moment, M à la fin. La vidéo se met en pause.' },
   { titre: 'Noter en 10 gestes', detail: '5 curseurs de gravité + 4 cases d’importance par élément.' },
-  { titre: 'Rejouer', detail: 'Le verre se remplit et se vide en suivant les moments traversés.' },
+  {
+    titre: 'Rejouer',
+    detail: 'Annoncez ce que la séquence représente (1 h à 8 h de travail) et le verre raconte le poste.',
+  },
 ]
 
 export function EcranImport({ onFichier }: EcranImportProps) {

@@ -21,3 +21,13 @@ export function formateDuree(secondes: number): string {
   const reste = valeur % 60
   return `${minutes} min ${reste.toString().padStart(2, '0')}`
 }
+
+/** Durée de travail représentée : `35 min` ou `3 h 20`. */
+export function formateDureeTravail(minutes: number): string {
+  const valeur = Math.max(0, Math.round(minutes))
+  if (valeur < 60) return `${valeur} min`
+
+  const heures = Math.floor(valeur / 60)
+  const reste = valeur % 60
+  return reste === 0 ? `${heures} h` : `${heures} h ${reste.toString().padStart(2, '0')}`
+}

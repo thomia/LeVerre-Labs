@@ -12,24 +12,34 @@ import { ELEMENT_THEME } from '@/lib/element-theme'
 import {
   ORDRE_AFFICHAGE_SCORES,
   couleurNiveau,
-  formateDuree,
+  formateDureeTravail,
   type ScoresMoment,
 } from '@/lib/analyse-rapide'
 
 interface BandeauScoresProps {
   scores: ScoresMoment
   niveau: number
-  /** Taux courant en % de verre par minute de vidéo (négatif = se vide). */
+  /** Taux courant en % de verre par minute de travail (négatif = se vide). */
   taux: number
-  /** Secondes de vidéo avant débordement, `null` si le verre ne déborde pas. */
+  /** Minutes de travail avant débordement, `null` si le verre ne déborde pas. */
   avantDebordement: number | null
+  /** Minutes de travail déjà représentées depuis le début de la vidéo. */
+  travailEcoule: number
   /** Nom du moment traversé, `null` entre deux moments. */
   momentActif: string | null
 }
 
-export function BandeauScores({ scores, niveau, taux, avantDebordement, momentActif }: BandeauScoresProps) {
+export function BandeauScores({
+  scores,
+  niveau,
+  taux,
+  avantDebordement,
+  travailEcoule,
+  momentActif,
+}: BandeauScoresProps) {
   const couleur = couleurNiveau(niveau)
-  const tendance = taux > 0.5 ? 'Se remplit' : taux < -0.5 ? 'Se vide' : 'Stable'
+  const parHeure = taux * 60
+  const tendance = parHeure > 1 ? 'Se remplit' : parHeure < -1 ? 'Se vide' : 'Stable'
 
   return (
     <div className="space-y-2 rounded-2xl border border-white/10 bg-slate-950/60 p-3">
@@ -37,6 +47,7 @@ export function BandeauScores({ scores, niveau, taux, avantDebordement, momentAc
         <div>
           <p className="text-[10px] uppercase tracking-wide text-white/35">
             {momentActif ? `Moment : ${momentActif}` : 'Hors moment — récupération'}
+            <span className="text-white/25"> · {formateDureeTravail(travailEcoule)} de travail</span>
           </p>
           <p className="text-3xl font-bold tabular-nums leading-none" style={{ color: couleur }}>
             {Math.round(niveau)}
@@ -49,13 +60,15 @@ export function BandeauScores({ scores, niveau, taux, avantDebordement, momentAc
             {tendance}
           </p>
           <p className="text-[11px] tabular-nums text-white/45">
-            {taux >= 0 ? '+' : ''}
-            {taux.toFixed(1)} %/min de vidéo
+            {parHeure >= 0 ? '+' : ''}
+            {parHeure.toFixed(1)} % par heure de travail
           </p>
           <p className="text-[11px] text-white/35">
-            {avantDebordement === null
-              ? 'Pas de débordement à ce rythme'
-              : `Débordement dans ${formateDuree(avantDebordement)}`}
+            {niveau >= 99.5
+              ? 'Verre débordé'
+              : avantDebordement === null
+                ? 'Pas de débordement à ce rythme'
+                : `Déborde après ${formateDureeTravail(avantDebordement)} de travail`}
           </p>
         </div>
       </div>

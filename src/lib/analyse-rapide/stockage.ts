@@ -9,14 +9,14 @@
 
 import { getLocalStorage, setLocalStorage } from '@/lib/localStorage'
 import type { MomentAnalyse } from './types'
-import type { TempoId } from './physique-verre'
+import type { ProjectionId } from './physique-verre'
 
 const PREFIXE = 'leverre:analyse-rapide:'
 
 export interface AnalyseSauvegardee {
   titre: string
   moments: MomentAnalyse[]
-  tempo: TempoId
+  projection: ProjectionId
   enregistreLe: string
 }
 

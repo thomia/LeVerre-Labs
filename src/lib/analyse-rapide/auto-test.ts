@@ -7,6 +7,8 @@
  *   - l'Orage se neutralise quand aucun imprévu ne survient,
  *   - le Verre et la Paille s'inversent bien (score élevé = favorable),
  *   - le remplissage suit la formule et les durées de calibration attendues,
+ *   - la projection (durée de travail représentée) agit sur le temps et non
+ *     sur le débit,
  *   - le niveau reste déterministe (rejouer la vidéo donne le même verre).
  *
  * Résultats visibles sur `/dev/analyse-rapide` en `npm run dev`.
@@ -15,13 +17,16 @@
 import {
   CRITERES_PAR_ELEMENT,
   NIVEAUX_POIDS,
+  PIRE_CAS_MINUTES,
   construitSegments,
   courbeNiveau,
+  facteurProjection,
   niveauAuTemps,
   notationsParDefaut,
   scoreElement,
   scoresDuMoment,
   tauxParMinute,
+  travailEcoule,
   type MomentAnalyse,
   type NotationsMoment,
   type ScoresMoment,
@@ -133,13 +138,26 @@ export function lancerAutotests(): ResultatTest[] {
   )
 
   // --- Physique du verre ---------------------------------------------------
+  //
+  // Le taux est exprimé par minute de TRAVAIL : les bornes se lisent donc en
+  // durée de travail, pas en durée de vidéo.
 
   const pireCas = scores({ robinet: 100, bulle: 100, orage: 100, paille: 0, verre: 0 })
-  tests.push(approx('Pire cas : taux de remplissage', tauxParMinute(pireCas), 206.3, ' %/min'))
-  tests.push(approx('Pire cas : verre plein en', (100 / tauxParMinute(pireCas)) * 60, 29.1, ' s'))
+  tests.push(approx('Pire cas : taux par heure de travail', tauxParMinute(pireCas) * 60, 50, ' %/h'))
+  tests.push(
+    approx('Pire cas : verre plein après', 100 / tauxParMinute(pireCas), PIRE_CAS_MINUTES, ' min de travail', 1)
+  )
 
   const momentMoyen = scores({ robinet: 50, bulle: 50, orage: 0, paille: 50, verre: 50 })
-  tests.push(approx('Moment neutre : taux de remplissage', tauxParMinute(momentMoyen), 17.9, ' %/min'))
+  tests.push(approx('Moment neutre : taux par heure de travail', tauxParMinute(momentMoyen) * 60, 4.3, ' %/h'))
+  tests.push(
+    approx('Moment neutre : verre plein après', 100 / tauxParMinute(momentMoyen) / 60, 23.1, ' h de travail', 0.2)
+  )
+
+  const momentDur = scores({ robinet: 100, bulle: 80, orage: 60, paille: 10, verre: 20 })
+  tests.push(
+    approx('Moment dur : verre plein après', 100 / tauxParMinute(momentDur) / 60, 3.0, ' h de travail', 0.2)
+  )
 
   const momentLeger = scores({ robinet: 20, bulle: 20, orage: 0, paille: 80, verre: 80 })
   tests.push(
@@ -147,11 +165,12 @@ export function lancerAutotests(): ResultatTest[] {
       'Moment léger : le verre se vide',
       tauxParMinute(momentLeger) < 0,
       'taux négatif',
-      `${tauxParMinute(momentLeger).toFixed(1)} %/min`
+      `${(tauxParMinute(momentLeger) * 60).toFixed(1)} %/h`
     )
   )
 
-  // Intégration : 2 min à 17.9 %/min = 35.8 % de verre.
+  // Vidéo de 2 min entièrement couverte par un moment neutre, projetée sur une
+  // demi-journée : 240 min de travail à 4.33 %/h = 17.3 % de verre.
   const moment: MomentAnalyse = {
     id: 'test',
     nom: 'Test',
@@ -160,16 +179,43 @@ export function lancerAutotests(): ResultatTest[] {
     notations: notationsParDefaut(),
     commentaire: '',
   }
-  const segments = construitSegments([moment], 240)
-  tests.push(approx('2 min de moment neutre remplissent', niveauAuTemps(segments, 120), 35.8, ' %'))
+  const segments = construitSegments([moment], 120)
+  const facteur4h = facteurProjection('4h', 120)
+  tests.push(approx('Séquence neutre projetée sur 4 h', niveauAuTemps(segments, 120, facteur4h), 17.3, ' %'))
+
+  tests.push(
+    approx(
+      'Projection : 1 min de vidéo = 2 min de travail (2 min → 4 h)',
+      facteurProjection('4h', 120),
+      120,
+      '×'
+    )
+  )
+  tests.push(approx('Travail écoulé à mi-vidéo', travailEcoule('4h', 60, 120), 120, ' min'))
+
+  // Doubler la projection double le temps de travail, donc le remplissage
+  // (tant qu'on ne touche pas les bornes) : la physique reste linéaire.
+  tests.push(
+    approx(
+      'Projection 8 h = 2 × projection 4 h',
+      niveauAuTemps(segments, 120, facteurProjection('8h', 120)),
+      2 * niveauAuTemps(segments, 120, facteur4h),
+      ' %'
+    )
+  )
 
   // Après le moment, plus de robinet : la paille héritée vide le verre.
+  const segmentsAvecRepos = construitSegments([moment], 240)
   tests.push(
     vraiSi(
       'Hors moment : le verre redescend',
-      niveauAuTemps(segments, 240) < niveauAuTemps(segments, 120),
+      niveauAuTemps(segmentsAvecRepos, 240, facteur4h) < niveauAuTemps(segmentsAvecRepos, 120, facteur4h),
       'niveau décroissant',
-      `${niveauAuTemps(segments, 120).toFixed(1)} % → ${niveauAuTemps(segments, 240).toFixed(1)} %`
+      `${niveauAuTemps(segmentsAvecRepos, 120, facteur4h).toFixed(1)} % → ${niveauAuTemps(
+        segmentsAvecRepos,
+        240,
+        facteur4h
+      ).toFixed(1)} %`
     )
   )
 
@@ -177,9 +223,9 @@ export function lancerAutotests(): ResultatTest[] {
   tests.push(
     vraiSi(
       'Déterminisme : rejouer donne le même niveau',
-      niveauAuTemps(segments, 90) === niveauAuTemps(segments, 90),
+      niveauAuTemps(segments, 90, facteur4h) === niveauAuTemps(segments, 90, facteur4h),
       'identique',
-      `${niveauAuTemps(segments, 90).toFixed(3)} %`
+      `${niveauAuTemps(segments, 90, facteur4h).toFixed(3)} %`
     )
   )
 
@@ -188,18 +234,44 @@ export function lancerAutotests(): ResultatTest[] {
     ...moment,
     notations: avecGravite(notationsUniformes(100), 'o_occurrence', 100),
   }
-  const segmentsExtremes = construitSegments([momentExtreme], 600)
-  const niveauMax = niveauAuTemps(segmentsExtremes, 600)
+  const niveauMax = niveauAuTemps(construitSegments([momentExtreme], 120), 120, facteurProjection('8h', 120))
   tests.push(
     vraiSi('Le niveau ne dépasse jamais 100 %', niveauMax <= 100, '≤ 100 %', `${niveauMax.toFixed(1)} %`)
   )
 
-  const niveauMin = niveauAuTemps(construitSegments([{ ...moment, notations: notationsUniformes(0) }], 600), 600)
+  const niveauMin = niveauAuTemps(
+    construitSegments([{ ...moment, notations: notationsUniformes(0) }], 120),
+    120,
+    facteurProjection('8h', 120)
+  )
   tests.push(vraiSi('Le niveau ne descend jamais sous 0 %', niveauMin >= 0, '≥ 0 %', `${niveauMin.toFixed(1)} %`))
 
+  // Le verre plein doit rester atteignable sur une séquence courte : c'est tout
+  // l'intérêt de la projection pour la vidéo.
+  const niveauDur: MomentAnalyse = {
+    ...moment,
+    notations: avecGravite(notationsUniformes(90), 'o_occurrence', 80),
+  }
+  tests.push(
+    vraiSi(
+      'Un poste très dégradé fait déborder le verre sur 8 h',
+      niveauAuTemps(construitSegments([niveauDur], 120), 120, facteurProjection('8h', 120)) >= 99,
+      '≈ 100 %',
+      `${niveauAuTemps(construitSegments([niveauDur], 120), 120, facteurProjection('8h', 120)).toFixed(1)} %`
+    )
+  )
+
   // La courbe de la frise doit raconter la même chose que le verre.
-  const courbe = courbeNiveau(segments, 240, 241)
-  tests.push(approx('Courbe de la frise = niveau du verre (t=120 s)', courbe[120], niveauAuTemps(segments, 120), ' %', 1))
+  const courbe = courbeNiveau(segmentsAvecRepos, 240, 241, facteur4h)
+  tests.push(
+    approx(
+      'Courbe de la frise = niveau du verre (t=120 s)',
+      courbe[120],
+      niveauAuTemps(segmentsAvecRepos, 120, facteur4h),
+      ' %',
+      1
+    )
+  )
 
   return tests
 }

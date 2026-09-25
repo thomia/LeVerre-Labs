@@ -25,7 +25,14 @@ interface SceneVerreVivantProps {
   niveau: number
 }
 
-const CADRE = calculeCadre(['robinet', 'bulle', 'orage', 'paille'])
+/**
+ * Cadre volontairement serré sur le verre, le robinet, la paille et l'orage :
+ * la Bulle est un halo de 710 px de large qui, à l'échelle d'une colonne
+ * d'écran, écraserait le verre à la taille d'un timbre. On la laisse déborder
+ * du cadre — ses particules font un fond de scène — pour garder un verre assez
+ * grand pour qu'on voie l'eau monter à l'image.
+ */
+const CADRE = calculeCadre(['robinet', 'orage', 'paille'])
 
 export const SceneVerreVivant = memo(function SceneVerreVivant({ scores, niveau }: SceneVerreVivantProps) {
   const conteneurRef = useRef<HTMLDivElement>(null)

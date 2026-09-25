@@ -3,9 +3,9 @@
  *
  * On garde les facteurs du modèle historique (`dashboard-simplified.tsx`,
  * `lib/indicateur.ts`) et la reformulation propre du §6 de
- * `docs/SIMULATION_PRINCIPLES.md` : un **taux de remplissage exprimé par minute**,
- * indépendant de la cadence d'affichage. Ici la minute de référence est la
- * minute de **vidéo**, puisque c'est elle qui fait avancer l'analyse.
+ * `docs/SIMULATION_PRINCIPLES.md` : un **taux de remplissage exprimé par minute
+ * de travail**, indépendant de la cadence d'affichage. La lecture de la vidéo
+ * ne fait que faire défiler ce temps de travail, via la projection (§6.2).
  *
  *     ENV(B)   = 1 + B/200        1.0 → 1.5
  *     STORM(O) = 1 + O/150        1.0 → 1.667
@@ -31,20 +31,26 @@ import { scoresDuMoment, scoresNeutres } from './scoring'
 /** Part de la charge qu'une paille à 100 peut évacuer. */
 export const RATIO_DRAIN = 0.6
 
+/** Facteur sans dimension du pire cas absolu : R=100, B=100, O=100, P=0, V=0. */
+const FACTEUR_PIRE_CAS = 3.75
+
 /**
- * Calibration : % de verre rempli par minute de vidéo, au pire cas absolu
- * (R=100, B=100, O=100, P=0, V=0 → facteur 3.75).
+ * Calibration (§7.1 de `docs/SIMULATION_PRINCIPLES.md`, option B) : au pire cas
+ * absolu, le verre déborde après **2 h de travail**. « Une matinée et c'est
+ * plié » — assez marquant pour un usage pédagogique, sans être invraisemblable.
  *
- *   - pire cas absolu        → verre plein en ~29 s de vidéo
- *   - moment lourd réaliste  (R 80, B 60, O 40, P 30, V 40) → ~1 min 30
- *   - moment neutre          (tous à 50, pas d'imprévu)     → ~5 min 30
- *   - moment tenable         (R 20, B 20, P 80, V 80)       → le verre se vide
+ * Ordres de grandeur qui en découlent, en temps de travail :
  *
- * Ces ordres de grandeur sont choisis pour une vidéo de poste de 2 à 10 min :
- * le verre doit raconter quelque chose à l'échelle de la séquence filmée, pas
- * à l'échelle de la journée de travail. Le tempo permet de recaler au besoin.
+ *   - pire cas absolu                                  → déborde en 2 h
+ *   - moment dur    (R 100, B 80, O 60, P 10, V 20)    → déborde en ~3 h
+ *   - moment chargé (R 80, B 60, O 30, P 30, V 40)     → déborde en ~6 h 30
+ *   - moment neutre (tous à 50, pas d'imprévu)         → ~4 % du verre par heure
+ *   - moment tenable (R 20, B 20, P 80, V 80)          → le verre se vide
  */
-export const TAUX_MAX_PAR_MINUTE = 55
+export const PIRE_CAS_MINUTES = 120
+
+/** % de verre par minute **de travail**, à facteur de charge égal à 1. */
+export const TAUX_MAX_PAR_MINUTE = 100 / (PIRE_CAS_MINUTES * FACTEUR_PIRE_CAS)
 
 /**
  * Part de la paille qui continue d'agir entre deux moments.
@@ -58,20 +64,55 @@ export const TAUX_MAX_PAR_MINUTE = 55
  */
 export const RECUPERATION_HORS_MOMENT = 0.5
 
-/** Tempos proposés à l'observateur pour caler la dynamique sur sa vidéo. */
-export const TEMPOS = [
-  { id: 'lent', label: 'Lent', facteur: 0.5 },
-  { id: 'normal', label: 'Normal', facteur: 1 },
-  { id: 'rapide', label: 'Rapide', facteur: 2 },
+/**
+ * Projection : quelle durée de travail la séquence filmée représente.
+ *
+ * C'est la « vitesse de simulation » du §6.2 de la doc, formulée en langage
+ * métier. Une vidéo de poste est un échantillon : filmer deux minutes ne veut
+ * pas dire que l'opérateur travaille deux minutes. En temps réel strict, le
+ * verre ne bougerait donc quasiment pas — mathématiquement juste, mais muet à
+ * l'écran. En annonçant « ce que je filme là, il le fait pendant 4 h », le
+ * verre parcourt la dynamique réelle du poste pendant la lecture, et le
+ * débordement redevient un résultat interprétable.
+ *
+ * La physique (§6.1) reste inchangée : la projection n'agit que sur le temps
+ * qui passe, jamais sur le débit.
+ */
+export const PROJECTIONS = [
+  { id: '1h', label: '1 h', minutes: 60, aide: 'la séquence résume 1 h de travail' },
+  { id: '2h', label: '2 h', minutes: 120, aide: 'la séquence résume 2 h de travail' },
+  { id: '4h', label: '4 h', minutes: 240, aide: 'la séquence résume une demi-journée' },
+  { id: '8h', label: '8 h', minutes: 480, aide: 'la séquence résume une journée entière' },
 ] as const
 
-export type TempoId = (typeof TEMPOS)[number]['id']
+export type ProjectionId = (typeof PROJECTIONS)[number]['id']
 
-export function facteurTempo(tempo: TempoId): number {
-  return TEMPOS.find((t) => t.id === tempo)?.facteur ?? 1
+export const PROJECTION_PAR_DEFAUT: ProjectionId = '4h'
+
+export function minutesProjetees(projection: ProjectionId): number {
+  return PROJECTIONS.find((option) => option.id === projection)?.minutes ?? 240
 }
 
-/** Taux de remplissage en % de verre par minute de vidéo (négatif = se vide). */
+/** Garde-fou pour les analyses relues depuis le stockage local. */
+export function projectionValide(valeur: unknown): ProjectionId {
+  return PROJECTIONS.some((option) => option.id === valeur)
+    ? (valeur as ProjectionId)
+    : PROJECTION_PAR_DEFAUT
+}
+
+/** Minutes de travail représentées par une minute de vidéo. */
+export function facteurProjection(projection: ProjectionId, dureeVideo: number): number {
+  if (dureeVideo <= 0) return 1
+  return minutesProjetees(projection) / (dureeVideo / 60)
+}
+
+/** Minutes de travail déjà représentées à l'instant `temps` de la vidéo. */
+export function travailEcoule(projection: ProjectionId, temps: number, dureeVideo: number): number {
+  if (dureeVideo <= 0) return 0
+  return (Math.min(temps, dureeVideo) / dureeVideo) * minutesProjetees(projection)
+}
+
+/** Taux de remplissage en % de verre par minute de travail (négatif = se vide). */
 export function tauxParMinute(scores: ScoresMoment): number {
   const environnement = 1 + scores.bulle / 200
   const orage = 1 + scores.orage / 150
@@ -160,14 +201,14 @@ export function construitSegments(moments: MomentAnalyse[], dureeVideo: number):
  * verre qui déborde au milieu d'un segment reste à 100 jusqu'à sa fin, et un
  * verre vidé reste à 0. Le résultat est donc exact, sans pas de temps.
  */
-export function niveauAuTemps(segments: SegmentSimulation[], temps: number, tempo = 1): number {
+export function niveauAuTemps(segments: SegmentSimulation[], temps: number, facteur = 1): number {
   let niveau = 0
 
   for (const segment of segments) {
     if (segment.debut >= temps) break
 
     const fin = Math.min(segment.fin, temps)
-    const minutes = ((fin - segment.debut) / 60) * tempo
+    const minutes = ((fin - segment.debut) / 60) * facteur
     if (minutes <= 0) continue
 
     niveau = Math.max(0, Math.min(100, niveau + tauxParMinute(segment.scores) * minutes))
@@ -195,7 +236,7 @@ export function courbeNiveau(
   segments: SegmentSimulation[],
   dureeVideo: number,
   nbPoints = 240,
-  tempo = 1
+  facteur = 1
 ): number[] {
   if (dureeVideo <= 0 || segments.length === 0) return []
 
@@ -212,7 +253,7 @@ export function courbeNiveau(
       const segment = segments[index]
       const debut = Math.max(segment.debut, tPrecedent)
       if (segment.fin > debut) {
-        niveau = avance(niveau, segment, debut, segment.fin, tempo)
+        niveau = avance(niveau, segment, debut, segment.fin, facteur)
         tPrecedent = segment.fin
       }
       index += 1
@@ -222,7 +263,7 @@ export function courbeNiveau(
       const segment = segments[index]
       const debut = Math.max(segment.debut, tPrecedent)
       if (t > debut) {
-        niveau = avance(niveau, segment, debut, t, tempo)
+        niveau = avance(niveau, segment, debut, t, facteur)
         tPrecedent = t
       }
     }
@@ -238,35 +279,43 @@ function avance(
   segment: SegmentSimulation,
   debut: number,
   fin: number,
-  tempo: number
+  facteur: number
 ): number {
-  const minutes = ((fin - debut) / 60) * tempo
+  const minutes = ((fin - debut) / 60) * facteur
   return Math.max(0, Math.min(100, niveau + tauxParMinute(segment.scores) * minutes))
 }
 
 /**
- * Temps de vidéo restant avant débordement au rythme courant, en secondes.
- * `null` quand le verre ne déborde pas (le taux est nul ou négatif).
+ * Minutes de **travail** restantes avant débordement au rythme courant.
+ * `null` quand le verre ne déborde pas (taux nul ou négatif).
+ *
+ * Exprimé en temps de travail et non en temps de vidéo : c'est la phrase qu'on
+ * prononce en commentant ("à ce rythme-là, il déborde avant la pause").
  */
-export function secondesAvantDebordement(
-  scores: ScoresMoment,
-  niveauActuel: number,
-  tempo = 1
-): number | null {
-  const taux = tauxParMinute(scores) * tempo
+export function travailAvantDebordement(scores: ScoresMoment, niveauActuel: number): number | null {
+  const taux = tauxParMinute(scores)
   if (taux <= 0) return null
 
-  return ((100 - niveauActuel) / taux) * 60
+  return (100 - niveauActuel) / taux
 }
 
 /**
- * Couleur d'un moment sur la frise, selon ce qu'il fait au verre :
- * vert = il vide, jaune = il remplit doucement, rouge = il remplit vite.
+ * Couleur d'un moment sur la frise, lue comme « en combien de temps de travail
+ * ce moment-là remplirait le verre à lui seul » :
+ *
+ *   vert   → il vide le verre (récupération nette)
+ *   lime   → soutenable au-delà de la semaine
+ *   jaune  → déborde dans la semaine
+ *   orange → déborde dans la journée
+ *   rouge  → déborde avant la demi-journée
  */
 export function couleurTaux(taux: number): string {
   if (taux <= 0) return '#4ade80'
-  if (taux < 10) return '#facc15'
-  if (taux < 25) return '#fb923c'
+
+  const heuresPourRemplir = 100 / taux / 60
+  if (heuresPourRemplir > 40) return '#a3e635'
+  if (heuresPourRemplir > 8) return '#facc15'
+  if (heuresPourRemplir > 4) return '#fb923c'
   return '#f87171'
 }
 

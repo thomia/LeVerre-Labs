@@ -26,23 +26,26 @@ import { Download, Eye, Keyboard, RotateCcw } from 'lucide-react'
 import { useTempsVideo } from '@/hooks/use-temps-video'
 import { useDecoupageMoments } from '@/hooks/use-decoupage-moments'
 import {
-  TEMPOS,
+  PROJECTIONS,
+  PROJECTION_PAR_DEFAUT,
   chargeAnalyse,
   cleAnalyse,
   construitSegments,
   courbeNiveau,
-  facteurTempo,
+  facteurProjection,
   formateDuree,
   niveauAuTemps,
   notationsParDefaut,
   sauvegardeAnalyse,
   scoresDuMoment,
   scoresRepos,
-  secondesAvantDebordement,
+  travailAvantDebordement,
+  travailEcoule,
   segmentAuTemps,
   tauxParMinute,
+  projectionValide,
   type MomentAnalyse,
-  type TempoId,
+  type ProjectionId,
 } from '@/lib/analyse-rapide'
 import { EcranImport } from './ecran-import'
 import { LecteurVideo } from './lecteur-video'
@@ -98,7 +101,7 @@ export function AnalyseRapide() {
   const [isPlaying, setIsPlaying] = useState(false)
   const [isMuted, setIsMuted] = useState(false)
   const [vitesse, setVitesse] = useState(1)
-  const [tempo, setTempo] = useState<TempoId>('normal')
+  const [projection, setProjection] = useState<ProjectionId>(PROJECTION_PAR_DEFAUT)
   const [modeFocus, setModeFocus] = useState(false)
   const [afficheRaccourcis, setAfficheRaccourcis] = useState(false)
   const [isPleinEcran, setIsPleinEcran] = useState(false)
@@ -111,7 +114,7 @@ export function AnalyseRapide() {
     useDecoupageMoments()
 
   const temps = useTempsVideo(videoRef)
-  const facteur = facteurTempo(tempo)
+  const facteur = facteurProjection(projection, duree)
 
   const momentSelectionne = moments.find((moment) => moment.id === momentSelectionneId) ?? null
   const courbe = useMemo(
@@ -139,7 +142,9 @@ export function AnalyseRapide() {
   // Arrondi au demi-point : évite de re-rendre toute la scène à chaque image
   // sans que l'œil y perde quoi que ce soit (le verre s'anime sur 0,5 s).
   const niveauAffiche = Math.round(niveau * 2) / 2
-  const taux = tauxParMinute(scores) * facteur
+  // Le taux affiché est celui de la physique, par minute de travail : la
+  // projection ne change que la vitesse à laquelle ce temps défile.
+  const taux = tauxParMinute(scores)
 
   const momentTraverse = segmentActif?.momentId
     ? moments.find((moment) => moment.id === segmentActif.momentId)?.nom ?? null
@@ -161,7 +166,7 @@ export function AnalyseRapide() {
     if (!sauvegarde) return
 
     remplaceMoments(sauvegarde.moments)
-    setTempo(sauvegarde.tempo)
+    setProjection(projectionValide(sauvegarde.projection))
     setTitre(sauvegarde.titre)
   }
 
@@ -318,11 +323,11 @@ export function AnalyseRapide() {
     if (!nomFichier || duree <= 0 || moments.length === 0) return
 
     const minuteur = setTimeout(() => {
-      sauvegardeAnalyse(cleAnalyse(nomFichier, duree), { titre, moments, tempo })
+      sauvegardeAnalyse(cleAnalyse(nomFichier, duree), { titre, moments, projection })
     }, 400)
 
     return () => clearTimeout(minuteur)
-  }, [duree, moments, nomFichier, tempo, titre])
+  }, [duree, moments, nomFichier, projection, titre])
 
   useEffect(() => {
     return () => {
@@ -335,7 +340,7 @@ export function AnalyseRapide() {
       titre,
       fichier: nomFichier,
       duree,
-      tempo,
+      projection,
       moments: moments.map((moment) => ({
         nom: moment.nom,
         debut: moment.debut,
@@ -359,7 +364,7 @@ export function AnalyseRapide() {
   return (
     <div
       ref={conteneurRef}
-      className={`flex flex-col gap-2 bg-slate-950 px-3 pb-3 ${
+      className={`flex flex-col gap-2 bg-slate-950 px-3 pb-4 ${
         isPleinEcran ? 'h-dvh pt-3' : 'h-[calc(100dvh-9rem)]'
       }`}
     >
@@ -377,15 +382,17 @@ export function AnalyseRapide() {
           </span>
 
           <div className="flex items-center gap-1 rounded-lg bg-white/5 p-1">
-            <span className="px-1.5 text-[10px] uppercase tracking-wide text-white/35">Tempo du verre</span>
-            {TEMPOS.map((option) => (
+            <span className="px-1.5 text-[10px] uppercase tracking-wide text-white/35">
+              La séquence représente
+            </span>
+            {PROJECTIONS.map((option) => (
               <button
                 key={option.id}
                 type="button"
-                onClick={() => setTempo(option.id)}
-                title={`Dynamique du remplissage ×${option.facteur}`}
+                onClick={() => setProjection(option.id)}
+                title={option.aide}
                 className={`rounded-md px-2 py-1 text-[11px] font-medium transition-colors ${
-                  tempo === option.id ? 'bg-white/20 text-white' : 'text-white/45 hover:text-white'
+                  projection === option.id ? 'bg-white/20 text-white' : 'text-white/45 hover:text-white'
                 }`}
               >
                 {option.label}
@@ -530,7 +537,8 @@ export function AnalyseRapide() {
             scores={scores}
             niveau={niveauAffiche}
             taux={taux}
-            avantDebordement={secondesAvantDebordement(scores, niveauAffiche, facteur)}
+            avantDebordement={travailAvantDebordement(scores, niveauAffiche)}
+            travailEcoule={travailEcoule(projection, tempsSimule, duree)}
             momentActif={isNotationOuverte && momentSelectionne ? momentSelectionne.nom : momentTraverse}
           />
         </motion.div>
