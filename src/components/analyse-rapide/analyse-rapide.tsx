@@ -421,6 +421,7 @@ export function AnalyseRapide() {
             <button
               type="button"
               onClick={() => setModeFocus(true)}
+              title="Mode focus (F)"
               className="flex items-center gap-1.5 rounded-lg bg-white/10 px-2.5 py-1.5 text-[11px] font-medium text-white transition-colors hover:bg-white/20"
             >
               <Eye className="h-3.5 w-3.5" />
