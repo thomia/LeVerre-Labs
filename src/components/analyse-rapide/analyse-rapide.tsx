@@ -4,20 +4,19 @@
  * ANALYSE RAPIDE — découper une vidéo de poste au fil de l'eau et voir le
  * modèle du verre réagir en direct.
  *
- * Disposition pensée pour la capture d'écran (16:9) :
+ * Disposition :
  *
- *   ┌──────────────────────────┬───────────────┬──────────────┐
- *   │  vidéo                   │  notation du  │   verre      │
- *   │                          │  moment       │   vivant     │
- *   ├──────────────────────────┤  (colonne qui │   + les 5    │
- *   │  frise + courbe du verre │   s'ouvre)    │   scores     │
- *   └──────────────────────────┴───────────────┴──────────────┘
+ *   ┌────────────────────────────┬─────────────────┐
+ *   │                            │  modèle entier  │
+ *   │  vidéo (2/3)               │  + 5 scores     │
+ *   │                            │  + notation     │
+ *   ├────────────────────────────┴─────────────────┤
+ *   │  frise sur toute la largeur                  │
+ *   └──────────────────────────────────────────────┘
  *
- * L'image reste à gauche (là où l'œil va d'abord), le verre reste à droite et
- * n'est JAMAIS masqué : quand le panneau de notation s'ouvre, la vidéo se
- * rétrécit, pas le modèle. Bouger un curseur fait donc monter le verre à
- * l'écran pendant qu'on explique pourquoi on le bouge — c'est l'effet
- * recherché pour la vidéo.
+ * La notation et le modèle partagent la même colonne : un curseur bougé se
+ * lit directement sur le verre au-dessus, et les scores ne sont affichés
+ * qu'une fois.
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -39,20 +38,20 @@ import {
   sauvegardeAnalyse,
   scoresDuMoment,
   scoresRepos,
-  travailAvantDebordement,
-  travailEcoule,
   segmentAuTemps,
   tauxParMinute,
   projectionValide,
   type MomentAnalyse,
   type ProjectionId,
 } from '@/lib/analyse-rapide'
+import type { ElementId } from '@/lib/supabase/types'
 import { EcranImport } from './ecran-import'
 import { LecteurVideo } from './lecteur-video'
 import { FriseMoments } from './frise-moments'
 import { PanneauNotation } from './panneau-notation'
 import { SceneVerreVivant } from './scene-verre-vivant'
-import { BandeauScores } from './bandeau-scores'
+import { BarreElements } from './barre-elements'
+import { EtatVerre } from './etat-verre'
 
 /**
  * Ajoute le moment en cours de découpage à la liste, tant qu'il n'empiète pas
@@ -109,6 +108,7 @@ export function AnalyseRapide() {
   const [decoupageEnCours, setDecoupageEnCours] = useState<number | null>(null)
   const [momentSelectionneId, setMomentSelectionneId] = useState<string | null>(null)
   const [isNotationOuverte, setIsNotationOuverte] = useState(false)
+  const [elementActif, setElementActif] = useState<ElementId>('verre')
 
   const { moments, creeMoment, majMoment, ajusteBornes, supprimeMoment, remplaceMoments } =
     useDecoupageMoments()
@@ -460,8 +460,8 @@ export function AnalyseRapide() {
         </button>
       )}
 
-      <div className="flex min-h-0 flex-1 gap-2">
-        <motion.div layout className="flex min-h-0 min-w-0 flex-1 flex-col gap-2">
+      <div className="flex min-h-0 flex-1 gap-2 overflow-hidden">
+        <div className="flex h-full min-h-0 min-w-0 flex-[2] flex-col">
           <LecteurVideo
             videoRef={videoRef}
             src={videoSrc}
@@ -483,66 +483,60 @@ export function AnalyseRapide() {
             onBasculeDecoupage={basculeDecoupage}
             onMetadonnees={chargeMetadonnees}
           />
+        </div>
 
-          <FriseMoments
-            moments={moments}
-            duree={duree}
-            temps={temps}
-            courbe={courbe}
-            momentSelectionneId={momentSelectionneId}
-            decoupageEnCours={decoupageEnCours}
-            onSeek={seek}
-            onSelectionner={(id) => {
-              setMomentSelectionneId(id)
-              if (!modeFocus) setIsNotationOuverte(true)
-            }}
-            onAjusterBornes={ajusteBornes}
-          />
-        </motion.div>
-
-        <AnimatePresence initial={false}>
-          {isNotationOuverte && momentSelectionne && !modeFocus && (
-            <motion.div
-              layout
-              initial={{ width: 0, opacity: 0 }}
-              animate={{ width: 420, opacity: 1 }}
-              exit={{ width: 0, opacity: 0 }}
-              transition={{ type: 'spring', stiffness: 260, damping: 30 }}
-              className="min-h-0 shrink-0 overflow-hidden"
-            >
-              <div className="h-full w-[420px]">
-                <PanneauNotation
-                  moment={momentSelectionne}
-                  onChange={majMoment}
-                  onSupprimer={() => {
-                    supprimeMoment(momentSelectionne.id)
-                    setMomentSelectionneId(null)
-                    setIsNotationOuverte(false)
-                  }}
-                  onFermer={fermeNotation}
-                />
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        <motion.div
-          layout
-          className={`flex min-h-0 min-w-[300px] flex-col gap-2 ${modeFocus ? 'w-[44%]' : 'w-[36%]'}`}
-        >
-          <div className="min-h-0 flex-1 rounded-2xl border border-white/10 bg-slate-950/40">
+        <div className="flex h-full min-h-0 w-1/3 min-w-[340px] flex-col gap-2 overflow-x-hidden">
+          <div
+            className={`min-h-0 rounded-2xl border border-white/10 bg-slate-950/40 ${
+              isNotationOuverte && momentSelectionne && !modeFocus ? 'min-h-[320px] flex-1' : 'flex-1'
+            }`}
+          >
             <SceneVerreVivant scores={scores} niveau={niveauAffiche} />
           </div>
 
-          <BandeauScores
-            scores={scores}
+          <EtatVerre
             niveau={niveauAffiche}
             taux={taux}
-            avantDebordement={travailAvantDebordement(scores, niveauAffiche)}
-            travailEcoule={travailEcoule(projection, tempsSimule, duree)}
             momentActif={isNotationOuverte && momentSelectionne ? momentSelectionne.nom : momentTraverse}
           />
-        </motion.div>
+
+          <BarreElements
+            scores={scores}
+            elementActif={isNotationOuverte ? elementActif : null}
+            onSelectionner={isNotationOuverte ? setElementActif : undefined}
+          />
+
+          {isNotationOuverte && momentSelectionne && !modeFocus && (
+            <PanneauNotation
+              moment={momentSelectionne}
+              elementActif={elementActif}
+              onChange={majMoment}
+              onSupprimer={() => {
+                supprimeMoment(momentSelectionne.id)
+                setMomentSelectionneId(null)
+                setIsNotationOuverte(false)
+              }}
+              onFermer={fermeNotation}
+            />
+          )}
+        </div>
+      </div>
+
+      <div className="shrink-0">
+      <FriseMoments
+        moments={moments}
+        duree={duree}
+        temps={temps}
+        courbe={courbe}
+        momentSelectionneId={momentSelectionneId}
+        decoupageEnCours={decoupageEnCours}
+        onSeek={seek}
+        onSelectionner={(id) => {
+          setMomentSelectionneId(id)
+          if (!modeFocus) setIsNotationOuverte(true)
+        }}
+        onAjusterBornes={ajusteBornes}
+      />
       </div>
     </div>
   )

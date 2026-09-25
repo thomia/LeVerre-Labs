@@ -15,34 +15,23 @@
 ```
 ┌──────────────────────────────────────────────────────────────────────┐
 │ titre · nb moments · « la séquence représente » 1h 2h 4h 8h · focus  │
-├───────────────────────────────┬──────────────────┬───────────────────┤
-│                               │                  │                   │
-│          VIDÉO                │  PANNEAU DE      │   LE VERRE        │
-│      (zone commentée)         │  NOTATION        │   (le résultat)   │
-│                               │  (ouvert à la    │                   │
-│  ▶  ✂ Découper  ×0,25 → ×2    │   demande)       │                   │
-├───────────────────────────────┴──────────────────┤                   │
-│  FRISE : courbe du verre + moments découpés      ├───────────────────┤
-│                                                  │ scores chiffrés   │
-└──────────────────────────────────────────────────┴───────────────────┘
+├────────────────────────────────────────────┬─────────────────────────┤
+│                                            │  modèle entier          │
+│              VIDÉO (2/3)                   │  niveau + 5 scores      │
+│                                            │  notation (1/3)        │
+├────────────────────────────────────────────┴─────────────────────────┤
+│  FRISE sur toute la largeur : courbe du verre + moments découpés     │
+└──────────────────────────────────────────────────────────────────────┘
 ```
 
-Trois principes, tous dictés par l'enregistrement vidéo :
+La vidéo occupe les deux tiers. Le modèle et la notation partagent le tiers
+restant : les 5 scores ne sont affichés qu'une fois, juste sous le verre, et
+servent d'onglets quand un moment est ouvert. La frise court sous les deux
+colonnes — c'est le plan large de la séquence.
 
-1. **La cause à gauche, l'effet à droite.** Le regard du spectateur va de la
-   scène filmée au verre, dans le sens de la lecture. Le commentaire oral suit
-   le même chemin : « regardez ce qu'il fait → regardez ce que ça remplit ».
-2. **Rien ne bouge de place.** Le panneau de notation s'insère entre les deux
-   sans déplacer la vidéo ni le verre : pas de saut de mise en page au montage,
-   on peut recadrer en 9:16 sur la colonne du verre pour un reel sans que la
-   cible se déplace d'un plan à l'autre.
-3. **La frise est un plan large.** Elle porte à la fois les moments (couleur =
-   gravité) et la courbe du verre sur toute la vidéo : c'est le plan de coupe
-   naturel pour conclure — « voilà la journée en une image ».
-
-Le **mode focus** (touche `F`) masque l'en-tête du site, passe en plein écran
-natif et élargit la colonne du verre : c'est la disposition à utiliser pour la
-relecture finale qu'on enregistre.
+Le **mode focus** (touche `F`) masque l'en-tête du site et passe en plein écran
+natif, en gardant le même découpage 2/3 – 1/3. La notation se range : il ne
+reste que le modèle, pour la relecture qu'on enregistre.
 
 **Raccourcis** : `Espace` lecture/pause · `M` début/fin de moment · `←` `→`
 ±5 s · `Échap` fermer le panneau · `F` mode focus.

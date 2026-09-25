@@ -327,4 +327,4 @@ export function couleurNiveau(niveau: number): string {
   return '#4ade80'
 }
 
-export const ORDRE_AFFICHAGE_SCORES: ElementId[] = ['robinet', 'bulle', 'orage', 'paille', 'verre']
+export const ORDRE_AFFICHAGE_SCORES: ElementId[] = ['verre', 'robinet', 'bulle', 'orage', 'paille']

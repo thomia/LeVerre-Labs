@@ -16,7 +16,7 @@
 
 import { memo, useEffect, useMemo, useRef, useState } from 'react'
 import DashboardSimplified from '@/components/modele/dashboard-simplified'
-import { NATIVE_HEIGHT, NATIVE_WIDTH, calculeCadre } from '@/lib/modele/cadrage-modele'
+import { NATIVE_WIDTH } from '@/lib/modele/cadrage-modele'
 import type { ScoresMoment } from '@/lib/analyse-rapide'
 
 interface SceneVerreVivantProps {
@@ -26,13 +26,11 @@ interface SceneVerreVivantProps {
 }
 
 /**
- * Cadre volontairement serré sur le verre, le robinet, la paille et l'orage :
- * la Bulle est un halo de 710 px de large qui, à l'échelle d'une colonne
- * d'écran, écraserait le verre à la taille d'un timbre. On la laisse déborder
- * du cadre — ses particules font un fond de scène — pour garder un verre assez
- * grand pour qu'on voie l'eau monter à l'image.
+ * On cadre le dashboard en entier, avec une marge en bas : le verre est mis à
+ * l'échelle (scale 125) et son fond dépasse le bloc de 700 px. Un cadre plus
+ * serré coupait le robinet ou le pied du verre.
  */
-const CADRE = calculeCadre(['robinet', 'orage', 'paille'])
+const CADRE = { haut: 0, gauche: 0, largeur: NATIVE_WIDTH, hauteur: 980 }
 
 export const SceneVerreVivant = memo(function SceneVerreVivant({ scores, niveau }: SceneVerreVivantProps) {
   const conteneurRef = useRef<HTMLDivElement>(null)
@@ -61,8 +59,10 @@ export const SceneVerreVivant = memo(function SceneVerreVivant({ scores, niveau 
     [scores.verre, scores.robinet, scores.bulle, scores.orage, scores.paille]
   )
 
+  // 0,9 : les éléments (verre à l'échelle, bulle) dépassent légèrement leur
+  // boîte. La marge garantit que rien n'est coupé par le cadre.
   const echelle = taille
-    ? Math.min(taille.largeur / CADRE.largeur, taille.hauteur / CADRE.hauteur)
+    ? Math.min(taille.largeur / CADRE.largeur, taille.hauteur / CADRE.hauteur) * 0.9
     : 0
 
   return (
@@ -74,7 +74,7 @@ export const SceneVerreVivant = memo(function SceneVerreVivant({ scores, niveau 
         <div
           style={{
             width: `${NATIVE_WIDTH}px`,
-            height: `${NATIVE_HEIGHT}px`,
+            height: `${CADRE.hauteur}px`,
             transform: `translate(${-CADRE.gauche * echelle}px, ${-CADRE.haut * echelle}px) scale(${echelle})`,
             transformOrigin: 'top left',
             pointerEvents: 'none',

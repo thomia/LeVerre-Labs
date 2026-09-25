@@ -1,27 +1,23 @@
 "use client"
 
 /**
- * Panneau de notation rapide d'un moment.
+ * Notation rapide d'un moment.
  *
- * Il s'ouvre dès qu'un moment est fermé (clic fin) et reste en colonne, entre
- * la vidéo et le verre : pendant qu'on note, on voit toujours l'image ET le
- * modèle réagir. Un onglet par élément, cinq lignes de critères maximum par
- * onglet — soit dix gestes environ pour noter un moment complet, contre une
- * quarantaine avec une checklist.
+ * Il s'ouvre dès qu'un moment est fermé (clic fin), sous le modèle et la barre
+ * des 5 éléments : pendant qu'on note, on voit le verre réagir juste au-dessus.
+ * Cinq lignes de critères maximum par élément — soit une dizaine de gestes pour
+ * noter un moment complet, contre une quarantaine avec une checklist.
  */
 
-import { useState } from 'react'
 import { Check, Trash2, X } from 'lucide-react'
 import { ELEMENT_THEME } from '@/lib/element-theme'
 import type { ElementId } from '@/lib/supabase/types'
 import {
   CRITERES_PAR_ELEMENT,
   DIRECTION_ELEMENT,
-  ORDRE_NOTATION,
   formateDuree,
   formateTemps,
   notationParDefaut,
-  scoresDuMoment,
   type MomentAnalyse,
   type NotationCritere,
 } from '@/lib/analyse-rapide'
@@ -29,15 +25,19 @@ import { LigneCritere } from './ligne-critere'
 
 interface PanneauNotationProps {
   moment: MomentAnalyse
+  elementActif: ElementId
   onChange: (moment: MomentAnalyse) => void
   onSupprimer: () => void
   onFermer: () => void
 }
 
-export function PanneauNotation({ moment, onChange, onSupprimer, onFermer }: PanneauNotationProps) {
-  const [elementActif, setElementActif] = useState<ElementId>('robinet')
-
-  const scores = scoresDuMoment(moment.notations)
+export function PanneauNotation({
+  moment,
+  elementActif,
+  onChange,
+  onSupprimer,
+  onFermer,
+}: PanneauNotationProps) {
   const theme = ELEMENT_THEME[elementActif]
 
   function majNotation(critereId: string, notation: NotationCritere) {
@@ -45,14 +45,18 @@ export function PanneauNotation({ moment, onChange, onSupprimer, onFermer }: Pan
   }
 
   return (
-    <section className="flex h-full min-h-0 flex-col rounded-2xl border border-white/10 bg-slate-950/70 backdrop-blur">
-      <header className="flex items-center gap-2 border-b border-white/10 px-3 py-2.5">
+    <section className="flex min-h-0 flex-1 flex-col rounded-2xl border border-white/10 bg-slate-950/70 backdrop-blur">
+      <header className="flex items-center gap-2 border-b border-white/10 px-3 py-2">
         <input
           value={moment.nom}
           onChange={(event) => onChange({ ...moment, nom: event.target.value })}
           className="min-w-0 flex-1 rounded-lg border border-transparent bg-white/5 px-2 py-1.5 text-sm font-semibold text-white outline-none transition-colors focus:border-white/20 focus:bg-white/10"
           placeholder="Nom du moment"
         />
+        <span className="shrink-0 text-[11px] tabular-nums text-white/35">
+          {formateTemps(moment.debut)} → {formateTemps(moment.fin)} ·{' '}
+          {formateDuree(moment.fin - moment.debut)}
+        </span>
         <button
           type="button"
           onClick={onSupprimer}
@@ -71,51 +75,13 @@ export function PanneauNotation({ moment, onChange, onSupprimer, onFermer }: Pan
         </button>
       </header>
 
-      <div className="flex items-center justify-between px-3 py-1.5 text-[11px] text-white/40">
-        <span className="tabular-nums">
-          {formateTemps(moment.debut, true)} → {formateTemps(moment.fin, true)}
-        </span>
-        <span>{formateDuree(moment.fin - moment.debut)}</span>
-      </div>
-
-      <nav className="flex gap-1 px-2 pb-2">
-        {ORDRE_NOTATION.map((element) => {
-          const isActif = element === elementActif
-          const themeElement = ELEMENT_THEME[element]
-
-          return (
-            <button
-              key={element}
-              type="button"
-              onClick={() => setElementActif(element)}
-              className="flex-1 rounded-lg border px-1 py-1.5 transition-all duration-150"
-              style={{
-                borderColor: isActif ? themeElement.color : 'rgba(255,255,255,0.08)',
-                backgroundColor: isActif ? `${themeElement.color}1f` : 'transparent',
-              }}
-            >
-              <span
-                className="block truncate text-[10px] font-medium uppercase tracking-wide"
-                style={{ color: isActif ? themeElement.color : 'rgba(255,255,255,0.45)' }}
-              >
-                {themeElement.name}
-              </span>
-              <span
-                className="block text-sm font-bold tabular-nums"
-                style={{ color: isActif ? themeElement.color : 'rgba(255,255,255,0.7)' }}
-              >
-                {scores[element]}
-              </span>
-            </button>
-          )
-        })}
-      </nav>
-
-      <div className="min-h-0 flex-1 space-y-2 overflow-y-auto px-3 pb-3">
+      <div className="min-h-0 flex-1 space-y-2 overflow-y-auto px-3 py-2">
         <p className="text-[11px] leading-snug text-white/35">
-          <span style={{ color: theme.color }}>{theme.officialName}</span> — curseur : 0 rien à signaler → 100
-          le pire. Cases : poids dans le score
-          {DIRECTION_ELEMENT[elementActif] === 'positive' ? ' (ici, score élevé = favorable).' : '.'}
+          <span style={{ color: theme.color }}>{theme.officialName}</span> — le{' '}
+          <span className="text-white/60">curseur</span> dit ce que tu observes (0 rien à signaler →
+          100 le pire), les <span className="text-white/60">carrés</span> disent combien ce critère
+          compte dans le score de l&apos;élément.
+          {DIRECTION_ELEMENT[elementActif] === 'positive' && ' Ici, score élevé = favorable.'}
         </p>
 
         {CRITERES_PAR_ELEMENT[elementActif].map((critere) => (

@@ -350,7 +350,11 @@ export const CRITERES_PAR_ELEMENT: Record<ElementId, CritereRapide[]> = {
  * l'opérateur, qui ne change pas d'un moment à l'autre et se recopie tout seul
  * grâce à l'héritage du moment précédent.
  */
-export const ORDRE_NOTATION: ElementId[] = ['robinet', 'bulle', 'orage', 'paille', 'verre']
+/**
+ * Ordre de lecture du modèle : la personne d'abord (le Verre), puis ce qui la
+ * remplit (Robinet, Bulle, Orage), puis ce qui la vide (Paille).
+ */
+export const ORDRE_NOTATION: ElementId[] = ['verre', 'robinet', 'bulle', 'orage', 'paille']
 
 export const TOUS_LES_CRITERES: CritereRapide[] = ORDRE_NOTATION.flatMap(
   (element) => CRITERES_PAR_ELEMENT[element]
