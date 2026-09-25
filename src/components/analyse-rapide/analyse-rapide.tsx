@@ -34,12 +34,14 @@ import {
   facteurTempo,
   formateDuree,
   niveauAuTemps,
+  notationsParDefaut,
   sauvegardeAnalyse,
   scoresDuMoment,
-  scoresNeutres,
+  scoresRepos,
   secondesAvantDebordement,
   segmentAuTemps,
   tauxParMinute,
+  type MomentAnalyse,
   type TempoId,
 } from '@/lib/analyse-rapide'
 import { EcranImport } from './ecran-import'
@@ -48,6 +50,34 @@ import { FriseMoments } from './frise-moments'
 import { PanneauNotation } from './panneau-notation'
 import { SceneVerreVivant } from './scene-verre-vivant'
 import { BandeauScores } from './bandeau-scores'
+
+/**
+ * Ajoute le moment en cours de découpage à la liste, tant qu'il n'empiète pas
+ * sur un moment déjà noté. Il hérite des notations du moment précédent, comme
+ * le fera le moment définitif : la transition est invisible à la validation.
+ */
+function avecMomentProvisoire(
+  moments: MomentAnalyse[],
+  debut: number | null,
+  temps: number
+): MomentAnalyse[] {
+  if (debut === null || temps <= debut) return moments
+  if (moments.some((moment) => moment.debut < temps && moment.fin > debut)) return moments
+
+  const precedent = moments.filter((moment) => moment.debut < debut).pop()
+
+  return [
+    ...moments,
+    {
+      id: 'moment-provisoire',
+      nom: 'Moment en cours',
+      debut,
+      fin: temps,
+      notations: precedent?.notations ?? notationsParDefaut(),
+      commentaire: '',
+    },
+  ]
+}
 
 const RACCOURCIS = [
   ['Espace', 'lecture / pause'],
@@ -59,6 +89,7 @@ const RACCOURCIS = [
 
 export function AnalyseRapide() {
   const videoRef = useRef<HTMLVideoElement>(null)
+  const conteneurRef = useRef<HTMLDivElement>(null)
 
   const [videoSrc, setVideoSrc] = useState<string | null>(null)
   const [nomFichier, setNomFichier] = useState('')
@@ -70,6 +101,7 @@ export function AnalyseRapide() {
   const [tempo, setTempo] = useState<TempoId>('normal')
   const [modeFocus, setModeFocus] = useState(false)
   const [afficheRaccourcis, setAfficheRaccourcis] = useState(false)
+  const [isPleinEcran, setIsPleinEcran] = useState(false)
 
   const [decoupageEnCours, setDecoupageEnCours] = useState<number | null>(null)
   const [momentSelectionneId, setMomentSelectionneId] = useState<string | null>(null)
@@ -82,8 +114,15 @@ export function AnalyseRapide() {
   const facteur = facteurTempo(tempo)
 
   const momentSelectionne = moments.find((moment) => moment.id === momentSelectionneId) ?? null
-  const segments = useMemo(() => construitSegments(moments, duree), [moments, duree])
-  const courbe = useMemo(() => courbeNiveau(segments, duree, 240, facteur), [segments, duree, facteur])
+  const courbe = useMemo(
+    () => courbeNiveau(construitSegments(moments, duree), duree, 240, facteur),
+    [moments, duree, facteur]
+  )
+
+  // Le moment en cours de découpage compte déjà dans la simulation, avec les
+  // notations dont il héritera : le verre vit pendant qu'on découpe, pas
+  // seulement une fois le moment validé.
+  const segments = construitSegments(avecMomentProvisoire(moments, decoupageEnCours, temps), duree)
 
   // Pendant la notation, on fige la simulation à la fin du moment noté : chaque
   // curseur déplacé montre immédiatement le niveau que ce moment laisse dans le
@@ -91,10 +130,10 @@ export function AnalyseRapide() {
   const tempsSimule = isNotationOuverte && momentSelectionne ? momentSelectionne.fin : temps
   const segmentActif = segmentAuTemps(segments, tempsSimule)
 
-  const scores = useMemo(() => {
-    if (isNotationOuverte && momentSelectionne) return scoresDuMoment(momentSelectionne.notations)
-    return segmentActif?.scores ?? scoresNeutres()
-  }, [isNotationOuverte, momentSelectionne, segmentActif])
+  const scores =
+    isNotationOuverte && momentSelectionne
+      ? scoresDuMoment(momentSelectionne.notations)
+      : segmentActif?.scores ?? scoresRepos()
 
   const niveau = niveauAuTemps(segments, tempsSimule, facteur)
   // Arrondi au demi-point : évite de re-rendre toute la scène à chaque image
@@ -251,6 +290,28 @@ export function AnalyseRapide() {
     if (video) video.playbackRate = vitesse
   }, [vitesse, videoSrc])
 
+  // Le mode focus passe l'outil en plein écran natif : plus de navbar ni
+  // d'onglets à l'image, la capture d'écran ne montre que la vidéo, la frise et
+  // le verre.
+  useEffect(() => {
+    const conteneur = conteneurRef.current
+    if (!conteneur) return
+
+    if (modeFocus && !document.fullscreenElement) void conteneur.requestFullscreen?.().catch(() => {})
+    if (!modeFocus && document.fullscreenElement) void document.exitFullscreen?.().catch(() => {})
+  }, [modeFocus])
+
+  useEffect(() => {
+    function surChangement() {
+      const actif = Boolean(document.fullscreenElement)
+      setIsPleinEcran(actif)
+      if (!actif) setModeFocus(false)
+    }
+
+    document.addEventListener('fullscreenchange', surChangement)
+    return () => document.removeEventListener('fullscreenchange', surChangement)
+  }, [])
+
   // Sauvegarde locale : une analyse commentée dure une heure, un
   // rafraîchissement ne doit pas la faire disparaître.
   useEffect(() => {
@@ -297,7 +358,10 @@ export function AnalyseRapide() {
 
   return (
     <div
-      className={`flex flex-col gap-2 px-3 pb-3 ${modeFocus ? 'h-[calc(100dvh-6.5rem)]' : 'h-[calc(100dvh-8.5rem)]'}`}
+      ref={conteneurRef}
+      className={`flex flex-col gap-2 bg-slate-950 px-3 pb-3 ${
+        isPleinEcran ? 'h-dvh pt-3' : 'h-[calc(100dvh-9rem)]'
+      }`}
     >
       {!modeFocus && (
         <header className="flex flex-wrap items-center gap-2 pt-1">
@@ -433,12 +497,12 @@ export function AnalyseRapide() {
             <motion.div
               layout
               initial={{ width: 0, opacity: 0 }}
-              animate={{ width: 380, opacity: 1 }}
+              animate={{ width: 420, opacity: 1 }}
               exit={{ width: 0, opacity: 0 }}
               transition={{ type: 'spring', stiffness: 260, damping: 30 }}
               className="min-h-0 shrink-0 overflow-hidden"
             >
-              <div className="h-full w-[380px]">
+              <div className="h-full w-[420px]">
                 <PanneauNotation
                   moment={momentSelectionne}
                   onChange={majMoment}
@@ -456,7 +520,7 @@ export function AnalyseRapide() {
 
         <motion.div
           layout
-          className={`flex min-h-0 min-w-[280px] flex-col gap-2 ${modeFocus ? 'w-[42%]' : 'w-[34%]'}`}
+          className={`flex min-h-0 min-w-[300px] flex-col gap-2 ${modeFocus ? 'w-[44%]' : 'w-[36%]'}`}
         >
           <div className="min-h-0 flex-1 rounded-2xl border border-white/10 bg-slate-950/40">
             <SceneVerreVivant scores={scores} niveau={niveauAffiche} />

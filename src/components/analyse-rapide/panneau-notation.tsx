@@ -16,9 +16,11 @@ import { ELEMENT_THEME } from '@/lib/element-theme'
 import type { ElementId } from '@/lib/supabase/types'
 import {
   CRITERES_PAR_ELEMENT,
+  DIRECTION_ELEMENT,
   ORDRE_NOTATION,
   formateDuree,
   formateTemps,
+  notationParDefaut,
   scoresDuMoment,
   type MomentAnalyse,
   type NotationCritere,
@@ -111,8 +113,9 @@ export function PanneauNotation({ moment, onChange, onSupprimer, onFermer }: Pan
 
       <div className="min-h-0 flex-1 space-y-2 overflow-y-auto px-3 pb-3">
         <p className="text-[11px] leading-snug text-white/35">
-          <span style={{ color: theme.color }}>{theme.officialName}</span> — curseur à 0 = rien à signaler,
-          100 = le pire observable. Les 4 cases règlent le poids du critère dans le score {theme.name}.
+          <span style={{ color: theme.color }}>{theme.officialName}</span> — curseur : 0 rien à signaler → 100
+          le pire. Cases : poids dans le score
+          {DIRECTION_ELEMENT[elementActif] === 'positive' ? ' (ici, score élevé = favorable).' : '.'}
         </p>
 
         {CRITERES_PAR_ELEMENT[elementActif].map((critere) => (
@@ -120,7 +123,7 @@ export function PanneauNotation({ moment, onChange, onSupprimer, onFermer }: Pan
             key={critere.id}
             critere={critere}
             couleur={theme.color}
-            notation={moment.notations[critere.id] ?? { gravite: 0, niveauPoids: critere.niveauPoidsDefaut }}
+            notation={moment.notations[critere.id] ?? notationParDefaut(critere)}
             onChange={(notation) => majNotation(critere.id, notation)}
           />
         ))}

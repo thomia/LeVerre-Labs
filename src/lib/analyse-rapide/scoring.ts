@@ -19,7 +19,14 @@
 
 import { applyDirection, weightedQuadraticMean, type ElementDirection, type WeightedValue } from '@/lib/questions/scoring'
 import type { ElementId } from '@/lib/supabase/types'
-import { CRITERES_PAR_ELEMENT, NIVEAUX_POIDS, ORDRE_NOTATION, TOUS_LES_CRITERES } from './criteres'
+import {
+  CRITERES_PAR_ELEMENT,
+  GRAVITE_PAR_DEFAUT,
+  NIVEAUX_POIDS,
+  ORDRE_NOTATION,
+  TOUS_LES_CRITERES,
+  type CritereRapide,
+} from './criteres'
 import type { NotationCritere, NotationsMoment, ScoresMoment } from './types'
 
 /** Sens de chaque élément, identique aux définitions de `lib/questions`. */
@@ -31,20 +38,28 @@ export const DIRECTION_ELEMENT: Record<ElementId, ElementDirection> = {
   verre: 'positive',
 }
 
-/** Notations initiales : rien d'observé (gravité 0) et poids pré-réglés. */
+/** Notation initiale d'un critère : hypothèse neutre + poids pré-réglé. */
+export function notationParDefaut(critere: CritereRapide): NotationCritere {
+  return {
+    gravite: critere.graviteDefaut ?? GRAVITE_PAR_DEFAUT,
+    niveauPoids: critere.niveauPoidsDefaut,
+  }
+}
+
+/** Notations initiales d'un moment. */
 export function notationsParDefaut(): NotationsMoment {
   const notations: NotationsMoment = {}
 
   for (const critere of TOUS_LES_CRITERES) {
-    notations[critere.id] = { gravite: 0, niveauPoids: critere.niveauPoidsDefaut }
+    notations[critere.id] = notationParDefaut(critere)
   }
 
   return notations
 }
 
 /** Notation d'un critère, avec repli sur la valeur par défaut si absente. */
-function litNotation(notations: NotationsMoment, critereId: string, niveauDefaut: number): NotationCritere {
-  return notations[critereId] ?? { gravite: 0, niveauPoids: niveauDefaut }
+function litNotation(notations: NotationsMoment, critere: CritereRapide): NotationCritere {
+  return notations[critere.id] ?? notationParDefaut(critere)
 }
 
 export function poidsDuNiveau(niveau: number | null): number {
@@ -58,7 +73,7 @@ export function scoreElement(element: ElementId, notations: NotationsMoment): nu
   let multiplicateur = 1
 
   for (const critere of CRITERES_PAR_ELEMENT[element]) {
-    const notation = litNotation(notations, critere.id, critere.niveauPoidsDefaut)
+    const notation = litNotation(notations, critere)
 
     if (critere.role === 'multiplicateur') {
       multiplicateur = Math.max(0, Math.min(100, notation.gravite)) / 100

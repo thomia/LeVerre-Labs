@@ -88,7 +88,13 @@ export function FriseMoments({
         className="relative h-[120px] cursor-pointer select-none overflow-hidden rounded-xl bg-black/40"
         onPointerDown={(event) => onSeek(tempsDepuisEvenement(event.clientX))}
       >
-        <CourbeNiveau courbe={courbe} />
+        {/* La courbe occupe la moitié haute, les moments la moitié basse : sans
+            cette séparation, une courbe qui reste basse disparaît derrière les
+            cartouches des moments. */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-[64px]">
+          <CourbeNiveau courbe={courbe} />
+          <span className="absolute right-1 top-0 text-[9px] font-medium text-red-400/50">100 % · débordement</span>
+        </div>
 
         {graduations.map((valeur) => (
           <div key={valeur} className="absolute top-0 bottom-0 border-l border-white/5" style={{ left: pourcent(valeur) }}>
@@ -168,7 +174,7 @@ function CourbeNiveau({ courbe }: { courbe: number[] }) {
 
   return (
     <svg
-      className="pointer-events-none absolute inset-0 h-full w-full"
+      className="absolute inset-0 h-full w-full"
       viewBox="0 0 1000 100"
       preserveAspectRatio="none"
     >

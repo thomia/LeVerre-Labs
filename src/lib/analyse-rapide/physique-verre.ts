@@ -26,7 +26,7 @@
 
 import type { ElementId } from '@/lib/supabase/types'
 import type { MomentAnalyse, ScoresMoment } from './types'
-import { scoresDuMoment } from './scoring'
+import { scoresDuMoment, scoresNeutres } from './scoring'
 
 /** Part de la charge qu'une paille à 100 peut évacuer. */
 export const RATIO_DRAIN = 0.6
@@ -35,15 +35,28 @@ export const RATIO_DRAIN = 0.6
  * Calibration : % de verre rempli par minute de vidéo, au pire cas absolu
  * (R=100, B=100, O=100, P=0, V=0 → facteur 3.75).
  *
- *   - pire cas absolu        → verre plein en ~40 s de vidéo
- *   - moment lourd réaliste  (R 60, B 40, O 20, P 35, V 55) → ~4 min
- *   - moment tenable         (R 30, B 20, O 10, P 60, V 70) → le verre se vide
+ *   - pire cas absolu        → verre plein en ~29 s de vidéo
+ *   - moment lourd réaliste  (R 80, B 60, O 40, P 30, V 40) → ~1 min 30
+ *   - moment neutre          (tous à 50, pas d'imprévu)     → ~5 min 30
+ *   - moment tenable         (R 20, B 20, P 80, V 80)       → le verre se vide
  *
- * Ces ordres de grandeur sont choisis pour une vidéo de poste de 3 à 10 min :
+ * Ces ordres de grandeur sont choisis pour une vidéo de poste de 2 à 10 min :
  * le verre doit raconter quelque chose à l'échelle de la séquence filmée, pas
- * à l'échelle de la journée de travail.
+ * à l'échelle de la journée de travail. Le tempo permet de recaler au besoin.
  */
-export const TAUX_MAX_PAR_MINUTE = 40
+export const TAUX_MAX_PAR_MINUTE = 55
+
+/**
+ * Part de la paille qui continue d'agir entre deux moments.
+ *
+ * Le temps non découpé n'est pas du repos : c'est surtout du travail qu'on n'a
+ * pas analysé. Laisser la récupération à pleine puissance viderait le verre
+ * dans chaque intervalle et effacerait tout ce que les moments viennent de
+ * raconter ; la couper complètement figerait le verre. On récupère donc à
+ * moitié, ce qui fait redescendre le niveau environ deux fois moins vite qu'un
+ * moment ordinaire ne le fait monter.
+ */
+export const RECUPERATION_HORS_MOMENT = 0.5
 
 /** Tempos proposés à l'observateur pour caler la dynamique sur sa vidéo. */
 export const TEMPOS = [
@@ -81,12 +94,25 @@ export interface SegmentSimulation {
 
 /**
  * Scores appliqués entre deux moments : le robinet se ferme et l'orage
- * s'éteint (plus de tâche observée), mais la personne, son environnement et sa
- * récupération restent ceux du dernier moment — le verre se vide doucement au
- * lieu de se figer.
+ * s'éteint (plus de tâche observée), la personne et son environnement restent
+ * ceux du dernier moment, et la récupération n'agit qu'à moitié — le verre
+ * redescend doucement au lieu de se figer ou de se vider d'un coup.
  */
-function scoresHorsMoment(precedents: ScoresMoment): ScoresMoment {
-  return { ...precedents, robinet: 0, orage: 0 }
+export function scoresHorsMoment(precedents: ScoresMoment): ScoresMoment {
+  return {
+    ...precedents,
+    robinet: 0,
+    orage: 0,
+    paille: Math.round(precedents.paille * RECUPERATION_HORS_MOMENT),
+  }
+}
+
+/**
+ * État affiché avant le premier moment : robinet fermé, hypothèse neutre pour
+ * le reste. Rien ne coule tant qu'aucune tâche n'a été découpée.
+ */
+export function scoresRepos(): ScoresMoment {
+  return scoresHorsMoment(scoresNeutres())
 }
 
 /**

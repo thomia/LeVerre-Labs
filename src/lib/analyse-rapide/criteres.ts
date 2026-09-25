@@ -40,7 +40,12 @@ export type RoleCritere = 'terme' | 'multiplicateur'
 export interface CritereRapide {
   id: string
   element: ElementId
-  /** Intitulé court affiché en face du curseur. */
+  /**
+   * Intitulé court affiché en face du curseur. Toujours formulé du côté
+   * défavorable ("Récupération insuffisante" et non "Récupération"), pour que
+   * pousser le curseur vers la droite veuille dire la même chose sur les cinq
+   * éléments.
+   */
   label: string
   /** Ce qu'on regarde concrètement dans l'image (support de la justification orale). */
   repere: string
@@ -48,8 +53,23 @@ export interface CritereRapide {
   ancrages: [string, string, string, string]
   /** Niveau de poids pré-réglé (index dans `NIVEAUX_POIDS`). */
   niveauPoidsDefaut: number
+  /** Position initiale du curseur. `GRAVITE_PAR_DEFAUT` si absent. */
+  graviteDefaut?: number
   role?: RoleCritere
 }
+
+/**
+ * Position initiale des curseurs : le milieu de l'échelle, c'est-à-dire
+ * "situation ordinaire, pas encore observée".
+ *
+ * Partir de 0 a été essayé et abandonné : 0 signifie "rien à signaler", donc un
+ * moment à peine noté décrivait un poste parfait — paille idéale et verre très
+ * large — qui absorbait tout ce que le robinet apportait. Le verre restait
+ * désespérément vide alors qu'on venait de coter une charge lourde. Partir du
+ * milieu affiche une hypothèse neutre, visible à l'écran (l'ancrage médian est
+ * écrit en clair), que l'observateur déplace dans un sens ou dans l'autre.
+ */
+export const GRAVITE_PAR_DEFAUT = 50
 
 /**
  * Les 4 cases d'importance affichées en face de chaque critère.
@@ -191,6 +211,8 @@ const CRITERES_ORAGE: CritereRapide[] = [
     repere: "L'imprévu se produit-il vraiment ici ? Rien à signaler = le reste de l'orage ne compte pas.",
     ancrages: ['Aucun imprévu', 'Micro-accroc ponctuel', 'Perturbation nette', 'Le moment est entièrement subi'],
     niveauPoidsDefaut: 3,
+    // Un imprévu ne se présume pas : tant qu'on n'en a pas vu, l'Orage est nul.
+    graviteDefaut: 0,
     role: 'multiplicateur',
   },
   {
@@ -231,7 +253,7 @@ const CRITERES_PAILLE: CritereRapide[] = [
   {
     id: 'p_micropauses',
     element: 'paille',
-    label: 'Micro-pauses possibles',
+    label: 'Micro-pauses impossibles',
     repere: "Peut-il s'arrêter quelques secondes sans que la ligne ou le client attende ? Les pauses observées sont-elles réelles ?",
     ancrages: ['Peut souffler quand il veut', 'Pauses courtes mais réelles', 'Presque aucune interruption', 'Enchaîne sans jamais s\u2019arrêter'],
     niveauPoidsDefaut: 2,
@@ -239,7 +261,7 @@ const CRITERES_PAILLE: CritereRapide[] = [
   {
     id: 'p_variation',
     element: 'paille',
-    label: 'Variation des postures',
+    label: 'Posture toujours identique',
     repere: 'Alternance debout/assis, changement de côté, sollicitation de groupes musculaires différents au fil du moment.',
     ancrages: ['Alterne naturellement', 'Quelques changements', 'Toujours la même posture', 'Geste unique figé, un seul côté'],
     niveauPoidsDefaut: 2,
@@ -247,7 +269,7 @@ const CRITERES_PAILLE: CritereRapide[] = [
   {
     id: 'p_recuperation',
     element: 'paille',
-    label: 'Récupération entre efforts',
+    label: 'Récupération insuffisante',
     repere: "Temps réellement disponible entre deux efforts notables, et ce qui est fait de ce temps (repos ou autre tâche).",
     ancrages: ['Récupération large entre efforts', 'Courte mais suffisante', 'Insuffisante, enchaîne trop vite', 'Aucune, efforts collés'],
     niveauPoidsDefaut: 2,
@@ -255,7 +277,7 @@ const CRITERES_PAILLE: CritereRapide[] = [
   {
     id: 'p_aides',
     element: 'paille',
-    label: 'Aides techniques utilisées',
+    label: 'Aides techniques délaissées',
     repere: "Présence ET usage réel des aides (table élévatrice, chariot, ventouse, convoyeur). Une aide non utilisée ne récupère rien.",
     ancrages: ['Aides adaptées et utilisées', 'Aides présentes, usage partiel', 'Aides disponibles mais délaissées', 'Tout à la main, aucune aide'],
     niveauPoidsDefaut: 2,
@@ -263,7 +285,7 @@ const CRITERES_PAILLE: CritereRapide[] = [
   {
     id: 'p_marge',
     element: 'paille',
-    label: 'Marge de manœuvre',
+    label: 'Rythme imposé',
     repere: 'Peut-il changer son ordre de travail, son rythme, sa façon de faire pour se ménager ?',
     ancrages: ['Organise son travail librement', 'Quelques ajustements possibles', 'Rythme largement imposé', 'Cadence machine, aucune latitude'],
     niveauPoidsDefaut: 1,
@@ -290,7 +312,7 @@ const CRITERES_VERRE: CritereRapide[] = [
   {
     id: 'v_condition',
     element: 'verre',
-    label: 'Condition physique',
+    label: 'Déconditionnement physique',
     repere: 'Activité physique hebdomadaire, aisance et stabilité du geste, essoufflement visible.',
     ancrages: ['Entraîné, geste stable', 'Actif régulièrement', 'Peu actif, geste peu assuré', 'Sédentaire, essoufflement rapide'],
     niveauPoidsDefaut: 2,
@@ -298,7 +320,7 @@ const CRITERES_VERRE: CritereRapide[] = [
   {
     id: 'v_morphologie',
     element: 'verre',
-    label: 'Adéquation morphologie / poste',
+    label: 'Poste inadapté à sa morphologie',
     repere: "Hauteur de plan de travail vs taille de l'opérateur, portée des commandes, taille des poignées vs main.",
     ancrages: ['Poste à sa taille', 'Léger décalage compensé', 'Doit se hausser ou se baisser', 'Poste totalement inadapté'],
     niveauPoidsDefaut: 2,
@@ -306,7 +328,7 @@ const CRITERES_VERRE: CritereRapide[] = [
   {
     id: 'v_forme',
     element: 'verre',
-    label: 'État de forme du jour',
+    label: 'Fatigue du jour',
     repere: 'Sommeil de la nuit, moment de la journée filmé (début vs fin de poste), signes de fatigue.',
     ancrages: ['Frais, début de poste', 'Légère fatigue', 'Fatigue nette, fin de poste', 'Épuisé avant même de commencer'],
     niveauPoidsDefaut: 1,
